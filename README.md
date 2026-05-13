@@ -4,6 +4,24 @@
 
 Upload pavement images for AI-powered distress analysis (cracking, potholes, rutting, etc.) via Google Gemini, then compute CTTP-compliant reinforcement designs with full traceability.
 
+## How it works
+
+```mermaid
+flowchart LR
+  A[Upload pavement photo] --> B[Gemini 2.0 Flash]
+  B --> C[Distress detections]
+  C --> D[CTTP design engine]
+  D --> E[Reinforcement plan]
+  E --> F[PDF report]
+
+  style A fill:#1E293B,color:#fff,stroke:#D97706
+  style B fill:#1E293B,color:#fff,stroke:#D97706
+  style C fill:#1E293B,color:#fff,stroke:#D97706
+  style D fill:#1E293B,color:#fff,stroke:#D97706
+  style E fill:#1E293B,color:#fff,stroke:#D97706
+  style F fill:#1E293B,color:#fff,stroke:#D97706
+```
+
 ## Features
 
 - **AI distress detection** — Upload pavement photos; Gemini 2.0 Flash identifies cracks, potholes, ravelling, and other distresses with severity ratings
