@@ -1,0 +1,402 @@
+{
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/next.config.ts": {
+    "mtime": 1778610519.0,
+    "hash": "a22a85c723318b0db0ab2e43ded09980"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/tailwind.config.ts": {
+    "mtime": 1778516551.0,
+    "hash": "cba8481b106175a751f92bc6a6807429"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/eslint.config.mjs": {
+    "mtime": 1778516551.0,
+    "hash": "ac19e4b067f4dbcde9ae67db96106680"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/postcss.config.mjs": {
+    "mtime": 1778516551.0,
+    "hash": "675899342e765a4d16acd75a53389101"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/next-env.d.ts": {
+    "mtime": 1778612272.852785,
+    "hash": "d0f8375ae1199dc7acd3977fc33b78b8"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/hooks/use-mobile.ts": {
+    "mtime": 1778516551.0,
+    "hash": "209b5193af16624cdd89d3591480dd48"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/hooks/use-toast.ts": {
+    "mtime": 1778516551.0,
+    "hash": "9ba64fc4134b167b51e5e1070a510a00"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/cttp/ErrorBoundary.tsx": {
+    "mtime": 1778589656.0,
+    "hash": "67f739198483628244342e35f6681239"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/cttp/ReportExporter.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "9a720d6d330896849d764cb90c173891"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/cttp/MetricsPanel.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "bf6ea5b9a2bc9e7baf36c248d41a8473"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/cttp/SWRegistrar.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "f18451b0cd7c202615747fcb9b5d53bb"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/cttp/ImageUploader.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "4536d64d0b6ecd83142d4fbfb211e3c0"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/cttp/CalculatorApp.tsx": {
+    "mtime": 1778610167.0,
+    "hash": "0624d4901033515eb3e8e417f8d3f1f0"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/cttp/LicenseInput.tsx": {
+    "mtime": 1778595403.0,
+    "hash": "68a06e82f1ea6627587474a377969787"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/cttp/SettingsModal.tsx": {
+    "mtime": 1778595410.0,
+    "hash": "9a5c0c5774b47d4d775584fea361f10a"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/cttp/ReinforcementPanel.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "21bc2682f8133e08d86b3741d2cd4711"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/cttp/DetectionCanvas.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "26d94394effee3b2eff29121d463ebe0"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/tabs.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "65854b541abbc3c9f39cb075d4cb43ca"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/input.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "a516f41f19d79cbedfb354e893706d87"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/dropdown-menu.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "61ed555c8e1fdeb8556a276a1721c8d4"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/checkbox.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "9de07e415989a8ae7695361a9e5bd5b0"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/drawer.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "d2f77e51ad7cefcf112c855235a172dc"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/radio-group.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "42634c5e24aebafa3f4ce9c91960dbfe"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/alert-dialog.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "0a52d56b575340a3297c172f22d797ae"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/sheet.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "638d6ec8d932fb7adbcd6f58ad1d8475"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/avatar.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "19bc4411b724fb504c65550b61a453b1"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/slider.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "d72c2e0760fae2d1d586db1f8e2c50f9"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/sidebar.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "9e981c1011ccf51eca1f6cb20fa599fd"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/menubar.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "f3836779da2e4f6a90dd7f2755f4c61e"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/alert.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "8e59179ed2f0f6e33320d0081b9782fa"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/input-otp.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "2598c4a03345f4d67397f90c3fbbaddb"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/toast.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "5bd1197d5cb25b2a6ca592850f0d8062"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/accordion.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "6f5ac2a39c951069d52ef56e1375d70a"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/command.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "5632786c44eaa58e5110088afcfb48a6"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/scroll-area.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "360243727fcdcb4d509af4516aaa9d0d"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/pagination.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "c00a637aa821284c8d400e2b84003e31"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/context-menu.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "ae9a7bdee410df0b5d0380784c3a2d16"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/switch.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "f93349e0eb061fc4e6c055ded4cff087"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/form.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "06437ddc30eab3a60f7a561dbc2970ba"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/breadcrumb.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "14763038175abd2410d97d8166c89480"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/progress.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "d0578ee4fb52d86376172c83fb67a9ba"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/aspect-ratio.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "be7a9b030095db724fb3d9ca4e62293c"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/carousel.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "b28bf29b5dccd43ddfa5fd7d38e8517f"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/toaster.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "b36ad9f6793e952195dbec2c7dd4c0ee"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/card.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "a1468e2e35dfde14b63b4308cd20d2c2"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/badge.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "8162fc70aeb50791309f57f8f845d533"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/table.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "531bf830b5f3b399abe3fd453157cdb7"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/calendar.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "92c5e0827022c5fc482a151e58467cee"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/collapsible.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "3280feca735918afc1e61fa59ba6e3f3"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/select.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "bc5bd729efe33ebe26ea6aceeb18dded"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/separator.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "07b35dc35f811b26a1ee3982582ba9fb"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/toggle-group.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "a68b5be2c6b0ce6526a95d195b448810"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/chart.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "79030ea8a0db990faf5a06180d40b274"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/popover.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "d7255316c532c766cee7792d775e4d0f"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/dialog.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "48a74bc4e6b2a9609c91582cae95730f"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/navigation-menu.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "bea6b8a7ef7d7e7d5dc09afe7631fb59"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/textarea.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "04f9af2a78672f7018b16db2bcec5036"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/button.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "7cf5063b66e3ea629115772120bc57e7"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/hover-card.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "a1010352934f4cdf860caa32491a3706"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/sonner.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "6ea1f5a74a5c8a3463d405fcd3099771"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/tooltip.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "9f753bf8201bd05dae554f6808586391"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/label.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "14f124762142b39a666ce10d3b42d28c"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/resizable.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "e6bc37b4f3397d034e51f987d66ebd48"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/toggle.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "df65c0dfce4225ad57a1901b01580f54"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/components/ui/skeleton.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "ee5017bac14efeda715feaceb488382a"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/app/page.tsx": {
+    "mtime": 1778610292.0,
+    "hash": "1765c37b09e64adfe5cb20677809563d"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/app/layout.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "ba191d9b2ca9ce4d5cbc7f276a18fa19"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/app/api/route.ts": {
+    "mtime": 1778516551.0,
+    "hash": "bea7bb6c5e8f4a6fad2e9ccc6324ae8a"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/app/api/export/route.ts": {
+    "mtime": 1778516551.0,
+    "hash": "19daa3307d65f960b9a96ea75cc25289"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/app/api/design/route.ts": {
+    "mtime": 1778516551.0,
+    "hash": "176256ce66255a771678d4a8ddd206b1"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/app/api/predict/route.ts": {
+    "mtime": 1778610515.0,
+    "hash": "4a9f93ad6ee17c3f5677d2ab57f34095"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/lib/noop.ts": {
+    "mtime": 1778516551.0,
+    "hash": "67c54dd4d3324fdceaf9087230e1f00d"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/lib/inference-types.ts": {
+    "mtime": 1778516551.0,
+    "hash": "8e1658982056a3729ee6538b9b6359ce"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/lib/utils.ts": {
+    "mtime": 1778516551.0,
+    "hash": "5a6fd53fdcf2be529e9cc0b718fde352"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/lib/pdf-generator.ts": {
+    "mtime": 1778516551.0,
+    "hash": "ccf191bb194e896167cd90600c6a05af"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/lib/ui-helpers.ts": {
+    "mtime": 1778516551.0,
+    "hash": "a4aad791857fd74cc918adfddb18faf8"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/lib/cttp-rules.ts": {
+    "mtime": 1778516551.0,
+    "hash": "1ae758307cdbb404d5a901a3d7edc50f"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/lib/db.ts": {
+    "mtime": 1778516551.0,
+    "hash": "91eb0a5e8e2f120bf0913d91d1a82ecd"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/lib/engine.ts": {
+    "mtime": 1778516551.0,
+    "hash": "c67273095e00aa6afd98576e3c1676a2"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/lib/cttp-validation.ts": {
+    "mtime": 1778589605.0,
+    "hash": "48f1e647f300048c471896ee51708d73"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/lib/onnx-provider.ts": {
+    "mtime": 1778610501.0,
+    "hash": "063f29cfb2e1d321d7c2f9aa296722a8"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/lib/onnx-postprocess.ts": {
+    "mtime": 1778516551.0,
+    "hash": "6982339066d3a9f58735864db29074d3"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/lib/inference-provider.ts": {
+    "mtime": 1778610480.0,
+    "hash": "080d981f37061b0804a8b8d1ca837cfe"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src/lib/onnx-preprocess.ts": {
+    "mtime": 1778516551.0,
+    "hash": "364459eaf76a5cc06eb0d5ae49396fc8"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/public/sw.js": {
+    "mtime": 1778516551.0,
+    "hash": "277f23e35d69bf000eabcef3b7a7d0a9"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src-tauri/src/main.rs": {
+    "mtime": 1778516551.0,
+    "hash": "b7a4e1b61da739600d929c15c7cbdb5e"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src-tauri/src/build.rs": {
+    "mtime": 1778516551.0,
+    "hash": "1be34a5c61c2c35365de3dab14298f0b"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/examples/websocket/frontend.tsx": {
+    "mtime": 1778516551.0,
+    "hash": "fc591eee23eeb8fa123d22cc5083466d"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/examples/websocket/server.ts": {
+    "mtime": 1778516551.0,
+    "hash": "3ba2a5fee765ca07de02ad0c3be5a437"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/worklog-ui-upgrade.md": {
+    "mtime": 1778516551.0,
+    "hash": "80314f2b3eb0cc7f4f8c91bd4f441398"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/worklog.md": {
+    "mtime": 1778611048.0,
+    "hash": "5931b655ee0708f97eb48e9426de1573"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/download/README.md": {
+    "mtime": 1778334346.0,
+    "hash": "45bbc1947dca1b9f21f04716bbf27562"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/agent-ctx/3-style-agent-metricspanel.md": {
+    "mtime": 1778516551.0,
+    "hash": "fd9859d56fdd001321700f319feb3ceb"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/agent-ctx/6a-style-agent.md": {
+    "mtime": 1778516551.0,
+    "hash": "fc3c0f895a480fb05b14d50d30c9dc64"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/agent-ctx/7-a-ui-components.md": {
+    "mtime": 1778516551.0,
+    "hash": "33811f6534d8d2f3f62a7476287654d1"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/agent-ctx/7-b-ui-components.md": {
+    "mtime": 1778516551.0,
+    "hash": "2716d1428bd6126c58bcc05011525a57"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/agent-ctx/5-main-hydration-fix.md": {
+    "mtime": 1778610371.0,
+    "hash": "0489ba4fe293bed2333ce71afe9de739"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/public/robots.txt": {
+    "mtime": 1778516551.0,
+    "hash": "f9dff89adf98833e676de2205921996a"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/docs/THESIS_VALIDATION.md": {
+    "mtime": 1778516551.0,
+    "hash": "e2e1880453a1c3b6c1754fb3e9ceaf20"
+  },
+  "/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/public/logo.svg": {
+    "mtime": 1778516551.0,
+    "hash": "42f46ee1967225126315578016f0f9b6"
+  }
+}

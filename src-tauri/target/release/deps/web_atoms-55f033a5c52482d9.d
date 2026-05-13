@@ -1,0 +1,11 @@
+/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src-tauri/target/release/deps/web_atoms-55f033a5c52482d9.d: /home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/web_atoms-0.2.4/lib.rs /home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src-tauri/target/release/build/web_atoms-c8f8c0f48d57ca6a/out/named_entities.rs /home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src-tauri/target/release/build/web_atoms-c8f8c0f48d57ca6a/out/generated.rs
+
+/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src-tauri/target/release/deps/libweb_atoms-55f033a5c52482d9.rlib: /home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/web_atoms-0.2.4/lib.rs /home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src-tauri/target/release/build/web_atoms-c8f8c0f48d57ca6a/out/named_entities.rs /home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src-tauri/target/release/build/web_atoms-c8f8c0f48d57ca6a/out/generated.rs
+
+/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src-tauri/target/release/deps/libweb_atoms-55f033a5c52482d9.rmeta: /home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/web_atoms-0.2.4/lib.rs /home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src-tauri/target/release/build/web_atoms-c8f8c0f48d57ca6a/out/named_entities.rs /home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src-tauri/target/release/build/web_atoms-c8f8c0f48d57ca6a/out/generated.rs
+
+/home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/web_atoms-0.2.4/lib.rs:
+/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src-tauri/target/release/build/web_atoms-c8f8c0f48d57ca6a/out/named_entities.rs:
+/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src-tauri/target/release/build/web_atoms-c8f8c0f48d57ca6a/out/generated.rs:
+
+# env-dep:OUT_DIR=/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src-tauri/target/release/build/web_atoms-c8f8c0f48d57ca6a/out

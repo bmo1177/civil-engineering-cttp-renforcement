@@ -1,0 +1,9 @@
+Package: cttp-renforcement
+Version: 1.0.0
+Architecture: amd64
+Installed-Size: 12986
+Maintainer: CTTP Direction des Études Techniques
+Priority: optional
+Depends: libwebkit2gtk-4.1-0, libgtk-3-0
+Description: CTTP-compliant pavement reinforcement design tool
+ Production-ready pavement reinforcement design application following the Algerian CTTP Guide des Renforcements (Dec 1992). Computes traffic classes, deflection corrections, and reinforcement structures with full traceability and AI-powered distress detection.

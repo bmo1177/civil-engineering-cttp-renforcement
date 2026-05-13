@@ -1,0 +1,21 @@
+{
+  "name": "CTTP Renforcement",
+  "short_name": "CTTP",
+  "description": "Pavement reinforcement design tool following Algerian CTTP Guide des Renforcements (Dec 1992)",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F0FDF4",
+  "theme_color": "#14532D",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["engineering", "productivity", "utilities"],
+  "lang": "fr",
+  "dir": "ltr"
+}

@@ -1,0 +1,9 @@
+/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src-tauri/target/release/deps/dlopen2_derive-c4dc656bcadaaba8.d: /home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dlopen2_derive-0.4.3/src/lib.rs /home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dlopen2_derive-0.4.3/src/api.rs /home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dlopen2_derive-0.4.3/src/common.rs /home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dlopen2_derive-0.4.3/src/multi_api.rs /home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dlopen2_derive-0.4.3/src/wrapper.rs
+
+/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src-tauri/target/release/deps/libdlopen2_derive-c4dc656bcadaaba8.so: /home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dlopen2_derive-0.4.3/src/lib.rs /home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dlopen2_derive-0.4.3/src/api.rs /home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dlopen2_derive-0.4.3/src/common.rs /home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dlopen2_derive-0.4.3/src/multi_api.rs /home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dlopen2_derive-0.4.3/src/wrapper.rs
+
+/home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dlopen2_derive-0.4.3/src/lib.rs:
+/home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dlopen2_derive-0.4.3/src/api.rs:
+/home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dlopen2_derive-0.4.3/src/common.rs:
+/home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dlopen2_derive-0.4.3/src/multi_api.rs:
+/home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dlopen2_derive-0.4.3/src/wrapper.rs:

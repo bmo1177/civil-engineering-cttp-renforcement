@@ -1,0 +1,9 @@
+[Desktop Entry]
+Categories=Office;
+Comment=CTTP-compliant pavement reinforcement design tool
+Exec=cttp-renforcement
+StartupWMClass=cttp-renforcement
+Icon=cttp-renforcement
+Name=CTTP Renforcement
+Terminal=false
+Type=Application
