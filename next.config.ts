@@ -1,7 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: process.env.TAURI ? "export" : (process.env.NEXT_OUTPUT || "standalone"),
+  output: process.env.VERCEL
+    ? undefined
+    : process.env.TAURI
+      ? "export"
+      : (process.env.NEXT_OUTPUT || "standalone"),
   typescript: {
     ignoreBuildErrors: true,
   },
