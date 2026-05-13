@@ -525,7 +525,7 @@ export default function CalculatorApp() {
                     className="gap-1.5 rounded border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-400"
                   >
                     <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                    AI Active {safeLocalStorageGet('cttp_gemini_key') ? t('status.ai_active_user') : t('status.ai_active_system')}
+                    {safeLocalStorageGet('cttp_gemini_key') ? t('status.ai_active_user') : t('status.ai_active_system')}
                   </Badge>
                 ) : (
                   <Badge
