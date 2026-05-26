@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="780" viewBox="0 0 600 780">
+  <defs>
+    <filter id="shadow3"><feDropShadow dx="2" dy="4" stdDeviation="8" flood-color="#000" flood-opacity="0.15"/></filter>
+  </defs>
+
+  <rect width="600" height="780" fill="#fff" rx="8" filter="url(#shadow3)"/>
+
+  <!-- Header -->
+  <rect x="0" y="0" width="600" height="100" fill="#1E293B" rx="8"/>
+  <rect x="0" y="40" width="600" height="60" fill="#1E293B"/>
+  <text x="300" y="35" font-family="'Inter', system-ui, sans-serif" font-size="9" fill="#D97706" text-anchor="middle" font-weight="600" letter-spacing="2">RAPPORT DE RENFORCEMENT</text>
+  <text x="300" y="55" font-family="system-ui" font-size="16" font-weight="800" fill="#fff" text-anchor="middle">CTTP Renforcement Design Report</text>
+  <text x="300" y="75" font-family="system-ui" font-size="9" fill="#94A3B8" text-anchor="middle">RN120 PK70-80 — Tiaret, Algeria — Direction des Études Techniques</text>
+
+  <!-- Project Info -->
+  <text x="40" y="130" font-family="system-ui" font-size="11" font-weight="700" fill="#1E293B">Project Information</text>
+  <line x1="40" y1="138" x2="560" y2="138" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="40" y="158" font-family="system-ui" font-size="9" fill="#64748B">Route</text>
+  <text x="280" y="158" font-family="system-ui" font-size="9" font-weight="600" fill="#1E293B">RN120 PK70-80</text>
+  <text x="40" y="174" font-family="system-ui" font-size="9" fill="#64748B">Date</text>
+  <text x="280" y="174" font-family="system-ui" font-size="9" font-weight="600" fill="#1E293B">27 May 2026</text>
+
+  <!-- Input Parameters -->
+  <text x="40" y="204" font-family="system-ui" font-size="11" font-weight="700" fill="#1E293B">Input Parameters</text>
+  <line x1="40" y1="212" x2="560" y2="212" stroke="#E2E8F0" stroke-width="1"/>
+
+  <rect x="40" y="222" width="120" height="40" rx="4" fill="#F8FAFC"/>
+  <text x="100" y="240" font-family="system-ui" font-size="8" fill="#64748B" text-anchor="middle">Traffic Class</text>
+  <text x="100" y="256" font-family="system-ui" font-size="14" font-weight="700" fill="#D97706" text-anchor="middle">T3</text>
+
+  <rect x="170" y="222" width="120" height="40" rx="4" fill="#F8FAFC"/>
+  <text x="230" y="240" font-family="system-ui" font-size="8" fill="#64748B" text-anchor="middle">Surface Type</text>
+  <text x="230" y="256" font-family="system-ui" font-size="14" font-weight="700" fill="#1E293B" text-anchor="middle">BB</text>
+
+  <rect x="300" y="222" width="120" height="40" rx="4" fill="#F8FAFC"/>
+  <text x="360" y="240" font-family="system-ui" font-size="8" fill="#64748B" text-anchor="middle">UNI</text>
+  <text x="360" y="256" font-family="system-ui" font-size="14" font-weight="700" fill="#1E293B" text-anchor="middle">3200</text>
+
+  <rect x="430" y="222" width="120" height="40" rx="4" fill="#F8FAFC"/>
+  <text x="490" y="240" font-family="system-ui" font-size="8" fill="#64748B" text-anchor="middle">Visual Status</text>
+  <text x="490" y="256" font-family="system-ui" font-size="14" font-weight="700" fill="#EF4444" text-anchor="middle">Mauvais</text>
+
+  <!-- Deflection Calculation -->
+  <text x="40" y="290" font-family="system-ui" font-size="11" font-weight="700" fill="#1E293B">Deflection Calculation</text>
+  <line x1="40" y1="298" x2="560" y2="298" stroke="#E2E8F0" stroke-width="1"/>
+
+  <text x="40" y="316" font-family="system-ui" font-size="9" fill="#64748B">Measured deflection (d_c)</text>
+  <text x="300" y="316" font-family="system-ui" font-size="9" fill="#1E293B">70 1/100mm</text>
+  <text x="40" y="332" font-family="system-ui" font-size="9" fill="#64748B">Seasonal coefficient (C_s)</text>
+  <text x="300" y="332" font-family="system-ui" font-size="9" fill="#1E293B">1.25 (Dry)</text>
+  <text x="40" y="348" font-family="system-ui" font-size="9" fill="#64748B">Regional coefficient (C_r)</text>
+  <text x="300" y="348" font-family="system-ui" font-size="9" fill="#1E293B">1.00 (North)</text>
+  <text x="40" y="364" font-family="system-ui" font-size="9" fill="#64748B">Temperature coefficient (C_t)</text>
+  <text x="300" y="364" font-family="system-ui" font-size="9" fill="#1E293B">1.045 (20°C, ≥10cm bitumen)</text>
+
+  <line x1="40" y1="376" x2="560" y2="376" stroke="#E2E8F0" stroke-width="1" stroke-dasharray="4,4"/>
+  <text x="40" y="392" font-family="system-ui" font-size="9" font-weight="700" fill="#1E293B">Corrected deflection (d_corr)</text>
+  <text x="300" y="392" font-family="system-ui" font-size="12" font-weight="700" fill="#D97706">91.44 1/100mm</text>
+  <text x="40" y="408" font-family="system-ui" font-size="9" font-weight="700" fill="#1E293B">Deflection zone</text>
+  <rect x="300" y="398" width="90" height="18" rx="4" fill="#F59E0B"/>
+  <text x="345" y="412" font-family="system-ui" font-size="9" font-weight="700" fill="#fff" text-anchor="middle">T4 — Très Fort</text>
+
+  <!-- Reinforcement Design -->
+  <text x="40" y="442" font-family="system-ui" font-size="11" font-weight="700" fill="#1E293B">Reinforcement Design</text>
+  <line x1="40" y1="450" x2="560" y2="450" stroke="#E2E8F0" stroke-width="1"/>
+
+  <rect x="40" y="460" width="520" height="80" rx="6" fill="#FEF3C7" stroke="#F59E0B" stroke-width="1"/>
+  <text x="300" y="482" font-family="system-ui" font-size="13" font-weight="700" fill="#92400E" text-anchor="middle">Renforcement en Béton Bitumineux (BB)</text>
+  <text x="300" y="500" font-family="system-ui" font-size="10" fill="#B45309" text-anchor="middle">Structure: 6 cm BB (binder) + 4 cm BB (wearing course)</text>
+  <text x="300" y="516" font-family="system-ui" font-size="10" fill="#B45309" text-anchor="middle">Base: 15 cm — Compacted to 98% MDA — Drainage layer required</text>
+
+  <text x="40" y="560" font-family="system-ui" font-size="9" fill="#64748B">Reinforcement type</text>
+  <text x="300" y="560" font-family="system-ui" font-size="9" fill="#1E293B">BS — Béton Bitumineux (épais)</text>
+  <text x="40" y="576" font-family="system-ui" font-size="9" fill="#64748B">Binder course</text>
+  <text x="300" y="576" font-family="system-ui" font-size="9" fill="#1E293B">6 cm BB 0/14</text>
+  <text x="40" y="592" font-family="system-ui" font-size="9" fill="#64748B">Wearing course</text>
+  <text x="300" y="592" font-family="system-ui" font-size="9" fill="#1E293B">4 cm BB 0/10</text>
+  <text x="40" y="608" font-family="system-ui" font-size="9" fill="#64748B">Compaction</text>
+  <text x="300" y="608" font-family="system-ui" font-size="9" fill="#1E293B">98% MDA</text>
+  <text x="40" y="624" font-family="system-ui" font-size="9" fill="#64748B">Drainage</text>
+  <text x="300" y="624" font-family="system-ui" font-size="9" fill="#1E293B">Subsurface drainage required</text>
+
+  <!-- Traceability -->
+  <text x="40" y="656" font-family="system-ui" font-size="11" font-weight="700" fill="#1E293B">Regulatory Traceability</text>
+  <line x1="40" y1="664" x2="560" y2="664" stroke="#E2E8F0" stroke-width="1"/>
+
+  <rect x="40" y="674" width="520" height="60" rx="4" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="56" y="694" font-family="system-ui" font-size="9" fill="#64748B">Rule</text>
+  <text x="280" y="694" font-family="system-ui" font-size="9" font-weight="600" fill="#1E293B">CTTP Table 4 — p.28 (T3, T4)</text>
+  <text x="56" y="712" font-family="system-ui" font-size="9" fill="#64748B">Matrix row</text>
+  <text x="280" y="712" font-family="system-ui" font-size="9" font-weight="600" fill="#1E293B">T3 + T4 + BB + Mauvais → BS reinforcement</text>
+
+  <!-- Footer -->
+  <line x1="40" y1="752" x2="560" y2="752" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="300" y="770" font-family="system-ui" font-size="7" fill="#94A3B8" text-anchor="middle">CTTP — Guide des Renforcements des Chaussées Souples (Déc. 1992) — Page 1 of 1</text>
+</svg>

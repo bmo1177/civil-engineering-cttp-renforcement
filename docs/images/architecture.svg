@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="560" viewBox="0 0 960 560">
+  <defs>
+    <linearGradient id="bg3" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#1E293B"/>
+    </linearGradient>
+    <linearGradient id="tier1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A5F"/>
+      <stop offset="100%" stop-color="#15294A"/>
+    </linearGradient>
+    <linearGradient id="tier2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#3B2F1A"/>
+      <stop offset="100%" stop-color="#2D2414"/>
+    </linearGradient>
+    <linearGradient id="tier3" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1A3A2E"/>
+      <stop offset="100%" stop-color="#142C22"/>
+    </linearGradient>
+    <filter id="shadow2">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <rect width="960" height="560" fill="url(#bg3)" rx="16"/>
+
+  <!-- Title -->
+  <text x="480" y="32" font-family="'Inter', system-ui, sans-serif" font-size="18" font-weight="700" fill="#F1F5F9" text-anchor="middle" letter-spacing="0.5">SYSTEM ARCHITECTURE</text>
+  <line x1="380" y1="42" x2="580" y2="42" stroke="#D97706" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Tier labels -->
+  <text x="30" y="82" font-family="system-ui" font-size="10" fill="#3B82F6" font-weight="700" letter-spacing="1.5">PRESENTATION LAYER</text>
+  <text x="30" y="220" font-family="system-ui" font-size="10" fill="#D97706" font-weight="700" letter-spacing="1.5">API LAYER</text>
+  <text x="30" y="360" font-family="system-ui" font-size="10" fill="#10B981" font-weight="700" letter-spacing="1.5">INFERENCE LAYER</text>
+  <text x="30" y="500" font-family="system-ui" font-size="10" fill="#8B5CF6" font-weight="700" letter-spacing="1.5">STORAGE &amp; DEPLOYMENT</text>
+
+  <!-- Dashed tier separators -->
+  <line x1="120" y1="90" x2="930" y2="90" stroke="#1E3A5F" stroke-width="1" stroke-dasharray="4,4"/>
+  <line x1="120" y1="250" x2="930" y2="250" stroke="#3B2F1A" stroke-width="1" stroke-dasharray="4,4"/>
+  <line x1="120" y1="400" x2="930" y2="400" stroke="#1A3A2E" stroke-width="1" stroke-dasharray="4,4"/>
+  <line x1="120" y1="510" x2="930" y2="510" stroke="#3B1F3A" stroke-width="1" stroke-dasharray="4,4"/>
+
+  <!-- Presentation Layer -->
+  <g transform="translate(130, 105)" filter="url(#shadow2)">
+    <rect x="0" y="0" width="800" height="130" rx="8" fill="url(#tier1)" opacity="0.4"/>
+    <!-- Web App -->
+    <rect x="15" y="15" width="180" height="100" rx="6" fill="#1E293B"/>
+    <rect x="15" y="15" width="180" height="100" rx="6" fill="none" stroke="#3B82F6" stroke-width="1"/>
+    <text x="105" y="40" font-family="system-ui" font-size="11" font-weight="700" fill="#E2E8F0" text-anchor="middle">Web App</text>
+    <text x="105" y="56" font-family="system-ui" font-size="9" fill="#94A3B8" text-anchor="middle">Next.js 16 + React 19</text>
+    <text x="105" y="70" font-family="system-ui" font-size="9" fill="#94A3B8" text-anchor="middle">Tailwind CSS 4 + shadcn/ui</text>
+    <!-- Desktop App -->
+    <rect x="215" y="15" width="180" height="100" rx="6" fill="#1E293B"/>
+    <rect x="215" y="15" width="180" height="100" rx="6" fill="none" stroke="#3B82F6" stroke-width="1"/>
+    <text x="305" y="40" font-family="system-ui" font-size="11" font-weight="700" fill="#E2E8F0" text-anchor="middle">Desktop App</text>
+    <text x="305" y="56" font-family="system-ui" font-size="9" fill="#94A3B8" text-anchor="middle">Tauri v2 (Rust)</text>
+    <text x="305" y="70" font-family="system-ui" font-size="9" fill="#94A3B8" text-anchor="middle">Windows NSIS / Linux deb</text>
+    <!-- PWA -->
+    <rect x="415" y="15" width="180" height="100" rx="6" fill="#1E293B"/>
+    <rect x="415" y="15" width="180" height="100" rx="6" fill="none" stroke="#3B82F6" stroke-width="1"/>
+    <text x="505" y="40" font-family="system-ui" font-size="11" font-weight="700" fill="#E2E8F0" text-anchor="middle">Progressive Web App</text>
+    <text x="505" y="56" font-family="system-ui" font-size="9" fill="#94A3B8" text-anchor="middle">Service worker + manifest</text>
+    <text x="505" y="70" font-family="system-ui" font-size="9" fill="#94A3B8" text-anchor="middle">Offline caching</text>
+    <!-- Components -->
+    <rect x="615" y="15" width="170" height="100" rx="6" fill="#1E293B"/>
+    <rect x="615" y="15" width="170" height="100" rx="6" fill="none" stroke="#3B82F6" stroke-width="1"/>
+    <text x="700" y="40" font-family="system-ui" font-size="11" font-weight="700" fill="#E2E8F0" text-anchor="middle">UI Components</text>
+    <text x="700" y="56" font-family="system-ui" font-size="9" fill="#94A3B8" text-anchor="middle">Design • Analysis • Results</text>
+    <text x="700" y="70" font-family="system-ui" font-size="9" fill="#94A3B8" text-anchor="middle">30+ shadcn primitives</text>
+  </g>
+
+  <!-- API Layer -->
+  <g transform="translate(130, 265)" filter="url(#shadow2)">
+    <rect x="0" y="0" width="800" height="120" rx="8" fill="url(#tier2)" opacity="0.4"/>
+    <rect x="15" y="15" width="140" height="90" rx="6" fill="#1E293B"/>
+    <rect x="15" y="15" width="140" height="90" rx="6" fill="none" stroke="#D97706" stroke-width="1"/>
+    <text x="85" y="40" font-family="system-ui" font-size="11" font-weight="700" fill="#E2E8F0" text-anchor="middle">/api/predict</text>
+    <text x="85" y="56" font-family="system-ui" font-size="9" fill="#94A3B8" text-anchor="middle">POST - AI Detection</text>
+    <text x="85" y="70" font-family="system-ui" font-size="9" fill="#94A3B8" text-anchor="middle">Gemini / ONNX</text>
+
+    <rect x="175" y="15" width="140" height="90" rx="6" fill="#1E293B"/>
+    <rect x="175" y="15" width="140" height="90" rx="6" fill="none" stroke="#D97706" stroke-width="1"/>
+    <text x="245" y="40" font-family="system-ui" font-size="11" font-weight="700" fill="#E2E8F0" text-anchor="middle">/api/predict-local</text>
+    <text x="245" y="56" font-family="system-ui" font-size="9" fill="#94A3B8" text-anchor="middle">POST - Local Models</text>
+    <text x="245" y="70" font-family="system-ui" font-size="9" fill="#94A3B8" text-anchor="middle">Keras + YOLO</text>
+
+    <rect x="335" y="15" width="140" height="90" rx="6" fill="#1E293B"/>
+    <rect x="335" y="15" width="140" height="90" rx="6" fill="none" stroke="#D97706" stroke-width="1"/>
+    <text x="405" y="40" font-family="system-ui" font-size="11" font-weight="700" fill="#E2E8F0" text-anchor="middle">/api/design</text>
+    <text x="405" y="56" font-family="system-ui" font-size="9" fill="#94A3B8" text-anchor="middle">POST - CTTP Engine</text>
+    <text x="405" y="70" font-family="system-ui" font-size="9" fill="#94A3B8" text-anchor="middle">Reinforcement design</text>
+
+    <rect x="495" y="15" width="140" height="90" rx="6" fill="#1E293B"/>
+    <rect x="495" y="15" width="140" height="90" rx="6" fill="none" stroke="#D97706" stroke-width="1"/>
+    <text x="565" y="40" font-family="system-ui" font-size="11" font-weight="700" fill="#E2E8F0" text-anchor="middle">/api/export</text>
+    <text x="565" y="56" font-family="system-ui" font-size="9" fill="#94A3B8" text-anchor="middle">POST - PDF Report</text>
+    <text x="565" y="70" font-family="system-ui" font-size="9" fill="#94A3B8" text-anchor="middle">jsPDF generation</text>
+
+    <rect x="655" y="15" width="130" height="90" rx="6" fill="#1E293B"/>
+    <rect x="655" y="15" width="130" height="90" rx="6" fill="none" stroke="#D97706" stroke-width="1"/>
+    <text x="720" y="40" font-family="system-ui" font-size="11" font-weight="700" fill="#E2E8F0" text-anchor="middle">Engine</text>
+    <text x="720" y="56" font-family="system-ui" font-size="9" fill="#94A3B8" text-anchor="middle">cttp-rules.ts</text>
+    <text x="720" y="70" font-family="system-ui" font-size="9" fill="#94A3B8" text-anchor="middle">engine.ts</text>
+  </g>
+
+  <!-- Inference Layer -->
+  <g transform="translate(130, 415)" filter="url(#shadow2)">
+    <rect x="0" y="0" width="800" height="80" rx="8" fill="url(#tier3)" opacity="0.4"/>
+    <!-- Gemini -->
+    <rect x="15" y="12" width="160" height="55" rx="6" fill="#1E293B"/>
+    <rect x="15" y="12" width="160" height="55" rx="6" fill="none" stroke="#10B981" stroke-width="1"/>
+    <text x="95" y="34" font-family="system-ui" font-size="11" font-weight="700" fill="#E2E8F0" text-anchor="middle">Gemini 2.0 Flash</text>
+    <text x="95" y="52" font-family="system-ui" font-size="9" fill="#94A3B8" text-anchor="middle">Cloud API — Distress detection</text>
+    <!-- Python Server -->
+    <rect x="195" y="12" width="160" height="55" rx="6" fill="#1E293B"/>
+    <rect x="195" y="12" width="160" height="55" rx="6" fill="none" stroke="#10B981" stroke-width="1"/>
+    <text x="275" y="34" font-family="system-ui" font-size="11" font-weight="700" fill="#E2E8F0" text-anchor="middle">Python Inference Server</text>
+    <text x="275" y="52" font-family="system-ui" font-size="9" fill="#94A3B8" text-anchor="middle">Flask — Port 5980</text>
+    <!-- Keras -->
+    <rect x="375" y="12" width="120" height="55" rx="6" fill="#1E293B"/>
+    <rect x="375" y="12" width="120" height="55" rx="6" fill="none" stroke="#10B981" stroke-width="1"/>
+    <text x="435" y="34" font-family="system-ui" font-size="11" font-weight="700" fill="#E2E8F0" text-anchor="middle">Keras</text>
+    <text x="435" y="52" font-family="system-ui" font-size="9" fill="#94A3B8" text-anchor="middle">EfficientNetB0</text>
+    <!-- YOLO -->
+    <rect x="510" y="12" width="120" height="55" rx="6" fill="#1E293B"/>
+    <rect x="510" y="12" width="120" height="55" rx="6" fill="none" stroke="#10B981" stroke-width="1"/>
+    <text x="570" y="34" font-family="system-ui" font-size="11" font-weight="700" fill="#E2E8F0" text-anchor="middle">YOLOv8</text>
+    <text x="570" y="52" font-family="system-ui" font-size="9" fill="#94A3B8" text-anchor="middle">Classification</text>
+    <!-- ONNX -->
+    <rect x="650" y="12" width="135" height="55" rx="6" fill="#1E293B"/>
+    <rect x="650" y="12" width="135" height="55" rx="6" fill="none" stroke="#10B981" stroke-width="1"/>
+    <text x="717" y="34" font-family="system-ui" font-size="11" font-weight="700" fill="#E2E8F0" text-anchor="middle">ONNX Runtime</text>
+    <text x="717" y="52" font-family="system-ui" font-size="9" fill="#94A3B8" text-anchor="middle">CPU-only option</text>
+  </g>
+
+  <!-- Footer -->
+  <text x="480" y="545" font-family="system-ui" font-size="10" fill="#475569" text-anchor="middle">INFERENCE PROVIDERS ARE SWAPPABLE VIA ENVIRONMENT VARIABLES — ZERO CODE CHANGES</text>
+</svg>
