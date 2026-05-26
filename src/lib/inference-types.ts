@@ -11,3 +11,15 @@ export interface DetectionBox {
   height: number
   severity: 'low' | 'medium' | 'high'
 }
+
+export interface ModelResult {
+  status: string
+  confidence: number
+  probabilities?: Record<string, number>
+  error?: string
+}
+
+export interface CombinedStatus {
+  status: string
+  confidence: number
+}

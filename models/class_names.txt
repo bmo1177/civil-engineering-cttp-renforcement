@@ -1,0 +1,4 @@
+good
+poor
+satisfactory
+very_poor

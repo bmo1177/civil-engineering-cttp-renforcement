@@ -202,6 +202,15 @@ export default function CalculatorApp() {
   const [detections, setDetections] = useState<Detection[]>([])
   const [demoMode, setDemoMode] = useState(false)
 
+  // ─── Local model classification state (Keras + YOLO) ─────────────────────
+  const [kerasResult, setKerasResult] = useState<{
+    status: string; confidence: number; probabilities?: Record<string, number>; error?: string
+  } | null>(null)
+  const [yoloResult, setYoloResult] = useState<{
+    status: string; confidence: number; probabilities?: Record<string, number>; error?: string
+  } | null>(null)
+  const [isClassifying, setIsClassifying] = useState(false)
+
   // ─── Connectivity & status state ───────────────────────────────────────
   const [isOnline, setIsOnline] = useState(true)
   const [showSuccessBanner, setShowSuccessBanner] = useState(false)
@@ -265,6 +274,8 @@ export default function CalculatorApp() {
     }
     setDetections([])
     setDemoMode(false)
+    setKerasResult(null)
+    setYoloResult(null)
   }, [])
 
   // ─── AI Analysis handler ────────────────────────────────────────────────
@@ -298,6 +309,54 @@ export default function CalculatorApp() {
       })
     } finally {
       setIsAnalyzing(false)
+    }
+  }, [uploadedFile, toast])
+
+  // ─── Local model classification handler (Keras + YOLO) ──────────────────
+
+  const handleClassifyLocal = useCallback(async () => {
+    if (!uploadedFile) return
+    setIsClassifying(true)
+    setKerasResult(null)
+    setYoloResult(null)
+
+    try {
+      const formData = new FormData()
+      formData.append('image', uploadedFile)
+
+      const res = await fetch('/api/predict-local', {
+        method: 'POST',
+        body: formData,
+      })
+
+      if (!res.ok) {
+        const errText = await res.text().catch(() => '')
+        throw new Error(errText || `Server error: ${res.status}`)
+      }
+
+      const data = await res.json()
+
+      if (data.keras_result) setKerasResult(data.keras_result)
+      if (data.yolo_result) setYoloResult(data.yolo_result)
+
+      if (data.image_status && VISUAL_STATUSES.includes(data.image_status)) {
+        setVisualStatus(data.image_status as VisualStatus)
+      }
+
+      toast({
+        title: 'Classification Complete',
+        description: data.combined_status
+          ? `Combined: ${data.combined_status.status} (${data.combined_status.confidence}%)`
+          : 'Local models finished',
+      })
+    } catch (error) {
+      toast({
+        title: 'Classification Failed',
+        description: error instanceof Error ? error.message : 'Could not reach local models',
+        variant: 'destructive',
+      })
+    } finally {
+      setIsClassifying(false)
     }
   }, [uploadedFile, toast])
 
@@ -905,24 +964,116 @@ export default function CalculatorApp() {
                   />
 
                   {uploadedFile && (
-                    <Button
-                      type="button"
-                      className="cttp-btn-secondary w-full"
-                      onClick={handleAnalyzeImage}
-                      disabled={isAnalyzing}
-                    >
-                      {isAnalyzing ? (
-                        <>
-                          <Loader2 className="size-4 animate-spin" />
-                          {t('analysis.analyzing')}
-                        </>
-                      ) : (
-                        <>
-                          <Zap className="size-4" />
-                          {t('analysis.analyze')}
-                        </>
-                      )}
-                    </Button>
+                    <div className="space-y-2">
+                      <Button
+                        type="button"
+                        className="cttp-btn-secondary w-full"
+                        onClick={handleAnalyzeImage}
+                        disabled={isAnalyzing}
+                      >
+                        {isAnalyzing ? (
+                          <>
+                            <Loader2 className="size-4 animate-spin" />
+                            {t('analysis.analyzing')}
+                          </>
+                        ) : (
+                          <>
+                            <Zap className="size-4" />
+                            {t('analysis.analyze')}
+                          </>
+                        )}
+                      </Button>
+
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="w-full gap-2 border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100 hover:text-blue-800 dark:border-blue-800 dark:bg-blue-950/30 dark:text-blue-300 dark:hover:bg-blue-950/50"
+                        onClick={handleClassifyLocal}
+                        disabled={isClassifying}
+                      >
+                        {isClassifying ? (
+                          <>
+                            <Loader2 className="size-4 animate-spin" />
+                            Classifying...
+                          </>
+                        ) : (
+                          <>
+                            <FlaskConical className="size-4" />
+                            Classify with Local Models (Keras + YOLO)
+                          </>
+                        )}
+                      </Button>
+                    </div>
+                  )}
+
+                  {/* Local model classification results */}
+                  {(kerasResult || yoloResult) && (
+                    <Card className="rounded border border-blue-200 bg-white shadow-sm dark:border-blue-800">
+                      <CardHeader className="pb-3">
+                        <CardTitle className="cttp-section-header text-sm">
+                          <FlaskConical className="size-4 text-blue-600" />
+                          Local Model Classification
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-3">
+                        {kerasResult && !kerasResult.error && (
+                          <div className="flex items-center justify-between rounded-lg border border-blue-100 bg-blue-50/50 px-3 py-2 dark:border-blue-900 dark:bg-blue-950/20">
+                            <div className="flex items-center gap-2">
+                              <span className="size-2 rounded-full bg-blue-500" />
+                              <span className="text-sm font-medium">Keras</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <span className={`text-sm font-bold uppercase ${kerasResult.status === 'good' || kerasResult.status === 'satisfactory' ? 'text-emerald-600' : 'text-red-600'}`}>
+                                {kerasResult.status.replace('_', ' ')}
+                              </span>
+                              <Badge variant="outline" className="cttp-mono text-[10px] font-bold">
+                                {kerasResult.confidence.toFixed(1)}%
+                              </Badge>
+                            </div>
+                          </div>
+                        )}
+                        {kerasResult?.error && (
+                          <div className="text-xs text-red-500">Keras: {kerasResult.error}</div>
+                        )}
+
+                        {yoloResult && !yoloResult.error && (
+                          <div className="flex items-center justify-between rounded-lg border border-purple-100 bg-purple-50/50 px-3 py-2 dark:border-purple-900 dark:bg-purple-950/20">
+                            <div className="flex items-center gap-2">
+                              <span className="size-2 rounded-full bg-purple-500" />
+                              <span className="text-sm font-medium">YOLOv8</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <span className={`text-sm font-bold uppercase ${yoloResult.status === 'good' || yoloResult.status === 'satisfactory' ? 'text-emerald-600' : 'text-red-600'}`}>
+                                {yoloResult.status.replace('_', ' ')}
+                              </span>
+                              <Badge variant="outline" className="cttp-mono text-[10px] font-bold">
+                                {yoloResult.confidence.toFixed(1)}%
+                              </Badge>
+                            </div>
+                          </div>
+                        )}
+                        {yoloResult?.error && (
+                          <div className="text-xs text-red-500">YOLO: {yoloResult.error}</div>
+                        )}
+
+                        {(kerasResult?.status || yoloResult?.status) && (
+                          <div className="relative overflow-hidden rounded border bg-white p-3 shadow-sm border-cttp-border">
+                            <div className="absolute bottom-0 left-0 top-0 w-[3px] bg-cttp-amber" />
+                            <div className="pl-2">
+                              <span className="text-xs text-cttp-text-muted">Combined Status</span>
+                              <div className="mt-1 flex items-center justify-between">
+                                <span className="text-lg font-bold uppercase tracking-wide">
+                                  {kerasResult?.status || yoloResult?.status}
+                                </span>
+                                <span className="text-xs text-cttp-text-muted">
+                                  Auto-set visual status
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </CardContent>
+                    </Card>
                   )}
 
                   {demoMode && (

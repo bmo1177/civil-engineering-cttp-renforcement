@@ -36,8 +36,12 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ],
-    "resources": [],
-    "externalBin": [],
+    "resources": [
+      "models/**/*"
+    ],
+    "externalBin": [
+      "binaries/inference-server"
+    ],
     "copyright": "CTTP Direction des Études Techniques — Alger",
     "category": "Productivity",
     "shortDescription": "CTTP-compliant pavement reinforcement design tool",

@@ -11,7 +11,7 @@
  * Turbopack compile errors from the onnxruntime-node dynamic import.
  */
 
-import type { DetectionBox } from './inference-types'
+import type { DetectionBox, ModelResult, CombinedStatus } from './inference-types'
 
 // ─── Abstract Provider Interface ────────────────────────────────────────────
 
@@ -21,6 +21,9 @@ export interface InferenceResult {
   model_used: string
   demo_mode: boolean
   processing_time_ms: number
+  keras_result?: ModelResult
+  yolo_result?: ModelResult
+  combined_status?: CombinedStatus
 }
 
 export interface InferenceProvider {
@@ -206,6 +209,22 @@ export async function getInferenceProvider(): Promise<InferenceProvider> {
   const backend = (process.env.INFERENCE_BACKEND || 'gemini').toLowerCase()
 
   switch (backend) {
+    case 'python': {
+      try {
+        const { PythonInferenceProvider } = await import('./python-inference')
+        const provider = new PythonInferenceProvider()
+        activeProvider = provider
+        const healthy = await provider.checkHealth()
+        if (!healthy) {
+          console.warn('[InferenceProvider] Python inference server not available at INFERENCE_SERVER_URL.')
+        }
+        return provider
+      } catch (error) {
+        console.warn('[InferenceProvider] Python inference provider not available:', error)
+        activeProvider = new GeminiProvider()
+        return activeProvider
+      }
+    }
     case 'onnx': {
       try {
         // Load ONNX provider dynamically to avoid compile-time resolution

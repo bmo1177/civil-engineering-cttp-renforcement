@@ -46,6 +46,9 @@ export async function POST(request: NextRequest) {
       demo_mode: result.demo_mode,
       model_used: result.model_used,
       processing_time_ms: result.processing_time_ms,
+      keras_result: result.keras_result,
+      yolo_result: result.yolo_result,
+      combined_status: result.combined_status,
     }
 
     return NextResponse.json(response, { status: 200 })
