@@ -296,10 +296,10 @@ export default function CalculatorApp() {
       }
 
       toast({
-        title: data.demo_mode ? 'Demo Analysis Complete' : 'AI Analysis Complete',
-        description: data.demo_mode
+        title: result.demo_mode ? 'Demo Analysis Complete' : 'AI Analysis Complete',
+        description: result.demo_mode
           ? 'Using demo detections. Add a Gemini API key in Settings for real analysis.'
-          : `Found ${data.detections?.length || 0} detections`,
+          : `Found ${result.detections?.length || 0} detections`,
       })
     } catch (error) {
       toast({
