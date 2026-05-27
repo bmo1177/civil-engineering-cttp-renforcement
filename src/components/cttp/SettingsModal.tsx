@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -41,24 +41,16 @@ interface SettingsModalProps {
 function SettingsModalContent({ onOpenChange }: { onOpenChange: (open: boolean) => void }) {
   const { t, lang, setLang } = useLanguage()
   // Initialize with safe defaults (no localStorage read during render)
-  const [apiKey, setApiKey] = useState('')
+  const [apiKey, setApiKey] = useState(() => readStoredKey())
   const [showKey, setShowKey] = useState(false)
-  const [hasStoredKey, setHasStoredKey] = useState(false)
   const [confirmClear, setConfirmClear] = useState(false)
-
-  // Read from localStorage AFTER mount to avoid hydration mismatch
-  useEffect(() => {
-    const stored = readStoredKey()
-    setApiKey(stored)
-    setHasStoredKey(!!stored)
-  }, [])
+  const hasStoredKey = apiKey !== ''
 
   const isServerConfigured = process.env.NEXT_PUBLIC_GEMINI_CONFIGURED === 'true'
 
   const handleSave = useCallback(() => {
     if (apiKey.trim()) {
       localStorage.setItem(STORAGE_KEY, apiKey.trim())
-      setHasStoredKey(true)
     }
     onOpenChange(false)
   }, [apiKey, onOpenChange])
@@ -74,7 +66,6 @@ function SettingsModalContent({ onOpenChange }: { onOpenChange: (open: boolean) 
     }
     localStorage.removeItem(STORAGE_KEY)
     setApiKey('')
-    setHasStoredKey(false)
     setConfirmClear(false)
   }, [confirmClear])
 

@@ -192,7 +192,18 @@ export default function CalculatorApp() {
   // ─── Result state ───────────────────────────────────────────────────────
   const [isComputing, setIsComputing] = useState(false)
   const [isAnalyzing, setIsAnalyzing] = useState(false)
-  const [reinforcementResult, setReinforcementResult] = useState<ReinforcementResult | null>(null)
+  const [reinforcementResult, setReinforcementResult] = useState<ReinforcementResult | null>(() => {
+    if (typeof window === 'undefined') return null
+    const cached = safeSessionStorageGet(SESSION_CACHE_KEY)
+    if (cached) {
+      try {
+        return JSON.parse(cached)
+      } catch {
+        return null
+      }
+    }
+    return null
+  })
   const [validationErrors, setValidationErrors] = useState<FieldError[]>([])
   const [activeTab, setActiveTab] = useState('design')
 
@@ -212,21 +223,19 @@ export default function CalculatorApp() {
   const [isClassifying, setIsClassifying] = useState(false)
 
   // ─── Connectivity & status state ───────────────────────────────────────
-  const [isOnline, setIsOnline] = useState(true)
+  const [isOnline, setIsOnline] = useState(() => typeof window !== 'undefined' && safeIsOnline())
   const [showSuccessBanner, setShowSuccessBanner] = useState(false)
-  const [geminiKeyMissing, setGeminiKeyMissing] = useState(() => {
+  const geminiKeyMissing = useMemo(() => {
     if (typeof window === 'undefined') return true
     const key = localStorage.getItem('cttp_gemini_key')
     const isServerConfigured = process.env.NEXT_PUBLIC_GEMINI_CONFIGURED === 'true'
     return !key && !isServerConfigured
-  })
+  }, [settingsOpen])
 
   const fileUrlRef = useRef<string | null>(null)
 
   // ─── Online/offline tracking ────────────────────────────────────────────
   useEffect(() => {
-    setIsOnline(safeIsOnline())
-
     const handleOnline = () => setIsOnline(true)
     const handleOffline = () => setIsOnline(false)
     window.addEventListener('online', handleOnline)
@@ -237,25 +246,7 @@ export default function CalculatorApp() {
     }
   }, [])
 
-  // ─── Check Gemini key status ────────────────────────────────────────────
-  useEffect(() => {
-    const key = safeLocalStorageGet('cttp_gemini_key')
-    const isServerConfigured = process.env.NEXT_PUBLIC_GEMINI_CONFIGURED === 'true'
-    setGeminiKeyMissing(!key && !isServerConfigured)
-  }, [settingsOpen]) // Re-check when settings modal closes
-
   // ─── Restore cached result from sessionStorage on mount ────────────────
-  useEffect(() => {
-    const cached = safeSessionStorageGet(SESSION_CACHE_KEY)
-    if (cached) {
-      try {
-        const parsed = JSON.parse(cached)
-        setReinforcementResult(parsed)
-      } catch {
-        // Invalid cache — ignore
-      }
-    }
-  }, [])
 
   // ─── File handling ──────────────────────────────────────────────────────
 
