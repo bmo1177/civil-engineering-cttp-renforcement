@@ -1,9 +1,0 @@
-/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src-tauri/target/x86_64-pc-windows-gnu/release/deps/webview2_com_sys-914897d9db63b0fd.d: /home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/webview2-com-sys-0.38.2/src/lib.rs /home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/webview2-com-sys-0.38.2/src/declared_interfaces.rs /home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/webview2-com-sys-0.38.2/src/bindings.rs
-
-/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src-tauri/target/x86_64-pc-windows-gnu/release/deps/libwebview2_com_sys-914897d9db63b0fd.rlib: /home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/webview2-com-sys-0.38.2/src/lib.rs /home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/webview2-com-sys-0.38.2/src/declared_interfaces.rs /home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/webview2-com-sys-0.38.2/src/bindings.rs
-
-/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src-tauri/target/x86_64-pc-windows-gnu/release/deps/libwebview2_com_sys-914897d9db63b0fd.rmeta: /home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/webview2-com-sys-0.38.2/src/lib.rs /home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/webview2-com-sys-0.38.2/src/declared_interfaces.rs /home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/webview2-com-sys-0.38.2/src/bindings.rs
-
-/home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/webview2-com-sys-0.38.2/src/lib.rs:
-/home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/webview2-com-sys-0.38.2/src/declared_interfaces.rs:
-/home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/webview2-com-sys-0.38.2/src/bindings.rs:

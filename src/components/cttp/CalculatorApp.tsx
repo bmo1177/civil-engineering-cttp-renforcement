@@ -320,32 +320,60 @@ export default function CalculatorApp() {
         body: formData,
       })
 
+      const contentType = res.headers.get('content-type') || ''
+
+      // Read body as text first (avoids WebKit DOM Exception 12 on res.json())
+      const bodyText = await res.text()
+
       if (!res.ok) {
-        const errText = await res.text().catch(() => '')
-        throw new Error(errText || `Server error: ${res.status}`)
+        if (contentType.includes('application/json')) {
+          try {
+            const errJson = JSON.parse(bodyText)
+            throw new Error((errJson as { error?: string }).error || `Server error: ${res.status}`)
+          } catch {
+            throw new Error(bodyText || `Server error: ${res.status}`)
+          }
+        }
+        throw new Error(bodyText || `Server error: ${res.status}`)
       }
 
-      const data = await res.json()
+      let data: Record<string, unknown>
+      try {
+        data = JSON.parse(bodyText)
+      } catch {
+        throw new Error(`Invalid response from server: ${bodyText.slice(0, 200)}`)
+      }
 
-      if (data.keras_result) setKerasResult(data.keras_result)
-      if (data.yolo_result) setYoloResult(data.yolo_result)
+      const d = data as {
+        success: boolean;
+        keras_result?: { status: string; confidence: number; probabilities?: Record<string, number>; error?: string } | null;
+        yolo_result?: { status: string; confidence: number; probabilities?: Record<string, number>; error?: string } | null;
+        image_status?: string;
+        combined_status?: { status: string; confidence: number };
+        error?: string;
+      }
 
-      if (data.image_status && VISUAL_STATUSES.includes(data.image_status)) {
-        setVisualStatus(data.image_status as VisualStatus)
+      if (d.keras_result) setKerasResult(d.keras_result)
+      if (d.yolo_result) setYoloResult(d.yolo_result)
+
+      if (d.image_status && VISUAL_STATUSES.includes(d.image_status as typeof VISUAL_STATUSES[number])) {
+        setVisualStatus(d.image_status as VisualStatus)
       }
 
       toast({
         title: 'Classification Complete',
-        description: data.combined_status
-          ? `Combined: ${data.combined_status.status} (${data.combined_status.confidence}%)`
+        description: d.combined_status
+          ? `Combined: ${d.combined_status.status} (${d.combined_status.confidence}%)`
           : 'Local models finished',
       })
     } catch (error) {
+      const message = error instanceof Error ? error.message : 'Could not reach local models'
       toast({
         title: 'Classification Failed',
-        description: error instanceof Error ? error.message : 'Could not reach local models',
+        description: message,
         variant: 'destructive',
       })
+      return
     } finally {
       setIsClassifying(false)
     }

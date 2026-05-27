@@ -98,3 +98,26 @@ export function validateDesignInput(data: unknown): {
   }
   return { success: false, errors: formatZodErrors(result.error) };
 }
+
+// ─── Local Inference Response Schema ─────────────────────────────────────────
+
+const ModelResultSchema = z.object({
+  status: z.string().optional(),
+  confidence: z.number().optional(),
+  probabilities: z.record(z.string(), z.number()).optional(),
+  error: z.string().optional(),
+});
+
+export const LocalInferenceResponseSchema = z.object({
+  success: z.boolean(),
+  keras_result: ModelResultSchema.nullable().optional(),
+  yolo_result: ModelResultSchema.nullable().optional(),
+  image_status: z.enum(["Bon", "Moyen", "Mauvais"]),
+  combined_status: z.object({
+    status: z.string(),
+    confidence: z.number(),
+  }).optional(),
+  model_used: z.string().optional(),
+  processing_time_ms: z.number().optional(),
+  error: z.string().optional(),
+});

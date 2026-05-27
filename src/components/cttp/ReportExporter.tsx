@@ -376,44 +376,6 @@ export default function ReportExporter(props: ReportExporterProps) {
     }
   }, [props])
 
-  // ─── Browser print fallback ────────────────────────────────────────────
-  const handlePrintPDF = useCallback(() => {
-    const existingStyle = document.getElementById(PRINT_STYLE_ID)
-    if (existingStyle) existingStyle.remove()
-
-    const existingContainer = document.getElementById(REPORT_CONTAINER_ID)
-    if (existingContainer) existingContainer.remove()
-
-    const style = document.createElement('style')
-    style.id = PRINT_STYLE_ID
-    style.textContent = `
-      @media print {
-        body > *:not(#${REPORT_CONTAINER_ID}) { display: none !important; }
-        #${REPORT_CONTAINER_ID} { display: block !important; position: absolute; top: 0; left: 0; width: 100%; background: white; }
-        #${REPORT_CONTAINER_ID} table { page-break-inside: avoid; }
-      }
-      @media not print {
-        #${REPORT_CONTAINER_ID} { display: none !important; }
-      }
-    `
-    document.head.appendChild(style)
-
-    const container = document.createElement('div')
-    container.id = REPORT_CONTAINER_ID
-    container.innerHTML = buildReportHTML(props)
-    document.body.appendChild(container)
-    printContainerRef.current = container
-
-    requestAnimationFrame(() => {
-      window.print()
-      setTimeout(() => {
-        style.remove()
-        container.remove()
-        printContainerRef.current = null
-      }, 2000)
-    })
-  }, [props])
-
   // ─── Copy JSON ─────────────────────────────────────────────────────────
   const handleCopyJSON = useCallback(() => {
     const report = {

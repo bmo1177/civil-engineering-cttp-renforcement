@@ -1,79 +1,111 @@
-/**
- * POST /api/predict-local — Local Python Model Classification
- * Proxies image classification requests to the local Python inference server
- * that runs both Keras (EfficientNetB0) and YOLO (YOLOv8-cls) models.
- *
- * The Python server must be running at INFERENCE_SERVER_URL (default: http://localhost:5980).
- */
-
 import { NextRequest, NextResponse } from 'next/server'
 
-const DEFAULT_SERVER_URL = process.env.INFERENCE_SERVER_URL || 'http://localhost:5980'
+const INFERENCE_SERVER_URL = process.env.INFERENCE_SERVER_URL || 'http://localhost:5980'
+const CLASS_NAMES = ['good', 'poor', 'satisfactory', 'very_poor']
 
-function determineStatus(status: string): 'Bon' | 'Moyen' | 'Mauvais' {
-  const rank: Record<string, number> = {
-    good: 1, satisfactory: 2, poor: 3, very_poor: 4,
-  }
-  const r = rank[status] || 1
-  if (r >= 4) return 'Mauvais'
-  if (r >= 3) return 'Moyen'
+function normalizeStatus(status: string): string {
+  const normalized = status.trim().toLowerCase().replace(/\s+/g, '_')
+  if (CLASS_NAMES.includes(normalized)) return normalized
+  return status
+}
+
+const STATUS_RANK: Record<string, number> = {
+  good: 1,
+  satisfactory: 2,
+  poor: 3,
+  very_poor: 4,
+}
+
+function determineImageStatus(
+  kerasStatus?: string,
+  yoloStatus?: string,
+): 'Bon' | 'Moyen' | 'Mauvais' {
+  const statuses = [kerasStatus, yoloStatus].filter(Boolean) as string[]
+  if (statuses.length === 0) return 'Bon'
+  const maxRank = Math.max(...statuses.map((s) => STATUS_RANK[s] || 0))
+  if (maxRank >= 4) return 'Mauvais'
+  if (maxRank >= 3) return 'Moyen'
   return 'Bon'
+}
+
+function getCombinedStatus(
+  kerasResult?: { status: string; confidence: number },
+  yoloResult?: { status: string; confidence: number },
+): { status: string; confidence: number } {
+  if (!kerasResult?.status) {
+    return { status: yoloResult?.status || 'unknown', confidence: yoloResult?.confidence || 0 }
+  }
+  if (!yoloResult?.status) {
+    return { status: kerasResult.status, confidence: kerasResult.confidence }
+  }
+  const votes: Record<string, number> = {}
+  votes[kerasResult.status] = (votes[kerasResult.status] || 0) + (kerasResult.confidence || 0)
+  votes[yoloResult.status] = (votes[yoloResult.status] || 0) + (yoloResult.confidence || 0)
+  const winner = Object.entries(votes).sort((a, b) => b[1] - a[1])[0][0]
+  const combinedConf = Math.round(((kerasResult.confidence || 0) + (yoloResult.confidence || 0)) / 2)
+  return { status: winner, confidence: combinedConf }
 }
 
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData()
-    const imageFile = formData.get('image') as File | null
+    const imageFile = formData.get('image')
 
-    if (!imageFile) {
+    if (!imageFile || !(imageFile instanceof File)) {
       return NextResponse.json(
-        { error: 'No image file provided. Send "image" field in multipart form data.' },
-        { status: 422 },
+        { error: 'No image file uploaded', success: false },
+        { status: 400 },
       )
     }
 
-    const pythonFormData = new FormData()
-    pythonFormData.append('file', imageFile)
+    const proxyFormData = new FormData()
+    proxyFormData.append('file', imageFile, imageFile.name)
 
-    const res = await fetch(`${DEFAULT_SERVER_URL}/predict`, {
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 60000)
+
+    const res = await fetch(`${INFERENCE_SERVER_URL}/predict`, {
       method: 'POST',
-      body: pythonFormData,
-      signal: AbortSignal.timeout(60000),
-    })
+      body: proxyFormData,
+      signal: controller.signal,
+    }).finally(() => clearTimeout(timeoutId))
 
     if (!res.ok) {
       const errBody = await res.text().catch(() => '')
-      return NextResponse.json(
-        { error: `Python server error (${res.status}): ${errBody}` },
-        { status: 502 },
-      )
+      throw new Error(`Inference server error (${res.status}): ${errBody}`)
     }
 
     const data = await res.json()
 
     if (!data.success) {
-      return NextResponse.json(
-        { error: data.error || 'Python inference failed', keras_result: data.keras, yolo_result: data.yolo },
-        { status: 500 },
-      )
+      throw new Error(data.error || 'Inference failed')
     }
 
-    const combined = data.combined || { status: 'good', confidence: 0 }
+    const kerasResult = data.keras?.status
+      ? { status: normalizeStatus(data.keras.status), confidence: data.keras.confidence, probabilities: data.keras.probabilities }
+      : undefined
+
+    const yoloResult = data.yolo?.status
+      ? { status: normalizeStatus(data.yolo.status), confidence: data.yolo.confidence, probabilities: data.yolo.probabilities }
+      : undefined
+
+    const imageStatus = determineImageStatus(kerasResult?.status, yoloResult?.status)
+    const combinedStatus = getCombinedStatus(kerasResult, yoloResult)
 
     return NextResponse.json({
-      image_status: determineStatus(combined.status),
-      keras_result: data.keras || null,
-      yolo_result: data.yolo || null,
-      combined_status: combined,
+      success: true,
+      keras_result: kerasResult || null,
+      yolo_result: yoloResult || null,
+      image_status: imageStatus,
+      combined_status: combinedStatus,
       model_used: 'keras+yolo',
       processing_time_ms: data.processing_time_ms || 0,
-      demo_mode: false,
     })
   } catch (error) {
-    console.error('[/api/predict-local] Error:', error)
+    console.error('[predict-local] Error:', error)
     const message = error instanceof Error ? error.message : 'Unknown error'
     return NextResponse.json(
-      { error: message },
+      { error: message, success: false },
       { status: 500 },
     )
   }

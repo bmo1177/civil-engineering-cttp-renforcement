@@ -1,9 +1,0 @@
-/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src-tauri/target/x86_64-pc-windows-gnu/release/deps/windows_collections-dbfd3b73c4d7462d.d: /home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/windows-collections-0.2.0/src/lib.rs /home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/windows-collections-0.2.0/src/bindings.rs /home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/windows-collections-0.2.0/src/../readme.md
-
-/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src-tauri/target/x86_64-pc-windows-gnu/release/deps/libwindows_collections-dbfd3b73c4d7462d.rlib: /home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/windows-collections-0.2.0/src/lib.rs /home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/windows-collections-0.2.0/src/bindings.rs /home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/windows-collections-0.2.0/src/../readme.md
-
-/home/dev-lab/Documents/AppProject/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/src-tauri/target/x86_64-pc-windows-gnu/release/deps/libwindows_collections-dbfd3b73c4d7462d.rmeta: /home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/windows-collections-0.2.0/src/lib.rs /home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/windows-collections-0.2.0/src/bindings.rs /home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/windows-collections-0.2.0/src/../readme.md
-
-/home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/windows-collections-0.2.0/src/lib.rs:
-/home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/windows-collections-0.2.0/src/bindings.rs:
-/home/dev-lab/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/windows-collections-0.2.0/src/../readme.md:

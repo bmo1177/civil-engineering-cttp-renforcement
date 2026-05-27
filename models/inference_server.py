@@ -127,10 +127,31 @@ def predict():
                     confidence = float(r.probs.top1conf * 100)
                     probs = r.probs.data.tolist() if hasattr(r.probs, 'data') else None
 
+                    raw_yolo_status = str(r.names[top1])
+                    yolo_status = raw_yolo_status.strip().lower().replace(' ', '_')
+
+                    if yolo_status not in CLASS_NAMES:
+                        logger.warning(f"YOLO returned unknown class '{raw_yolo_status}' (normalized: '{yolo_status}'), trying index-based mapping")
+                        if 0 <= top1 < len(CLASS_NAMES):
+                            yolo_status = CLASS_NAMES[top1]
+                            logger.info(f"Mapped YOLO index {top1} to class '{yolo_status}'")
+                        else:
+                            raise ValueError(f"YOLO top1 index {top1} out of range for {len(CLASS_NAMES)} classes")
+
+                    yolo_probs = None
+                    if probs is not None:
+                        num_yolo_classes = len(probs)
+                        yolo_probs = {}
+                        for i, name in enumerate(CLASS_NAMES):
+                            if i < num_yolo_classes:
+                                yolo_probs[name] = round(float(probs[i]) * 100, 2)
+                            else:
+                                yolo_probs[name] = 0.0
+
                     result['yolo'] = {
-                        'status': r.names[top1],
+                        'status': yolo_status,
                         'confidence': round(confidence, 2),
-                        'probabilities': {CLASS_NAMES[i]: round(float(probs[i]) * 100, 2) for i in range(len(CLASS_NAMES))} if probs else None,
+                        'probabilities': yolo_probs,
                     }
                 else:
                     result['yolo'] = {'error': 'No classification output'}
