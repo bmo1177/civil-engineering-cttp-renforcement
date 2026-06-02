@@ -42,24 +42,33 @@ fn main() {
                 // In production, try to launch the bundled inference engine
                 // as a sidecar process. The binary must be listed in
                 // tauri.conf.json → bundle → externalBin.
-                //
-                // let sidecar_command = app.shell().sidecar("inference-server").unwrap();
-                // let (mut rx, child) = sidecar_command.spawn().unwrap();
-                // app.manage(SidecarChild(Mutex::new(Some(child))));
-                //
-                // tauri::async_runtime::spawn(async move {
-                //     while let Some(event) = rx.recv().await {
-                //         match event {
-                //             tauri_plugin_shell::ShellEvent::Stdout(line) => {
-                //                 println!("[inference-server] {}", String::from_utf8_lossy(&line));
-                //             }
-                //             tauri_plugin_shell::ShellEvent::Stderr(line) => {
-                //                 eprintln!("[inference-server] {}", String::from_utf8_lossy(&line));
-                //             }
-                //             _ => {}
-                //         }
-                //     }
-                // });
+                if let Ok(sidecar_command) = app.shell().sidecar("inference-server") {
+                    let sidecar_command = if let Ok(res_dir) = app.path().resource_dir() {
+                        sidecar_command.env("TAURI_RESOURCE_DIR", res_dir.to_string_lossy().to_string())
+                    } else {
+                        sidecar_command
+                    };
+                    if let Ok((mut rx, child)) = sidecar_command.spawn() {
+                        app.manage(SidecarChild(Mutex::new(Some(child))));
+                        tauri::async_runtime::spawn(async move {
+                            while let Some(event) = rx.recv().await {
+                                match event {
+                                    tauri_plugin_shell::process::CommandEvent::Stdout(line) => {
+                                        println!("[inference-server] {}", String::from_utf8_lossy(&line));
+                                    }
+                                    tauri_plugin_shell::process::CommandEvent::Stderr(line) => {
+                                        eprintln!("[inference-server] {}", String::from_utf8_lossy(&line));
+                                    }
+                                    _ => {}
+                                }
+                            }
+                        });
+                    } else {
+                        eprintln!("Warning: Failed to spawn inference-server sidecar");
+                    }
+                } else {
+                    eprintln!("Warning: inference-server sidecar not found");
+                }
             }
 
             println!("CTTP Renforcement application started");

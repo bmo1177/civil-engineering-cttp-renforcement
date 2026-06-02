@@ -282,7 +282,7 @@ export default function CalculatorApp() {
       setDetections(result.detections)
       setDemoMode(result.demo_mode)
 
-      if (result.image_status && VISUAL_STATUSES.includes(result.image_status)) {
+      if (result.image_status && VISUAL_STATUSES.includes(result.image_status as any)) {
         setVisualStatus(result.image_status as VisualStatus)
       }
 
@@ -312,13 +312,27 @@ export default function CalculatorApp() {
     setYoloResult(null)
 
     try {
+      const isTauri = typeof window !== 'undefined' && (
+        (window as any).__TAURI__ !== undefined ||
+        (window as any).__TAURI_INTERNALS__ !== undefined ||
+        window.navigator.userAgent.toLowerCase().includes('tauri')
+      )
       const formData = new FormData()
-      formData.append('image', uploadedFile)
 
-      const res = await fetch('/api/predict-local', {
-        method: 'POST',
-        body: formData,
-      })
+      let res: Response
+      if (isTauri) {
+        formData.append('file', uploadedFile)
+        res = await fetch('http://127.0.0.1:5980/predict', {
+          method: 'POST',
+          body: formData,
+        })
+      } else {
+        formData.append('image', uploadedFile)
+        res = await fetch('/api/predict-local', {
+          method: 'POST',
+          body: formData,
+        })
+      }
 
       const contentType = res.headers.get('content-type') || ''
 
@@ -344,13 +358,77 @@ export default function CalculatorApp() {
         throw new Error(`Invalid response from server: ${bodyText.slice(0, 200)}`)
       }
 
-      const d = data as {
+      let d: {
         success: boolean;
         keras_result?: { status: string; confidence: number; probabilities?: Record<string, number>; error?: string } | null;
         yolo_result?: { status: string; confidence: number; probabilities?: Record<string, number>; error?: string } | null;
         image_status?: string;
         combined_status?: { status: string; confidence: number };
         error?: string;
+      }
+
+      if (isTauri) {
+        const rawData = data as unknown as {
+          success: boolean
+          keras?: { status: string; confidence: number; probabilities?: Record<string, number>; error?: string }
+          yolo?: { status: string; confidence: number; probabilities?: Record<string, number>; error?: string }
+          combined?: { status: string; confidence: number }
+          processing_time_ms: number
+          error?: string
+        }
+
+        if (!rawData.success) {
+          throw new Error(rawData.error || 'Inference failed')
+        }
+
+        const normalizeStatus = (status: string): string => {
+          const normalized = status.trim().toLowerCase().replace(/\s+/g, '_')
+          const CLASS_NAMES = ['good', 'poor', 'satisfactory', 'very_poor']
+          if (CLASS_NAMES.includes(normalized)) return normalized
+          return status
+        }
+
+        const determineImageStatus = (kerasStatus?: string, yoloStatus?: string): 'Bon' | 'Moyen' | 'Mauvais' => {
+          const STATUS_RANK: Record<string, number> = {
+            good: 1,
+            satisfactory: 2,
+            poor: 3,
+            very_poor: 4,
+          }
+          const statuses = [kerasStatus, yoloStatus].filter(Boolean) as string[]
+          if (statuses.length === 0) return 'Bon'
+          const maxRank = Math.max(...statuses.map((s) => STATUS_RANK[s] || 0))
+          if (maxRank >= 4) return 'Mauvais'
+          if (maxRank >= 3) return 'Moyen'
+          return 'Bon'
+        }
+
+        const kerasResult = rawData.keras?.status
+          ? { status: normalizeStatus(rawData.keras.status), confidence: rawData.keras.confidence, probabilities: rawData.keras.probabilities }
+          : undefined
+
+        const yoloResult = rawData.yolo?.status
+          ? { status: normalizeStatus(rawData.yolo.status), confidence: rawData.yolo.confidence, probabilities: rawData.yolo.probabilities }
+          : undefined
+
+        const imageStatus = determineImageStatus(kerasResult?.status, yoloResult?.status)
+
+        d = {
+          success: true,
+          keras_result: kerasResult || null,
+          yolo_result: yoloResult || null,
+          image_status: imageStatus,
+          combined_status: rawData.combined,
+        }
+      } else {
+        d = data as {
+          success: boolean;
+          keras_result?: { status: string; confidence: number; probabilities?: Record<string, number>; error?: string } | null;
+          yolo_result?: { status: string; confidence: number; probabilities?: Record<string, number>; error?: string } | null;
+          image_status?: string;
+          combined_status?: { status: string; confidence: number };
+          error?: string;
+        }
       }
 
       if (d.keras_result) setKerasResult(d.keras_result)

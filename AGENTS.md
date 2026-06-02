@@ -1,7 +1,7 @@
 <!-- gitnexus:start -->
 # GitNexus — Code Intelligence
 
-This project is indexed by GitNexus as **workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf** (1356 symbols, 2443 relationships, 64 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
+This project is indexed by GitNexus as **civil-engineering-cttp-renforcement** (1817 symbols, 2973 relationships, 64 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
 
 > If any GitNexus tool warns the index is stale, run `npx gitnexus analyze` in terminal first.
 
@@ -24,10 +24,10 @@ This project is indexed by GitNexus as **workspace-5902d4e5-5da3-41cb-a2e3-bc34f
 
 | Resource | Use for |
 |----------|---------|
-| `gitnexus://repo/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/context` | Codebase overview, check index freshness |
-| `gitnexus://repo/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/clusters` | All functional areas |
-| `gitnexus://repo/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/processes` | All execution flows |
-| `gitnexus://repo/workspace-5902d4e5-5da3-41cb-a2e3-bc34f6a7d2cf/process/{name}` | Step-by-step execution trace |
+| `gitnexus://repo/civil-engineering-cttp-renforcement/context` | Codebase overview, check index freshness |
+| `gitnexus://repo/civil-engineering-cttp-renforcement/clusters` | All functional areas |
+| `gitnexus://repo/civil-engineering-cttp-renforcement/processes` | All execution flows |
+| `gitnexus://repo/civil-engineering-cttp-renforcement/process/{name}` | Step-by-step execution trace |
 
 ## CLI
 

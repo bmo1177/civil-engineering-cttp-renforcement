@@ -20,7 +20,17 @@ logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
-MODELS_DIR = Path(__file__).parent.resolve()
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    return response
+
+if getattr(sys, 'frozen', False):
+    MODELS_DIR = Path(sys._MEIPASS).resolve()
+else:
+    MODELS_DIR = Path(__file__).parent.resolve()
 CLASS_NAMES = ['good', 'poor', 'satisfactory', 'very_poor']
 
 keras_model = None
@@ -66,8 +76,10 @@ def load_models():
         if yolo_model: loaded.append("YOLO")
         logger.info(f"Models loaded: {' + '.join(loaded)}")
 
-@app.route('/health', methods=['GET'])
+@app.route('/health', methods=['GET', 'OPTIONS'])
 def health():
+    if request.method == 'OPTIONS':
+        return '', 204
     return jsonify({
         'status': 'ok',
         'keras_loaded': keras_model is not None,
@@ -75,8 +87,10 @@ def health():
         'class_names': CLASS_NAMES,
     })
 
-@app.route('/predict', methods=['POST'])
+@app.route('/predict', methods=['POST', 'OPTIONS'])
 def predict():
+    if request.method == 'OPTIONS':
+        return '', 204
     if 'file' not in request.files:
         return jsonify({'error': 'No file uploaded', 'success': False}), 400
 
@@ -138,15 +152,13 @@ def predict():
                         else:
                             raise ValueError(f"YOLO top1 index {top1} out of range for {len(CLASS_NAMES)} classes")
 
-                    yolo_probs = None
+                    yolo_probs = {name: 0.0 for name in CLASS_NAMES}
                     if probs is not None:
-                        num_yolo_classes = len(probs)
-                        yolo_probs = {}
-                        for i, name in enumerate(CLASS_NAMES):
-                            if i < num_yolo_classes:
-                                yolo_probs[name] = round(float(probs[i]) * 100, 2)
-                            else:
-                                yolo_probs[name] = 0.0
+                        for idx, prob_val in enumerate(probs):
+                            if idx in r.names:
+                                name = str(r.names[idx]).strip().lower().replace(' ', '_')
+                                if name in CLASS_NAMES:
+                                    yolo_probs[name] = round(float(prob_val) * 100, 2)
 
                     result['yolo'] = {
                         'status': yolo_status,

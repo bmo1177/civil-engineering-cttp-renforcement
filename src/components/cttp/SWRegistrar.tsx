@@ -8,8 +8,14 @@ import { useEffect } from 'react'
  */
 export function SWRegistrar() {
   useEffect(() => {
-    // Skip in Tauri environment
-    if (typeof window !== 'undefined' && (window as any).__TAURI__) return
+    if (
+      typeof window !== 'undefined' &&
+      ((window as any).__TAURI__ !== undefined ||
+        (window as any).__TAURI_INTERNALS__ !== undefined ||
+        window.navigator.userAgent.toLowerCase().includes('tauri'))
+    ) {
+      return
+    }
 
     // Skip if SW not supported
     if (typeof navigator === 'undefined' || !('serviceWorker' in navigator)) return

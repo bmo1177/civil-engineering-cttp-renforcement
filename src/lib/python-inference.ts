@@ -9,7 +9,7 @@
 import type { InferenceProvider, InferenceResult } from './inference-provider'
 import type { DetectionBox } from './inference-types'
 
-const DEFAULT_SERVER_URL = process.env.INFERENCE_SERVER_URL || 'http://localhost:5980'
+const DEFAULT_SERVER_URL = process.env.INFERENCE_SERVER_URL || 'http://127.0.0.1:5980'
 
 export interface ModelResult {
   status: string

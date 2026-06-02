@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-const INFERENCE_SERVER_URL = process.env.INFERENCE_SERVER_URL || 'http://localhost:5980'
+const INFERENCE_SERVER_URL = process.env.INFERENCE_SERVER_URL || 'http://127.0.0.1:5980'
 const CLASS_NAMES = ['good', 'poor', 'satisfactory', 'very_poor']
 
 function normalizeStatus(status: string): string {
