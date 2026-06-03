@@ -1,0 +1,11 @@
+\babel@toc {french}{}\relax 
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {1.1}{\ignorespaces Architecture en couches de l'application CTTP{} Renforcement~: frontal Web, routes d'API et moteurs d'inférence.}}{8}{figure.caption.5}%
+\contentsline {figure}{\numberline {1.2}{\ignorespaces Flot de données de l'application~: saisie, calcul CTTP{}, analyse IA, génération du rapport PDF.}}{9}{figure.caption.6}%
+\contentsline {figure}{\numberline {1.3}{\ignorespaces Structure du projet (diagramme arborescent)~: dossiers principaux — frontal (src/), modèles d'IA (models/), documentation (docs/) et coquille de bureau (src-tauri/).}}{11}{figure.caption.8}%
+\contentsline {figure}{\numberline {1.4}{\ignorespaces Schéma de calcul de la déflexion corrigée (diagramme Mermaid)~: $d = d_c \times C_s \times C_r \times C_t$ (d'après CTTP{} p.~33).}}{13}{figure.caption.11}%
+\contentsline {figure}{\numberline {1.5}{\ignorespaces Coupe transversale type d'une structure de renforcement «~Très Lourd~» pour un trafic T3--T5 (d'après CTTP{} p.~48--55, diagramme Mermaid).}}{15}{figure.caption.14}%
+\contentsline {figure}{\numberline {1.6}{\ignorespaces Architecture du provider d'inférence (diagramme Mermaid)~: une interface commune (\texttt {InferenceProvider}) encapsule trois moteurs d'IA interchangeables, sélectionnés par la variable d'environnement \texttt {INFERENCE\_BACKEND}.}}{16}{figure.caption.15}%
+\contentsline {figure}{\numberline {1.7}{\ignorespaces Capture d'écran de l'onglet \emph {Design}~: saisie des paramètres et calcul en temps réel de la déflexion corrigée et de la structure de renforcement.}}{18}{figure.caption.16}%
+\contentsline {figure}{\numberline {1.8}{\ignorespaces Capture d'écran de l'onglet \emph {Analysis}~: détection automatique des dégradations avec \emph {bounding boxes} superposées à l'image de chaussée.}}{19}{figure.caption.17}%
+\contentsline {figure}{\numberline {1.9}{\ignorespaces Aperçu du rapport PDF généré~: paramètres, calcul de déflexion, structure de renforcement et traçabilité réglementaire.}}{20}{figure.caption.18}%

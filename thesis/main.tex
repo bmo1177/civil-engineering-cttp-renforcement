@@ -33,6 +33,10 @@
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{float}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning,calc,fit,backgrounds,
+                decorations.pathmorphing,decorations.pathreplacing,
+                patterns,shadings,shadows,arrows.meta}
 \captionsetup{font=small,labelfont=bf,labelsep=period}
 
 % ─── Code source ─────────────────────────────────────────────────────────────
@@ -44,6 +48,69 @@
 \definecolor{codecomment}{RGB}{106,153,78}
 \definecolor{codestring}{RGB}{200,80,40}
 \definecolor{codenumber}{RGB}{180,80,160}
+
+% ─── Palette Mermaid (look-and-feel) ────────────────────────────────────────
+%  Reproduit la palette pastel caractéristique des diagrammes Mermaid v10+
+%  (mermaid.js). Les teintes claires servent de remplissages ; les versions
+%  foncées correspondantes servent de bordures.
+\definecolor{mm-blue-fill}{HTML}{DAE8FC}    % nœud principal
+\definecolor{mm-blue-edge}{HTML}{6C8EBF}    % bordure nœud principal
+\definecolor{mm-violet-fill}{HTML}{E1D5E7}  % interface / module central
+\definecolor{mm-violet-edge}{HTML}{9673A6}  % bordure interface
+\definecolor{mm-green-fill}{HTML}{D5E8D4}   % moteur / calcul
+\definecolor{mm-green-edge}{HTML}{82B366}   % bordure moteur
+\definecolor{mm-orange-fill}{HTML}{FFE6CC}  % entrée / input
+\definecolor{mm-orange-edge}{HTML}{D79B00}  % bordure entrée
+\definecolor{mm-yellow-fill}{HTML}{FFF2CC}  % facteur / coefficient
+\definecolor{mm-yellow-edge}{HTML}{D6B656} % bordure facteur
+\definecolor{mm-red-fill}{HTML}{F8CECC}     % sortie / output
+\definecolor{mm-red-edge}{HTML}{B85450}     % bordure sortie
+\definecolor{mm-gray-fill}{HTML}{F5F5F5}    % neutre
+\definecolor{mm-gray-edge}{HTML}{666666}    % bordure neutre
+\definecolor{mm-text}{HTML}{2F2F2F}         % texte (anthracite)
+\definecolor{mm-arrow}{HTML}{7B7B7B}        % flèches (gris moyen)
+\definecolor{mm-bg}{HTML}{FAFAFA}           % fond de page Mermaid
+
+% ─── Style « Mermaid-like » pour TikZ ───────────────────────────────────────
+%  Reproduit fidèlement l'apparence d'un diagramme généré par mermaid.js :
+%  rectangles aux coins arrondis, fond pastel, bordure colorée 1,5 pt,
+%  police sans-serif, flèches fines à pointe simple.
+\tikzset{
+  mermaid/.style={
+    font=\sffamily\small,
+    color=mm-text,
+    >=Stealth,
+    line cap=round, line join=round
+  },
+  mm-node/.style={
+    rectangle, rounded corners=4pt, very thick,
+    minimum height=0.9cm, text width=2.6cm, align=center,
+    inner sep=6pt, font=\sffamily\small
+  },
+  mm-node-blue/.style  ={mm-node, draw=mm-blue-edge,   fill=mm-blue-fill},
+  mm-node-violet/.style={mm-node, draw=mm-violet-edge, fill=mm-violet-fill},
+  mm-node-green/.style ={mm-node, draw=mm-green-edge,  fill=mm-green-fill},
+  mm-node-orange/.style={mm-node, draw=mm-orange-edge, fill=mm-orange-fill},
+  mm-node-yellow/.style={mm-node, draw=mm-yellow-edge, fill=mm-yellow-fill},
+  mm-node-red/.style   ={mm-node, draw=mm-red-edge,    fill=mm-red-fill},
+  mm-node-gray/.style  ={mm-node, draw=mm-gray-edge,   fill=mm-gray-fill},
+  mm-edge/.style={
+    ->, >=Stealth, thick, draw=mm-arrow
+  },
+  mm-edge-dashed/.style={
+    ->, >=Stealth, thick, draw=mm-arrow, dashed
+  },
+  mm-op/.style={
+    circle, draw=mm-yellow-edge, very thick, fill=mm-yellow-fill,
+    minimum size=0.7cm, inner sep=0pt, font=\sffamily\bfseries\small
+  },
+  mm-note/.style={
+    font=\sffamily\footnotesize\itshape, text=mm-gray-edge, align=center
+  }
+}
+
+% Fond Mermaid optionnel pour les figures (légère teinte)
+\newcommand{\mermaidbg}{\color{mm-bg}}
 
 \lstdefinestyle{tsstyle}{
   backgroundcolor=\color{codebg},
@@ -111,25 +178,37 @@
 
 % ─── Métadonnées ─────────────────────────────────────────────────────────────
 \title{
-  \vspace*{1cm}
+  \vspace*{0.5cm}
   \begin{center}
-    {\large Université --- Faculté de Technologie}\\[0.2cm]
-    {\large Département de Génie Civil}\\[1.2cm]
+    % Bandeau supérieur avec logos
+    \begin{minipage}{0.45\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{figures/universite-logo.pdf}
+    \end{minipage}\hfill
+    \begin{minipage}{0.45\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{figures/cttp-logo.pdf}
+    \end{minipage}\\[0.6cm]
+
+    \rule{\textwidth}{0.8pt}\\[0.4cm]
 
     {\LARGE\bfseries Application logicielle pour le dimensionnement\\
     du renforcement des chaussées souples}\\[0.3cm]
     {\Large\itshape selon le \cttp{} \textit{Guide des Renforcements}
-    (Déc. 1992)}\\[1.2cm]
+    (Déc. 1992)}\\[0.8cm]
 
-    \rule{0.6\textwidth}{0.4pt}\\[0.4cm]
+    \begin{center}
+      \includegraphics[width=0.85\textwidth]{figures/project-banner.pdf}
+    \end{center}
 
-    {\Large\bfseries Chapitre : Application}\\[0.4cm]
-    {\large Projet \cttp{} Renforcement}\\[0.2cm]
+    \vspace{0.3cm}
+    \rule{\textwidth}{0.4pt}\\[0.3cm]
+
+    {\Large\bfseries Chapitre~: Application}\\[0.3cm]
     {\large RN120 PK70--80 --- Wilaya de Tiaret, Algérie}\\[0.4cm]
-
-    \rule{0.6\textwidth}{0.4pt}
+    \rule{\textwidth}{0.8pt}
   \end{center}
-  \vspace{1.2cm}
+  \vspace{0.8cm}
 }
 
 \author{

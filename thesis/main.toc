@@ -1,0 +1,41 @@
+\babel@toc {french}{}\relax 
+\contentsline {chapter}{\numberline {1}Application : conception, mise en œuvre et validation de l'outil CTTP{} Renforcement}{5}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Introduction}{5}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Présentation générale de l'application}{6}{section.1.2}%
+\contentsline {subsection}{\numberline {1.2.1}Contexte opérationnel}{6}{subsection.1.2.1}%
+\contentsline {subsection}{\numberline {1.2.2}Cahier des charges fonctionnel}{6}{subsection.1.2.2}%
+\contentsline {subsection}{\numberline {1.2.3}Périmètre normatif}{7}{subsection.1.2.3}%
+\contentsline {section}{\numberline {1.3}Architecture du système}{8}{section.1.3}%
+\contentsline {subsection}{\numberline {1.3.1}Vue d'ensemble}{8}{subsection.1.3.1}%
+\contentsline {subsection}{\numberline {1.3.2}Pile technologique}{9}{subsection.1.3.2}%
+\contentsline {subsection}{\numberline {1.3.3}Structure du projet}{10}{subsection.1.3.3}%
+\contentsline {section}{\numberline {1.4}Module de calcul CTTP{}}{11}{section.1.4}%
+\contentsline {subsection}{\numberline {1.4.1}Modèle de données}{11}{subsection.1.4.1}%
+\contentsline {subsection}{\numberline {1.4.2}Calcul du trafic}{12}{subsection.1.4.2}%
+\contentsline {subsection}{\numberline {1.4.3}Correction de la déflexion}{12}{subsection.1.4.3}%
+\contentsline {subsection}{\numberline {1.4.4}Matrice de décision}{13}{subsection.1.4.4}%
+\contentsline {subsection}{\numberline {1.4.5}Catalogue matériaux}{14}{subsection.1.4.5}%
+\contentsline {subsection}{\numberline {1.4.6}Traçabilité réglementaire}{15}{subsection.1.4.6}%
+\contentsline {section}{\numberline {1.5}Module d'analyse par intelligence artificielle}{15}{section.1.5}%
+\contentsline {subsection}{\numberline {1.5.1}Architecture du provider d'inférence}{15}{subsection.1.5.1}%
+\contentsline {subsection}{\numberline {1.5.2}Provider Gemini}{16}{subsection.1.5.2}%
+\contentsline {subsection}{\numberline {1.5.3}Provider ONNX local}{16}{subsection.1.5.3}%
+\contentsline {subsection}{\numberline {1.5.4}Provider Python (Keras + YOLOv8)}{17}{subsection.1.5.4}%
+\contentsline {section}{\numberline {1.6}Interface utilisateur}{17}{section.1.6}%
+\contentsline {subsection}{\numberline {1.6.1}Principes de conception}{17}{subsection.1.6.1}%
+\contentsline {subsection}{\numberline {1.6.2}Page de calcul (« Design »)}{17}{subsection.1.6.2}%
+\contentsline {subsection}{\numberline {1.6.3}Page d'analyse (« Analysis »)}{18}{subsection.1.6.3}%
+\contentsline {subsection}{\numberline {1.6.4}Génération de rapport PDF}{19}{subsection.1.6.4}%
+\contentsline {section}{\numberline {1.7}Validation fonctionnelle et tests}{20}{section.1.7}%
+\contentsline {subsection}{\numberline {1.7.1}Stratégie de test}{20}{subsection.1.7.1}%
+\contentsline {subsection}{\numberline {1.7.2}Cas de test de référence}{21}{subsection.1.7.2}%
+\contentsline {subsection}{\numberline {1.7.3}Test de bout en bout documenté}{21}{subsection.1.7.3}%
+\contentsline {section}{\numberline {1.8}Déploiement multiplateforme}{22}{section.1.8}%
+\contentsline {subsection}{\numberline {1.8.1}Web (Vercel)}{22}{subsection.1.8.1}%
+\contentsline {subsection}{\numberline {1.8.2}Application de bureau (Tauri~v2)}{22}{subsection.1.8.2}%
+\contentsline {subsection}{\numberline {1.8.3}Progressive Web App (PWA)}{22}{subsection.1.8.3}%
+\contentsline {subsection}{\numberline {1.8.4}Indicateurs de performance}{22}{subsection.1.8.4}%
+\contentsline {section}{\numberline {1.9}Limites et perspectives}{23}{section.1.9}%
+\contentsline {subsection}{\numberline {1.9.1}Limites identifiées}{23}{subsection.1.9.1}%
+\contentsline {subsection}{\numberline {1.9.2}Perspectives d'évolution}{23}{subsection.1.9.2}%
+\contentsline {section}{\numberline {1.10}Conclusion}{24}{section.1.10}%

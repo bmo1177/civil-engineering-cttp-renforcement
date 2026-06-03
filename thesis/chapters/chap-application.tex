@@ -141,35 +141,31 @@ fichier source.
 \label{sec:vue-ensemble}
 
 L'application suit une architecture \emph{client-serveur} moderne
-présentée sur la figure~\ref{fig:archi}. Le frontal est une SPA React~19
-servie par Next.js~16 (App Router). Elle dialogue avec quatre routes
-d'API qui matérialisent les frontières fonctionnelles~:
+présentée sur la figure~\ref{fig:archi}. Le frontal est une application
+monopage React~19 servie par Next.js~16 (App Router). Elle dialogue avec
+quatre routes d'API qui matérialisent les frontières fonctionnelles~:
 \texttt{/api/design} (moteur \cttp{}), \texttt{/api/predict} et
-\texttt{/api/predict-local} (inférence IA), et
-\texttt{/api/export} (génération PDF).
+\texttt{/api/predict-local} (inférence IA), et \texttt{/api/export}
+(génération PDF).
 
 \begin{figure}[H]
-\centering
-\begin{minipage}{0.92\textwidth}
-\centering
-\begin{tabular}{|c|c|c|c|c|}
-\hline
-\multicolumn{5}{|c|}{\textbf{Client Web (Next.js 16 / React 19 / Tailwind 4)}} \\
-\hline
-\multicolumn{2}{|c|}{Onglet \emph{Design}} & \multicolumn{2}{c|}{Onglet \emph{Analysis}} & Export \\
-\hline
-\multicolumn{2}{|c|}{} & \multicolumn{2}{c|}{} & PDF \\
-\hline
-\multicolumn{2}{|c|}{$\downarrow$} & \multicolumn{2}{c|}{$\downarrow$} & $\downarrow$ \\
-\hline
-\texttt{/api/design} & \multicolumn{2}{c|}{\texttt{/api/predict}} & \texttt{/api/predict-local} & \texttt{/api/export} \\
-\hline
-Moteur \cttp{} & Gemini VLM & ONNX & Python Flask & jsPDF \\
-\hline
-\end{tabular}
-\end{minipage}
-\caption{Architecture en couches de l'application \cttp{} Renforcement.}
-\label{fig:archi}
+  \centering
+  \includegraphics[width=0.96\textwidth]{figures/architecture.pdf}
+  \caption{Architecture en couches de l'application \cttp{}
+  Renforcement~: frontal Web, routes d'API et moteurs d'inférence.}
+  \label{fig:archi}
+\end{figure}
+
+La figure~\ref{fig:workflow} synthétise le flot de données
+\emph{de bout en bout}, depuis la saisie utilisateur jusqu'à
+l'export PDF.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{figures/workflow.pdf}
+  \caption{Flot de données de l'application~: saisie, calcul
+  \cttp{}, analyse IA, génération du rapport PDF.}
+  \label{fig:workflow}
 \end{figure}
 
 \subsection{Pile technologique}
@@ -255,6 +251,39 @@ export const REINFORCEMENT_MATRIX: MatrixRow[] = [
     deflectionZone: "High", reinforcementType: "Lourd" },
 ];
 \end{lstlisting}
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[mermaid,
+      level 1/.style={sibling distance=42mm, level distance=14mm},
+      level 2/.style={sibling distance=22mm, level distance=10mm},
+      edge from parent/.style={draw=mm-arrow, thick, rounded corners},
+  ]
+  \node[mm-node-violet, text width=4.2cm] {cttp-renforcement/}
+    child { node[mm-node-blue, text width=2.4cm] {src/}
+      child { node[mm-node-gray, text width=2.8cm] {app/api/} }
+      child { node[mm-node-gray, text width=2.8cm] {components/} }
+      child { node[mm-node-gray, text width=2.8cm] {lib/ (moteur)} }
+    }
+    child { node[mm-node-green, text width=2.4cm] {models/}
+      child { node[mm-node-gray, text width=2.8cm] {Keras .h5} }
+      child { node[mm-node-gray, text width=2.8cm] {YOLO .pt} }
+      child { node[mm-node-gray, text width=2.8cm] {inference\_server.py} }
+    }
+    child { node[mm-node-yellow, text width=2.4cm] {docs/}
+      child { node[mm-node-gray, text width=2.8cm] {images/*.svg} }
+      child { node[mm-node-gray, text width=2.8cm] {THESIS\_VALIDATION.md} }
+    }
+    child { node[mm-node-orange, text width=2.4cm] {src-tauri/}
+      child { node[mm-node-gray, text width=2.8cm] {main.rs} }
+      child { node[mm-node-gray, text width=2.8cm] {tauri.conf.json} }
+    };
+  \end{tikzpicture}
+  \caption{Structure du projet (diagramme arborescent)~: dossiers
+  principaux — frontal (src/), modèles d'IA (models/), documentation
+  (docs/) et coquille de bureau (src-tauri/).}
+  \label{fig:arborescence}
+\end{figure}
 
 
 % ─── Section 3 : Module de calcul CTTP ────────────────────────────────────
@@ -383,6 +412,51 @@ Une fois la déflexion corrigée $d$ calculée, sa zone est déterminée
 selon les bornes du \cttp{} p.~33 (tableau~\ref{tab:zones}). Le
 résultat est injecté comme clé de la matrice 3D de décision.
 
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[mermaid, node distance=0.6cm]
+  \node[mm-node-orange] (dc)  {$d_c$\\ mesurée};
+  \node[mm-op, right=of dc]   (mul1) {$\times$};
+  \node[mm-node-yellow, right=of mul1] (cs)  {$C_s$\\ saison};
+  \node[mm-op, right=of cs]   (mul2) {$\times$};
+  \node[mm-node-yellow, right=of mul2] (cr)  {$C_r$\\ région};
+  \node[mm-op, right=of cr]   (mul3) {$\times$};
+  \node[mm-node-yellow, right=of mul3] (ct)  {$C_t$\\ température};
+  \node[mm-op, right=of ct]   (eq)  {$=$};
+  \node[mm-node-red, right=of eq]   (d)   {$d$\\ corrigée};
+
+  \draw[mm-edge] (dc)  -- (mul1);
+  \draw[mm-edge] (mul1) -- (cs);
+  \draw[mm-edge] (cs)  -- (mul2);
+  \draw[mm-edge] (mul2) -- (cr);
+  \draw[mm-edge] (cr)  -- (mul3);
+  \draw[mm-edge] (mul3) -- (ct);
+  \draw[mm-edge] (ct)  -- (eq);
+  \draw[mm-edge] (eq)  -- (d);
+
+  % Légendes sous les coefficients (note Mermaid)
+  \node[mm-note, below=0.4cm of cs]
+       {humide = 1,0\\intermédiaire = 1,15\\sèche = 1,25};
+  \node[mm-note, below=0.4cm of cr]
+       {Nord = 1,0\\Hauts-Plateaux = 0,8\\Sahara = 0,5};
+  \node[mm-note, below=0.4cm of ct]
+       {0\,\si{\celsius} = 1,40\\20\,\si{\celsius} = 1,00\\30\,\si{\celsius} = 0,90};
+
+  % Annotation groupe de coefficients
+  \node[mm-node-violet, text width=4cm, minimum height=0.9cm,
+        below=2.4cm of cr] (grp)
+       {Trois coefficients correcteurs\\\cttp{} p.~33};
+  \draw[mm-edge-dashed, mm-violet-edge]
+        (cs.south) .. controls +(0,-1.0) and +(-1.0,0) .. (grp.north west);
+  \draw[mm-edge-dashed, mm-violet-edge]
+        (ct.south) .. controls +(0,-1.0) and +( 1.0,0) .. (grp.north east);
+  \end{tikzpicture}
+  \caption{Schéma de calcul de la déflexion corrigée (diagramme
+  Mermaid)~: $d = d_c \times C_s \times C_r \times C_t$
+  (d'après \cttp{} p.~33).}
+  \label{fig:deflexion-flow}
+\end{figure}
+
 \begin{table}[H]
 \centering
 \caption{Bornes des zones de déflexion (en $1/100$\,mm).}
@@ -437,7 +511,9 @@ sélectionne une structure type. Deux catalogues coexistent~:
 
 L'épaisseur de la couche de base croît par paliers de 5\,cm
 (Léger $\to$ Très Lourd). Le tableau~\ref{tab:structures} donne
-quelques exemples représentatifs.
+quelques exemples représentatifs. La figure~\ref{fig:structure}
+illustre la structure type «~Très Lourd~» (T3--T5) telle
+qu'elle est recommandée par le \cttp{}.
 
 \begin{table}[H]
 \centering
@@ -455,6 +531,49 @@ T3--T5 & Très Lourd & 25\,cm & 5\,cm BB + 25\,cm GB \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[mermaid,
+      layer/.style={rectangle, rounded corners=3pt, very thick,
+                    minimum width=10cm, minimum height=0.9cm,
+                    font=\sffamily\small, text=mm-text},
+      tag/.style={mm-node, text width=3.4cm, font=\sffamily\footnotesize}
+  ]
+  % Bandes colorées façon Mermaid (du plus foncé au sol)
+  \node[layer, fill=mm-violet-fill, draw=mm-violet-edge] (L1) at (0, 0)   {BB 5\,cm --- couche de roulement};
+  \node[layer, fill=mm-blue-fill,   draw=mm-blue-edge]   (L2) at (0,-1.0) {BB 6\,cm --- couche de base};
+  \node[layer, fill=mm-yellow-fill, draw=mm-yellow-edge,
+        minimum height=2.5cm]                            (L3) at (0,-2.75)
+        {GB 25\,cm --- couche de fondation};
+  \node[layer, fill=mm-green-fill,  draw=mm-green-edge]  (L4) at (0,-4.5) {GNT 20\,cm --- couche de forme};
+  \node[layer, fill=mm-orange-fill, draw=mm-orange-edge,
+        minimum height=1.2cm]                            (L5) at (0,-6.0)
+        {Sol support --- classe S};
+
+  % Tag d'identification (pastille à droite)
+  \node[tag, fill=mm-violet-fill, draw=mm-violet-edge,
+        right=0.3cm of L1] (T1) {Revêtement\\bitumineux};
+  \node[tag, fill=mm-blue-fill,   draw=mm-blue-edge,
+        right=0.3cm of L2] (T2) {Couche de base\\bitumineuse};
+  \node[tag, fill=mm-yellow-fill, draw=mm-yellow-edge,
+        right=0.3cm of L3] (T3) {Couche de\\fondation GB};
+  \node[tag, fill=mm-green-fill,  draw=mm-green-edge,
+        right=0.3cm of L4] (T4) {Couche de forme\\non traitée};
+  \node[tag, fill=mm-orange-fill, draw=mm-orange-edge,
+        right=0.3cm of L5] (T5) {Plate-forme\\support};
+
+  % Annotation épaisseur totale
+  \draw[{Stealth[length=5pt]}-{Stealth[length=5pt]}, thick, draw=mm-arrow]
+       (-6.0, 0.45) -- (-6.0, -4.95)
+       node[midway, left=4pt, font=\sffamily\bfseries\footnotesize,
+            text=mm-text, fill=mm-bg, inner sep=2pt] {30\,cm de chaussée};
+  \end{tikzpicture}
+  \caption{Coupe transversale type d'une structure de renforcement
+  «~Très Lourd~» pour un trafic T3--T5 (d'après \cttp{} p.~48--55,
+  diagramme Mermaid).}
+  \label{fig:structure}
+\end{figure}
 
 \subsection{Traçabilité réglementaire}
 \label{sec:tracabilite}
@@ -499,7 +618,51 @@ d'inférence d'IA sans toucher au code frontal. L'environnement
 
 Cette abstraction constitue une véritable \emph{stratégie de
 basculement} en cas d'indisponibilité du cloud, d'absence de
-connectivité terrain, ou de contraintes de confidentialité.
+connectivité terrain, ou de contraintes de confidentialité. La
+figure~\ref{fig:inference-sw} résume les trois moteurs
+interchangeables derrière l'interface commune.
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[mermaid, node distance=1.4cm]
+  % Variable d'environnement (haut)
+  \node[mm-node-yellow, text width=4.4cm] (env)
+       at (0, 1.6) {\texttt{INFERENCE\_BACKEND}};
+
+  % Interface commune
+  \node[mm-node-violet, text width=4.6cm, minimum height=1.1cm] (iface)
+       at (0, 0) {\texttt{InferenceProvider}\\interface commune};
+
+  % Trois providers
+  \node[mm-node-blue,   text width=3.0cm, minimum height=1.4cm,
+        below left=1.6cm and 0.5cm of iface]  (gemini)
+       {\textbf{Gemini}\\2.0 Flash\\(cloud)};
+  \node[mm-node-green,  text width=3.0cm, minimum height=1.4cm,
+        below=1.6cm of iface]                (onnx)
+       {\textbf{ONNX}\\YOLOv8-cls\\(local CPU)};
+  \node[mm-node-orange, text width=3.0cm, minimum height=1.4cm,
+        below right=1.6cm and 0.5cm of iface] (py)
+       {\textbf{Python}\\Keras + YOLO\\(GPU local)};
+
+  % Flèches verticales de l'env vers l'interface
+  \draw[mm-edge-dashed] (env) -- (iface);
+
+  % Flèches en éventail vers les 3 providers
+  \draw[mm-edge] (iface.south) -- (gemini.north);
+  \draw[mm-edge] (iface.south) -- (onnx.north);
+  \draw[mm-edge] (iface.south) -- (py.north);
+
+  % Notes Mermaid sous chaque provider
+  \node[mm-note, below=0.3cm of gemini] {VLM, détection\\de dégradations};
+  \node[mm-note, below=0.3cm of onnx]   {Quantifié INT8,\\hors ligne};
+  \node[mm-note, below=0.3cm of py]     {Ensemble 2 modèles,\\haute précision};
+  \end{tikzpicture}
+  \caption{Architecture du provider d'inférence (diagramme Mermaid)~:
+  une interface commune (\texttt{InferenceProvider}) encapsule trois
+  moteurs d'IA interchangeables, sélectionnés par la variable
+  d'environnement \texttt{INFERENCE\_BACKEND}.}
+  \label{fig:inference-sw}
+\end{figure}
 
 \subsection{Provider Gemini}
 \label{sec:gemini}
@@ -566,33 +729,50 @@ produit~:
 \subsection{Page de calcul (« Design »)}
 \label{sec:ui-design}
 
-L'onglet \emph{Design} présente un formulaire de saisie
-compact~: classe de trafic, type de surface, UNI, déflexion
-mesurée, saison, région, température. La déflexion corrigée et la
-zone correspondante sont calculées en temps réel, sans attendre la
-validation finale. Un panneau latéral affiche la structure de
-renforcement candidate et les paramètres matériaux
-correspondants. La mise en page privilégie la densité
-d'information~: tous les paramètres et tous les résultats
-intermédiaires sont visibles simultanément, conformément au
-principe énoncé en~\secref{sec:principes-ui}.
+L'onglet \emph{Design} (figure~\ref{fig:screenshot-design}) présente un
+formulaire de saisie compact~: classe de trafic, type de surface, UNI,
+déflexion mesurée, saison, région, température. La déflexion corrigée
+et la zone correspondante sont calculées en temps réel, sans attendre
+la validation finale. Un panneau latéral affiche la structure de
+renforcement candidate et les paramètres matériaux correspondants. La
+mise en page privilégie la densité d'information~: tous les paramètres
+et tous les résultats intermédiaires sont visibles simultanément,
+conformément au principe énoncé en~\secref{sec:principes-ui}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{figures/screenshot-design.pdf}
+  \caption{Capture d'écran de l'onglet \emph{Design}~: saisie des
+  paramètres et calcul en temps réel de la déflexion corrigée et de
+  la structure de renforcement.}
+  \label{fig:screenshot-design}
+\end{figure}
 
 \subsection{Page d'analyse (« Analysis »)}
 \label{sec:ui-analysis}
 
-L'onglet \emph{Analysis} accepte un glisser-déposer d'image de
-chaussée. L'utilisateur peut choisir l'analyse par Gemini (cloud,
-détection détaillée) ou par les modèles locaux (classification en
-quatre classes). Le résultat est superposé à l'image sous forme
-de \emph{bounding boxes} SVG avec libellé de sévérité, et l'état
-visuel global est automatiquement reporté dans l'onglet
-\emph{Design}.
+L'onglet \emph{Analysis} (figure~\ref{fig:screenshot-analysis}) accepte
+un glisser-déposer d'image de chaussée. L'utilisateur peut choisir
+l'analyse par Gemini (cloud, détection détaillée) ou par les modèles
+locaux (classification en quatre classes). Le résultat est superposé à
+l'image sous forme de \emph{bounding boxes} SVG avec libellé de
+sévérité, et l'état visuel global est automatiquement reporté dans
+l'onglet \emph{Design}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{figures/screenshot-analysis.pdf}
+  \caption{Capture d'écran de l'onglet \emph{Analysis}~: détection
+  automatique des dégradations avec \emph{bounding boxes} superposées
+  à l'image de chaussée.}
+  \label{fig:screenshot-analysis}
+\end{figure}
 
 \subsection{Génération de rapport PDF}
 \label{sec:ui-pdf}
 
-Le bouton d'export produit un rapport PDF \emph{côté client} via
-jsPDF, contenant~:
+Le bouton d'export produit un rapport PDF \emph{côté client}
+(figure~\ref{fig:screenshot-pdf}) via jsPDF, contenant~:
 
 \begin{itemize}
   \item les paramètres d'entrée (métadonnées du projet)~;
@@ -601,6 +781,14 @@ jsPDF, contenant~:
   \item la structure de renforcement finale avec matériaux~;
   \item la traçabilité réglementaire (références \cttp{} p.~45).
 \end{itemize}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.78\textwidth]{figures/screenshot-pdf.pdf}
+  \caption{Aperçu du rapport PDF généré~: paramètres, calcul de
+  déflexion, structure de renforcement et traçabilité réglementaire.}
+  \label{fig:screenshot-pdf}
+\end{figure}
 
 Le PDF est destiné à être joint à un dossier de soumission à
 l'administration (DTP) et à servir de pièce justificative du
