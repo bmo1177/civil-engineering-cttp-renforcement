@@ -150,7 +150,86 @@ quatre routes d'API qui matérialisent les frontières fonctionnelles~:
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.96\textwidth]{figures/architecture.pdf}
+  \resizebox{0.96\textwidth}{!}{%
+  \begin{tikzpicture}[mermaid, node distance=0.6cm and 0.4cm]
+
+    % ── Tier labels ──────────────────────────────────────────────────────
+    \node[mm-note, text width=2.2cm] (lbl-p) at (-3.8, 0.5)
+      {Couche\\Présentation};
+    \node[mm-note, text width=2.2cm] (lbl-a) at (-3.8, -2.5)
+      {Couche\\API};
+    \node[mm-note, text width=2.2cm] (lbl-i) at (-3.8, -5.5)
+      {Couche\\Inférence};
+
+    % ── Dashed tier separators ──────────────────────────────────────────
+    \draw[mm-edge-dashed, gray!50]
+      (-3.2, -1.2) -- (9.5, -1.2);
+    \draw[mm-edge-dashed, gray!50]
+      (-3.2, -4.2) -- (9.5, -4.2);
+
+    % ── Presentation Layer ──────────────────────────────────────────────
+    \node[mm-node-blue, minimum height=1.6cm, text width=2.4cm]
+      (web) at (0, 0)
+      {\textbf{Web App}\\[2pt]{\footnotesize Next.js 16 + React 19}\\
+       {\footnotesize Tailwind + shadcn/ui}};
+    \node[mm-node-blue, minimum height=1.6cm, text width=2.4cm]
+      (desktop) at (3.2, 0)
+      {\textbf{Desktop App}\\[2pt]{\footnotesize Tauri v2 (Rust)}\\
+       {\footnotesize Windows / Linux}};
+    \node[mm-node-blue, minimum height=1.6cm, text width=2.4cm]
+      (pwa) at (6.4, 0)
+      {\textbf{PWA}\\[2pt]{\footnotesize Service worker}\\
+       {\footnotesize Offline caching}};
+    \node[mm-node-blue, minimum height=1.6cm, text width=2.4cm]
+      (ui) at (9.6, 0)
+      {\textbf{UI Components}\\[2pt]{\footnotesize Design · Analysis}\\
+       {\footnotesize 30+ primitives}};
+
+    % ── API Layer ───────────────────────────────────────────────────────
+    \node[mm-node-orange, minimum height=1.6cm, text width=2.4cm]
+      (predict) at (0, -3)
+      {\textbf{/api/predict}\\[2pt]{\footnotesize Détection IA}\\
+       {\footnotesize Gemini / ONNX}};
+    \node[mm-node-orange, minimum height=1.6cm, text width=2.4cm]
+      (local) at (3.2, -3)
+      {\textbf{/api/predict-local}\\[2pt]{\footnotesize Modèles locaux}\\
+       {\footnotesize Keras + YOLO}};
+    \node[mm-node-orange, minimum height=1.6cm, text width=2.4cm]
+      (design) at (6.4, -3)
+      {\textbf{/api/design}\\[2pt]{\footnotesize Moteur CTTP}\\
+       {\footnotesize Reinforcement}};
+    \node[mm-node-orange, minimum height=1.6cm, text width=2.4cm]
+      (export) at (9.6, -3)
+      {\textbf{/api/export}\\[2pt]{\footnotesize Rapport PDF}\\
+       {\footnotesize jsPDF}};
+
+    % ── Inference Layer ─────────────────────────────────────────────────
+    \node[mm-node-green, minimum height=1.4cm, text width=2.4cm]
+      (gemini) at (0, -6)
+      {\textbf{Gemini 2.0}\\[2pt]{\footnotesize Cloud API}\\
+       {\footnotesize Distress detection}};
+    \node[mm-node-green, minimum height=1.4cm, text width=2.4cm]
+      (flask) at (3.2, -6)
+      {\textbf{Python Server}\\[2pt]{\footnotesize Flask :5980}\\
+       {\footnotesize Inference}};
+    \node[mm-node-green, minimum height=1.4cm, text width=2.4cm]
+      (keras) at (6.4, -6)
+      {\textbf{Keras}\\[2pt]{\footnotesize EfficientNetB0}\\
+       {\footnotesize Classification}};
+    \node[mm-node-green, minimum height=1.4cm, text width=2.4cm]
+      (yolo) at (9.6, -6)
+      {\textbf{YOLOv8}\\[2pt]{\footnotesize Détection}\\
+       {\footnotesize Bounding boxes}};
+
+    % ── Arrows (presentation → API) ────────────────────────────────────
+    \foreach \s/\t in {web/predict, desktop/local, pwa/design, ui/export}
+      \draw[mm-edge] (\s.south) -- (\t.north);
+
+    % ── Arrows (API → inference) ────────────────────────────────────────
+    \foreach \s/\t in {predict/gemini, local/flask, design/keras, export/yolo}
+      \draw[mm-edge] (\s.south) -- (\t.north);
+
+  \end{tikzpicture}}
   \caption{Architecture en couches de l'application \cttp{}
   Renforcement~: frontal Web, routes d'API et moteurs d'inférence.}
   \label{fig:archi}
@@ -162,7 +241,55 @@ l'export PDF.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.95\textwidth]{figures/workflow.pdf}
+  \resizebox{0.95\textwidth}{!}{%
+  \begin{tikzpicture}[mermaid, node distance=0.8cm]
+
+    % ── Row 1 ───────────────────────────────────────────────────────────
+    \node[mm-node-blue, minimum height=2.2cm, text width=2.6cm]
+      (step1) at (0, 0)
+      {\textbf{1 · Saisie}\\[3pt]
+       {\footnotesize Image de chaussée}\\
+       {\footnotesize Glisser-déposer}};
+    \node[mm-node-orange, minimum height=2.2cm, text width=2.6cm]
+      (step2) at (3.6, 0)
+      {\textbf{2 · Analyse IA}\\[3pt]
+       {\footnotesize Gemini VLM}\\
+       {\footnotesize Keras + YOLOv8}};
+    \node[mm-node-green, minimum height=2.2cm, text width=2.6cm]
+      (step3) at (7.2, 0)
+      {\textbf{3 · Paramètres}\\[3pt]
+       {\footnotesize Classe de trafic}\\
+       {\footnotesize Déflexion, UNI}};
+
+    % ── Row 2 ───────────────────────────────────────────────────────────
+    \node[mm-node-violet, minimum height=2.2cm, text width=2.6cm]
+      (step4) at (0, -3.8)
+      {\textbf{4 · Moteur CTTP}\\[3pt]
+       {\footnotesize Calcul déflexion}\\
+       {\footnotesize Matrice renforcement}};
+    \node[mm-node-yellow, minimum height=2.2cm, text width=2.6cm]
+      (step5) at (3.6, -3.8)
+      {\textbf{5 · Résultats}\\[3pt]
+       {\footnotesize Structure candidate}\\
+       {\footnotesize Type + matériaux}};
+    \node[mm-node-red, minimum height=2.2cm, text width=2.6cm]
+      (step6) at (7.2, -3.8)
+      {\textbf{6 · Export PDF}\\[3pt]
+       {\footnotesize Rapport complet}\\
+       {\footnotesize Traçabilité CTTP}};
+
+    % ── Horizontal arrows (row 1) ───────────────────────────────────────
+    \draw[mm-edge] (step1.east) -- (step2.west);
+    \draw[mm-edge] (step2.east) -- (step3.west);
+
+    % ── Vertical arrow (row 1 → row 2) ─────────────────────────────────
+    \draw[mm-edge] (step3.south) -- (step6.north);
+
+    % ── Horizontal arrows (row 2, right to left) ────────────────────────
+    \draw[mm-edge] (step6.west) -- (step5.east);
+    \draw[mm-edge] (step5.west) -- (step4.east);
+
+  \end{tikzpicture}}
   \caption{Flot de données de l'application~: saisie, calcul
   \cttp{}, analyse IA, génération du rapport PDF.}
   \label{fig:workflow}
@@ -790,10 +917,13 @@ produit~:
 \subsection{Page de calcul (« Design »)}
 \label{sec:ui-design}
 
-L'onglet \emph{Design} (figure~\ref{fig:screenshot-design}) présente un
-formulaire de saisie compact~: classe de trafic, type de surface, UNI,
-déflexion mesurée, saison, région, température. La déflexion corrigée
-et la zone correspondante sont calculées en temps réel, sans attendre
+L'onglet \emph{Dimensionnement} (figure~\ref{fig:ui-design-inputs})
+centralise la saisie~: classe de trafic, type de surface, état
+visuel, \textsc{uni} (mm/km). Le panneau de droite affiche en
+temps réel les paramètres dérivés~: indicateurs de zone
+(\textsc{Moyen}, \textsc{Medium}), \textsc{uni} lissé et
+déflexion corrigée. La déflexion corrigée et la zone
+correspondante sont calculées en temps réel, sans attendre
 la validation finale. Un panneau latéral affiche la structure de
 renforcement candidate et les paramètres matériaux correspondants. La
 mise en page privilégie la densité d'information~: tous les paramètres
@@ -802,17 +932,17 @@ conformément au principe énoncé en~\secref{sec:principes-ui}.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.95\textwidth]{figures/screenshot-design.pdf}
-  \caption{Capture d'écran de l'onglet \emph{Design}~: saisie des
-  paramètres et calcul en temps réel de la déflexion corrigée et de
-  la structure de renforcement.}
-  \label{fig:screenshot-design}
+  \includegraphics[width=0.95\textwidth]{figures/ui-design-inputs.pdf}
+  \caption{Dimensionnement~: saisie des paramètres d'entrée
+  (T2, BB, état \emph{Moyen -- Non Acceptable}, UNI 3\,200) et
+  indicateurs temps réel de zone.}
+  \label{fig:ui-design-inputs}
 \end{figure}
 
 \subsection{Page d'analyse (« Analysis »)}
 \label{sec:ui-analysis}
 
-L'onglet \emph{Analysis} (figure~\ref{fig:screenshot-analysis}) accepte
+L'onglet \emph{Analysis} (figure~\ref{fig:ui-ai-detect}) accepte
 un glisser-déposer d'image de chaussée. L'utilisateur peut choisir
 l'analyse par Gemini (cloud, détection détaillée) ou par les modèles
 locaux (classification en quatre classes). Le résultat est superposé à
@@ -822,18 +952,18 @@ l'onglet \emph{Design}.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.95\textwidth]{figures/screenshot-analysis.pdf}
-  \caption{Capture d'écran de l'onglet \emph{Analysis}~: détection
-  automatique des dégradations avec \emph{bounding boxes} superposées
-  à l'image de chaussée.}
-  \label{fig:screenshot-analysis}
+  \includegraphics[width=0.95\textwidth]{figures/ui-ai-detect.pdf}
+  \caption{Détection YOLO superposée à l'image~: \emph{bounding
+  box} «~\emph{Fissures transversales}~» à 21\,\%, sévérité
+  faible.}
+  \label{fig:ui-ai-detect}
 \end{figure}
 
 \subsection{Génération de rapport PDF}
 \label{sec:ui-pdf}
 
 Le bouton d'export produit un rapport PDF \emph{côté client}
-(figure~\ref{fig:screenshot-pdf}) via jsPDF, contenant~:
+(figure~\ref{fig:ui-design-traceability}) via jsPDF, contenant~:
 
 \begin{itemize}
   \item les paramètres d'entrée (métadonnées du projet)~;
@@ -845,15 +975,129 @@ Le bouton d'export produit un rapport PDF \emph{côté client}
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.78\textwidth]{figures/screenshot-pdf.pdf}
-  \caption{Aperçu du rapport PDF généré~: paramètres, calcul de
-  déflexion, structure de renforcement et traçabilité réglementaire.}
-  \label{fig:screenshot-pdf}
+  \includegraphics[width=0.95\textwidth]{figures/ui-design-traceability.pdf}
+  \caption{Traçabilité réglementaire~: référence \cttp{} p.~45
+  Table 3, règle «~T2-T3 + Non Acceptable + Medium
+  $\rightarrow$ Lourd~», enregistrement complet.}
+  \label{fig:ui-design-traceability}
 \end{figure}
 
 Le PDF est destiné à être joint à un dossier de soumission à
 l'administration (DTP) et à servir de pièce justificative du
 dimensionnement.
+
+
+\subsection{Parcours utilisateur de bout en bout}
+\label{sec:ui-walkthrough}
+
+Les captures présentées dans cette section documentent le
+parcours ingénieur complet sur la version déployée de
+l'application~: l'utilisateur saisit ses paramètres, déclenche
+l'analyse IA d'une image de chaussée, puis calcule la structure
+de renforcement et en exporte la trace. Toutes les
+illustrations proviennent de la même session de démonstration
+effectuée sur la section de référence \textsc{rn120} entre
+\textsc{pk70} et \textsc{pk80}.
+
+\subsubsection{Saisie et analyse d'un cliché (\emph{Analyse IA})}
+
+La figure~\ref{fig:ui-ia-overview} montre l'onglet
+\emph{Analyse IA} après une analyse complète~: le cliché
+\emph{China\_Drone\_000075.jpg} a été déposé dans la zone de
+glisser-déposer, les deux modèles locaux \textsc{keras} et
+\textsc{yolov8} ont été déclenchés, et la structure de
+renforcement dérivée s'affiche simultanément dans le panneau de
+droite. L'état visuel \textsc{very\_poor} (94{,}83\,\% combiné)
+est automatiquement reporté dans le panneau
+\emph{Input parameters \& computed values}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{figures/ui-ia-overview.pdf}
+  \caption{Analyse IA, état complet~: cliché chargé, classification
+  locale Keras + YOLOv8, coefficients de déflexion et structure
+  de renforcement dérivée (Lourd, GNT, 5\,cm BB + 20\,cm GNT).
+  \label{fig:ui-ia-overview}}
+\end{figure}
+
+\subsubsection{Classification locale par modèles Keras + YOLOv8}
+
+Dès qu'un cliché est chargé, l'utilisateur peut lancer la
+classification locale (figure~\ref{fig:ui-ia-classification}).
+Les deux modèles s'expriment indépendamment et un score combiné
+par moyenne pondérée des confiances est affiché. Dans
+l'exemple~: \textsc{keras} classe la chaussée en
+\textsc{very\_poor} à 90{,}3\,\%, \textsc{yolov8} en
+\textsc{very\_poor} à 99{,}4\,\%~; l'état combiné
+\textsc{very\_poor} (94{,}83\,\%) est automatiquement reporté
+dans l'onglet \emph{Dimensionnement}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{figures/ui-ia-classification.pdf}
+  \caption{Classification locale Keras + YOLOv8 d'un cliché de
+  chaussée fissurée~: confiances par modèle et décision combinée.
+  \label{fig:ui-ia-classification}}
+\end{figure}
+
+\subsubsection{Calculateur de correction de flèche}
+
+La figure~\ref{fig:ui-design-coefficients} détaille le
+calculateur de correction de flèche~: la flèche mesurée
+$d_c$, le coefficient saisonnier $C_s$, le coefficient
+régional $C_r$ et le coefficient thermique $C_t$ sont affichés
+explicitement, et le produit
+$d = d_c \times C_s \times C_r \times C_t$ est recalculé à
+chaque frappe.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{figures/ui-design-coefficients.pdf}
+  \caption{Calculateur de correction de flèche~: affichage
+  explicite de $d_c$, $C_s$, $C_r$, $C_t$ et de la déflexion
+  corrigée $d = 70 \times 1{,}25 \times 1{,}00 \times 1{,}000 = 87{,}5$ (zone \emph{Medium}).
+  \label{fig:ui-design-coefficients}}
+\end{figure}
+
+\subsubsection{Déclenchement du calcul de renforcement}
+
+Une fois les paramètres validés, l'utilisateur clique sur
+\emph{Calculer le Renforcement} (figure~\ref{fig:ui-design-calculate}).
+Le calcul est déterministe et instantané, et le résultat est
+rendu dans le panneau de droite sans rechargement de page.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{figures/ui-design-calculate.pdf}
+  \caption{Déclenchement du calcul~: bouton
+  \emph{Calculer le Renforcement} et aperçu de la structure
+  candidate dans le panneau de résultats.
+  \label{fig:ui-design-calculate}}
+\end{figure}
+
+\subsubsection{Structure de renforcement candidate}
+
+La figure~\ref{fig:ui-design-structure} affiche la structure de
+renforcement retenue~: type (\emph{Lourd}), matériau de base
+(\textsc{gnt} -- \emph{Grave Non Traitée}), coupe transversale
+de la structure avec épaisseurs (5\,cm BB + 20\,cm GNT) et
+épaisseur totale (25\,cm), compactage requis (95--100\,\%
+\textsc{opm}) et alerte de drainage.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{figures/ui-design-structure.pdf}
+  \caption{Structure de renforcement candidate~: type
+  \emph{Lourd}, \textsc{gnt}, coupe transversale
+  5\,cm BB + 20\,cm GNT, compactage 95--100\,\% OPM et alerte
+  de drainage.
+  \label{fig:ui-design-structure}}
+\end{figure}
+
+Le parcours complet -- saisie, classification IA, calcul,
+structure, traçabilité, export -- est exécutable en moins de
+cinq minutes et produit un dossier conforme aux exigences de
+la \textsc{dtp} de Tiaret.
 
 
 % ─── Section 6 : Validation ────────────────────────────────────────────────

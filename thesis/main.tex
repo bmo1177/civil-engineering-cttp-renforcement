@@ -26,6 +26,7 @@
 
 % ─── Tableaux & Figures ──────────────────────────────────────────────────────
 \usepackage{graphicx}
+\usepackage{pdfpages}
 \usepackage{booktabs}
 \usepackage{array}
 \usepackage{multirow}
@@ -152,8 +153,8 @@
 % ─── Liens & Métadonnées ─────────────────────────────────────────────────────
 \usepackage[colorlinks=true,linkcolor=blue!60!black,citecolor=blue!60!black,
             urlcolor=blue!60!black,bookmarks=true,bookmarksnumbered=true,
-            pdftitle={CTTP Renforcement --- Chapitre Application},
-            pdfauthor={Mémoire de fin d'études --- Génie Civil},
+            pdftitle={Renforcement RN120 PK70--80 --- Techniques avancées de traitement d'images},
+            pdfauthor={Abdenour --- Université Ibn Khaldoun Tiaret},
             pdfsubject={Application logicielle pour le dimensionnement du
                         renforcement des chaussées souples selon le CTTP}]{hyperref}
 
@@ -164,7 +165,7 @@
 % ─── En-têtes & pieds de page ────────────────────────────────────────────────
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\small\textit{CTTP Renforcement --- Chapitre : Application}}
+\fancyhead[L]{\small\textit{Renforcement RN120 PK70--80}}
 \fancyhead[R]{\small\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
 \setlength{\headsep}{15pt}
@@ -225,8 +226,59 @@
 \begin{document}
 
 % ─── Page de titre ───────────────────────────────────────────────────────────
-\maketitle
+%  Reproduction fidèle du modèle de page de garde ISIL (Word)
 \thispagestyle{empty}
+\vspace*{-0.5cm}
+\begin{center}
+  % En-tête officiel
+  {\small RÉPUBLIQUE ALGÉRIENNE DÉMOCRATIQUE ET POPULAIRE}\\[0.15cm]
+  {\small MINISTÈRE DE L'ENSEIGNEMENT SUPÉRIEUR ET DE LA RECHERCHE SCIENTIFIQUE}\\[0.4cm]
+
+  % Logo universitaire (calligraphie arabe)
+  \includegraphics[height=3.0cm]{figures/universite-docx.pdf}\\[0.4cm]
+
+  % Nom de l'université
+  {\Large\bfseries UNIVERSITÉ IBN KHALDOUN --- TIARET}\\[0.5cm]
+
+  % Titre du document
+  {\fontsize{26}{30}\selectfont MÉMOIRE}\\[0.6cm]
+
+  % Présenté à
+  Présenté à~:\\[0.2cm]
+  {\large FACULTÉ DES SCIENCES APPLIQUÉES}\\[0.1cm]
+  {\large DÉPARTEMENT DE GÉNIE CIVIL}\\[0.4cm]
+
+  % Diplôme
+  Pour l'obtention du diplôme de~:\\[0.2cm]
+  {\fontsize{18}{22}\selectfont Master~2}\\[0.2cm]
+  Spécialité~: Génie Civil\\[0.5cm]
+
+  % Auteur
+  Par~:\\[0.2cm]
+  {\large\bfseries Abdenour --- Étudiant en Master~2 Génie Civil}\\[0.6cm]
+
+  % Thème
+  Sur le thème~:\\[0.2cm]
+  {\large\bfseries Renforcement de la route nationale RN120\\[0.1cm]
+  sur 10~km du PK70 au PK80\\[0.1cm]
+  par des techniques avancées de traitement d'images}\\[0.6cm]
+
+  % Tableau Encadrant / Examinateur
+  \begin{tabular}{|>{\centering\arraybackslash}m{4cm}|>{\centering\arraybackslash}m{2cm}|>{\centering\arraybackslash}m{4cm}|>{\centering\arraybackslash}m{3cm}|}
+    \hline
+    \textbf{Nom} & \textbf{Grade} & \textbf{Université} & \textbf{Qualité} \\
+    \hline
+    Mr [Nom Encadrant] & Professeur & Université de Tiaret & Encadrant \\
+    \hline
+    Mr [Nom Examinateur] & Professeur & Université de Tiaret & Examinateur \\
+    \hline
+  \end{tabular}
+
+  \vfill
+
+  {\large Année universitaire 2025--2026}
+\end{center}
+\newpage
 
 % ─── Table des matières ──────────────────────────────────────────────────────
 \tableofcontents
@@ -244,6 +296,9 @@
 
 % ─── Inclusion du chapitre ───────────────────────────────────────────────────
 \input{chapters/chap-application}
+
+% ─── Inclusion de l'annexe ───────────────────────────────────────────────────
+\input{chapters/chap-annexe}
 
 % ─── Bibliographie ───────────────────────────────────────────────────────────
 \input{chapters/bibliographie}
