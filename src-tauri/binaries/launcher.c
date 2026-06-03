@@ -25,45 +25,50 @@ int main(int argc, char *argv[]) {
     char *exe_dir = dirname(exe_path);
     
     char script_path[2048];
-    
-    // Candidate 0: TAURI_RESOURCE_DIR environment variable
     char *tauri_resource_dir = getenv("TAURI_RESOURCE_DIR");
+    
+    // Candidate 1: Check with TAURI_RESOURCE_DIR (if set)
     if (tauri_resource_dir != NULL && strlen(tauri_resource_dir) > 0) {
+        // Try under _up_/models (Tauri's bundled layout for relative parent paths)
+        snprintf(script_path, sizeof(script_path), "%s/_up_/models/inference_server.py", tauri_resource_dir);
+        if (file_exists(script_path)) goto found;
+
+        // Try under models/
         snprintf(script_path, sizeof(script_path), "%s/models/inference_server.py", tauri_resource_dir);
-        if (file_exists(script_path)) {
-            goto found;
-        }
+        if (file_exists(script_path)) goto found;
     }
     
-    // Candidate 1: relative to current working directory (e.g. models/inference_server.py)
-    snprintf(script_path, sizeof(script_path), "models/inference_server.py");
-    if (file_exists(script_path)) {
-        goto found;
-    }
-    
-    // Candidate 2: relative to exe_dir (e.g. <exe_dir>/models/inference_server.py)
+    // Candidate 2: Check relative to exe_dir
+    // Try development workspace (binary in src-tauri/target/release, models at root)
+    snprintf(script_path, sizeof(script_path), "%s/../../models/inference_server.py", exe_dir);
+    if (file_exists(script_path)) goto found;
+
+    // Try packaged layout with _up_/models
+    snprintf(script_path, sizeof(script_path), "%s/_up_/models/inference_server.py", exe_dir);
+    if (file_exists(script_path)) goto found;
+
+    // Try standard models directory
     snprintf(script_path, sizeof(script_path), "%s/models/inference_server.py", exe_dir);
-    if (file_exists(script_path)) {
-        goto found;
-    }
+    if (file_exists(script_path)) goto found;
     
-    // Candidate 3: Tauri resources directory under exe_dir (e.g. <exe_dir>/resources/models/inference_server.py)
+    // Try Tauri resources directory under exe_dir
     snprintf(script_path, sizeof(script_path), "%s/resources/models/inference_server.py", exe_dir);
-    if (file_exists(script_path)) {
-        goto found;
-    }
+    if (file_exists(script_path)) goto found;
 
-    // Candidate 4: Tauri resources directory next to exe_dir (e.g. <exe_dir>/../resources/models/inference_server.py)
+    // Try Tauri resources directory next to exe_dir
     snprintf(script_path, sizeof(script_path), "%s/../resources/models/inference_server.py", exe_dir);
-    if (file_exists(script_path)) {
-        goto found;
-    }
+    if (file_exists(script_path)) goto found;
 
-    // Candidate 5: Relative to exe_dir's parent (e.g. <exe_dir>/../models/inference_server.py)
+    // Try relative to exe_dir's parent
     snprintf(script_path, sizeof(script_path), "%s/../models/inference_server.py", exe_dir);
-    if (file_exists(script_path)) {
-        goto found;
-    }
+    if (file_exists(script_path)) goto found;
+
+    // Candidate 3: Check relative to current working directory
+    snprintf(script_path, sizeof(script_path), "_up_/models/inference_server.py");
+    if (file_exists(script_path)) goto found;
+
+    snprintf(script_path, sizeof(script_path), "models/inference_server.py");
+    if (file_exists(script_path)) goto found;
 
     fprintf(stderr, "[launcher] Error: models/inference_server.py not found in search paths.\n");
     return 1;

@@ -221,6 +221,7 @@ export default function CalculatorApp() {
     status: string; confidence: number; probabilities?: Record<string, number>; error?: string
   } | null>(null)
   const [isClassifying, setIsClassifying] = useState(false)
+  const [classifyStatus, setClassifyStatus] = useState<string>('')
 
   // ─── Connectivity & status state ───────────────────────────────────────
   const [isOnline, setIsOnline] = useState(() => typeof window !== 'undefined' && safeIsOnline())
@@ -303,6 +304,7 @@ export default function CalculatorApp() {
     }
   }, [uploadedFile, toast])
 
+
   // ─── Local model classification handler (Keras + YOLO) ──────────────────
 
   const handleClassifyLocal = useCallback(async () => {
@@ -312,147 +314,147 @@ export default function CalculatorApp() {
     setYoloResult(null)
 
     try {
-      const isTauri = typeof window !== 'undefined' && (
-        (window as any).__TAURI__ !== undefined ||
-        (window as any).__TAURI_INTERNALS__ !== undefined ||
-        window.navigator.userAgent.toLowerCase().includes('tauri')
-      )
-      const formData = new FormData()
+      // withGlobalTauri:true injects window.__TAURI__ — use it directly.
+      // Dynamic import('@tauri-apps/api/core') is unreliable in static builds.
+      const tauriInvoke: (<T>(cmd: string, args?: Record<string, unknown>) => Promise<T>) | undefined =
+        (window as any)?.__TAURI__?.core?.invoke
 
-      let res: Response
+      const isTauri = typeof tauriInvoke === 'function'
+
+      let bodyText: string
+
       if (isTauri) {
-        formData.append('file', uploadedFile)
-        res = await fetch('http://127.0.0.1:5980/predict', {
-          method: 'POST',
-          body: formData,
-        })
-      } else {
-        formData.append('image', uploadedFile)
-        res = await fetch('/api/predict-local', {
-          method: 'POST',
-          body: formData,
-        })
-      }
+        // ── Tauri path: ALL HTTP goes through Rust (bypasses WebKitGTK CORS) ──
+        //
+        // Poll the inference server via Rust's check_server_health command
+        // (never touches 127.0.0.1 from the WebView).
+        const MAX_ATTEMPTS = 60  // 60 × 2 s = 2 min ceiling
+        let attempt = 0
+        let serverReady = false
 
-      const contentType = res.headers.get('content-type') || ''
+        while (!serverReady && attempt < MAX_ATTEMPTS) {
+          attempt++
+          const elapsed = attempt * 2
+          setClassifyStatus(
+            attempt <= 3  ? 'Starting inference engine…' :
+            attempt <= 15 ? `Loading YOLO model… (${elapsed}s)` :
+                            `Loading Keras model… (~40 s on CPU, ${elapsed}s elapsed)`
+          )
 
-      // Read body as text first (avoids WebKit DOM Exception 12 on res.json())
-      const bodyText = await res.text()
-
-      if (!res.ok) {
-        if (contentType.includes('application/json')) {
           try {
-            const errJson = JSON.parse(bodyText)
-            throw new Error((errJson as { error?: string }).error || `Server error: ${res.status}`)
+            const health = await tauriInvoke<{ ready: boolean; keras: boolean; yolo: boolean }>(
+              'check_server_health'
+            )
+            if (health.keras || health.yolo) {
+              serverReady = true
+              break
+            }
           } catch {
-            throw new Error(bodyText || `Server error: ${res.status}`)
+            // Server not up yet — keep polling
           }
-        }
-        throw new Error(bodyText || `Server error: ${res.status}`)
-      }
 
-      let data: Record<string, unknown>
-      try {
-        data = JSON.parse(bodyText)
-      } catch {
-        throw new Error(`Invalid response from server: ${bodyText.slice(0, 200)}`)
-      }
-
-      let d: {
-        success: boolean;
-        keras_result?: { status: string; confidence: number; probabilities?: Record<string, number>; error?: string } | null;
-        yolo_result?: { status: string; confidence: number; probabilities?: Record<string, number>; error?: string } | null;
-        image_status?: string;
-        combined_status?: { status: string; confidence: number };
-        error?: string;
-      }
-
-      if (isTauri) {
-        const rawData = data as unknown as {
-          success: boolean
-          keras?: { status: string; confidence: number; probabilities?: Record<string, number>; error?: string }
-          yolo?: { status: string; confidence: number; probabilities?: Record<string, number>; error?: string }
-          combined?: { status: string; confidence: number }
-          processing_time_ms: number
-          error?: string
+          await new Promise((r) => setTimeout(r, 2000))
         }
 
-        if (!rawData.success) {
-          throw new Error(rawData.error || 'Inference failed')
+        if (!serverReady) {
+          throw new Error(
+            'AI models did not load within 2 minutes. ' +
+            'Ensure python3, tensorflow, ultralytics and flask are installed.'
+          )
         }
 
-        const normalizeStatus = (status: string): string => {
-          const normalized = status.trim().toLowerCase().replace(/\s+/g, '_')
-          const CLASS_NAMES = ['good', 'poor', 'satisfactory', 'very_poor']
-          if (CLASS_NAMES.includes(normalized)) return normalized
-          return status
-        }
+        setClassifyStatus('Classifying…')
 
-        const determineImageStatus = (kerasStatus?: string, yoloStatus?: string): 'Bon' | 'Moyen' | 'Mauvais' => {
-          const STATUS_RANK: Record<string, number> = {
-            good: 1,
-            satisfactory: 2,
-            poor: 3,
-            very_poor: 4,
-          }
-          const statuses = [kerasStatus, yoloStatus].filter(Boolean) as string[]
-          if (statuses.length === 0) return 'Bon'
-          const maxRank = Math.max(...statuses.map((s) => STATUS_RANK[s] || 0))
-          if (maxRank >= 4) return 'Mauvais'
-          if (maxRank >= 3) return 'Moyen'
-          return 'Bon'
-        }
+        // Send image bytes through Rust — no WebView HTTP at all
+        const arrayBuffer = await uploadedFile.arrayBuffer()
+        const imageBytes = Array.from(new Uint8Array(arrayBuffer))
 
-        const kerasResult = rawData.keras?.status
-          ? { status: normalizeStatus(rawData.keras.status), confidence: rawData.keras.confidence, probabilities: rawData.keras.probabilities }
-          : undefined
+        bodyText = await tauriInvoke<string>('proxy_predict', {
+          imageBytes,
+          filename: uploadedFile.name || 'image.jpg',
+        })
 
-        const yoloResult = rawData.yolo?.status
-          ? { status: normalizeStatus(rawData.yolo.status), confidence: rawData.yolo.confidence, probabilities: rawData.yolo.probabilities }
-          : undefined
-
-        const imageStatus = determineImageStatus(kerasResult?.status, yoloResult?.status)
-
-        d = {
-          success: true,
-          keras_result: kerasResult || null,
-          yolo_result: yoloResult || null,
-          image_status: imageStatus,
-          combined_status: rawData.combined,
-        }
       } else {
-        d = data as {
-          success: boolean;
-          keras_result?: { status: string; confidence: number; probabilities?: Record<string, number>; error?: string } | null;
-          yolo_result?: { status: string; confidence: number; probabilities?: Record<string, number>; error?: string } | null;
-          image_status?: string;
-          combined_status?: { status: string; confidence: number };
-          error?: string;
+        // ── Web path: route through Next.js API ──
+        const formData = new FormData()
+        formData.append('image', uploadedFile)
+        const res = await fetch('/api/predict-local', { method: 'POST', body: formData })
+        bodyText = await res.text()
+        if (!res.ok) {
+          let msg = bodyText
+          try { msg = (JSON.parse(bodyText) as { error?: string }).error || bodyText } catch {}
+          throw new Error(msg || `Server error: ${res.status}`)
         }
       }
 
-      if (d.keras_result) setKerasResult(d.keras_result)
-      if (d.yolo_result) setYoloResult(d.yolo_result)
+      // ── Parse response (same format for both paths) ──
+      let rawData: {
+        success: boolean
+        keras?: { status: string; confidence: number; probabilities?: Record<string, number>; error?: string }
+        yolo?: { status: string; confidence: number; probabilities?: Record<string, number>; error?: string }
+        combined?: { status: string; confidence: number }
+        processing_time_ms?: number
+        error?: string
+        // web API may nest differently
+        keras_result?: { status: string; confidence: number; probabilities?: Record<string, number>; error?: string } | null
+        yolo_result?: { status: string; confidence: number; probabilities?: Record<string, number>; error?: string } | null
+        image_status?: string
+        combined_status?: { status: string; confidence: number }
+      }
+      try {
+        rawData = JSON.parse(bodyText)
+      } catch {
+        throw new Error(`Invalid response: ${bodyText.slice(0, 200)}`)
+      }
 
-      if (d.image_status && VISUAL_STATUSES.includes(d.image_status as typeof VISUAL_STATUSES[number])) {
-        setVisualStatus(d.image_status as VisualStatus)
+      if (!rawData.success) {
+        throw new Error(rawData.error || 'Inference failed')
+      }
+
+      const normalizeStatus = (s: string) => {
+        const n = s.trim().toLowerCase().replace(/\s+/g, '_')
+        return ['good', 'poor', 'satisfactory', 'very_poor'].includes(n) ? n : s
+      }
+
+      const STATUS_RANK: Record<string, number> = { good: 1, satisfactory: 2, poor: 3, very_poor: 4 }
+      const determineImageStatus = (a?: string, b?: string): 'Bon' | 'Moyen' | 'Mauvais' => {
+        const ranks = [a, b].filter(Boolean).map((s) => STATUS_RANK[s!] || 0)
+        if (!ranks.length) return 'Bon'
+        const max = Math.max(...ranks)
+        return max >= 4 ? 'Mauvais' : max >= 3 ? 'Moyen' : 'Bon'
+      }
+
+      // Normalise — handle both { keras: ... } (server format) and { keras_result: ... } (web API format)
+      const kerasRaw = rawData.keras || rawData.keras_result || undefined
+      const yoloRaw  = rawData.yolo  || rawData.yolo_result  || undefined
+      const combinedRaw = rawData.combined || rawData.combined_status || undefined
+
+      const kerasResult = kerasRaw?.status
+        ? { status: normalizeStatus(kerasRaw.status), confidence: kerasRaw.confidence, probabilities: kerasRaw.probabilities }
+        : undefined
+      const yoloResult = yoloRaw?.status
+        ? { status: normalizeStatus(yoloRaw.status), confidence: yoloRaw.confidence, probabilities: yoloRaw.probabilities }
+        : undefined
+
+      if (kerasResult) setKerasResult(kerasResult)
+      if (yoloResult)  setYoloResult(yoloResult)
+
+      const imageStatus = rawData.image_status || determineImageStatus(kerasResult?.status, yoloResult?.status)
+      if (VISUAL_STATUSES.includes(imageStatus as typeof VISUAL_STATUSES[number])) {
+        setVisualStatus(imageStatus as VisualStatus)
       }
 
       toast({
         title: 'Classification Complete',
-        description: d.combined_status
-          ? `Combined: ${d.combined_status.status} (${d.combined_status.confidence}%)`
+        description: combinedRaw
+          ? `Combined: ${combinedRaw.status} (${combinedRaw.confidence}%)`
           : 'Local models finished',
       })
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Could not reach local models'
-      toast({
-        title: 'Classification Failed',
-        description: message,
-        variant: 'destructive',
-      })
-      return
+      toast({ title: 'Classification Failed', description: message, variant: 'destructive' })
     } finally {
+      setClassifyStatus('')
       setIsClassifying(false)
     }
   }, [uploadedFile, toast])
@@ -1091,7 +1093,7 @@ export default function CalculatorApp() {
                         {isClassifying ? (
                           <>
                             <Loader2 className="size-4 animate-spin" />
-                            Classifying...
+                            {classifyStatus || 'Classifying…'}
                           </>
                         ) : (
                           <>

@@ -85,25 +85,36 @@ Répondez UNIQUEMENT au format JSON:
 
 Si aucune dégradation n'est détectée, retournez: {"detections": []}`
 
-    const geminiRes = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-goog-api-key': apiKey,
-        },
-        body: JSON.stringify({
-          contents: [{
-            role: 'user',
-            parts: [
-              { text: prompt },
-              { inlineData: { mimeType: file.type || 'image/jpeg', data: base64 } },
-            ],
-          }],
-        }),
-      }
-    )
+    const makeRequest = async (model: string) => {
+      return fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-goog-api-key': apiKey,
+          },
+          body: JSON.stringify({
+            contents: [{
+              role: 'user',
+              parts: [
+                { text: prompt },
+                { inlineData: { mimeType: file.type || 'image/jpeg', data: base64 } },
+              ],
+            }],
+          }),
+        }
+      )
+    }
+
+    let modelUsed = 'gemini-2.0-flash'
+    let geminiRes = await makeRequest(modelUsed)
+
+    if (!geminiRes.ok) {
+      console.warn(`[ClientPredict] gemini-2.0-flash failed (HTTP ${geminiRes.status}), attempting fallback to gemini-flash-latest...`)
+      modelUsed = 'gemini-flash-latest'
+      geminiRes = await makeRequest(modelUsed)
+    }
 
     if (!geminiRes.ok) {
       const errBody = await geminiRes.text().catch(() => '')

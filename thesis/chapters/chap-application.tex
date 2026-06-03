@@ -254,31 +254,58 @@ export const REINFORCEMENT_MATRIX: MatrixRow[] = [
 
 \begin{figure}[H]
   \centering
+  \resizebox{\textwidth}{!}{%
   \begin{tikzpicture}[mermaid,
-      level 1/.style={sibling distance=42mm, level distance=14mm},
-      level 2/.style={sibling distance=22mm, level distance=10mm},
-      edge from parent/.style={draw=mm-arrow, thick, rounded corners},
+      every node/.style={font=\sffamily\scriptsize, text=mm-text, align=center},
+      every path/.style={draw=mm-arrow, thick, rounded corners}
   ]
-  \node[mm-node-violet, text width=4.2cm] {cttp-renforcement/}
-    child { node[mm-node-blue, text width=2.4cm] {src/}
-      child { node[mm-node-gray, text width=2.8cm] {app/api/} }
-      child { node[mm-node-gray, text width=2.8cm] {components/} }
-      child { node[mm-node-gray, text width=2.8cm] {lib/ (moteur)} }
-    }
-    child { node[mm-node-green, text width=2.4cm] {models/}
-      child { node[mm-node-gray, text width=2.8cm] {Keras .h5} }
-      child { node[mm-node-gray, text width=2.8cm] {YOLO .pt} }
-      child { node[mm-node-gray, text width=2.8cm] {inference\_server.py} }
-    }
-    child { node[mm-node-yellow, text width=2.4cm] {docs/}
-      child { node[mm-node-gray, text width=2.8cm] {images/*.svg} }
-      child { node[mm-node-gray, text width=2.8cm] {THESIS\_VALIDATION.md} }
-    }
-    child { node[mm-node-orange, text width=2.4cm] {src-tauri/}
-      child { node[mm-node-gray, text width=2.8cm] {main.rs} }
-      child { node[mm-node-gray, text width=2.8cm] {tauri.conf.json} }
-    };
-  \end{tikzpicture}
+  % Racine
+  \node[mm-node-violet, text width=4.0cm, minimum height=0.9cm] (root)
+        at (0, 0) {cttp-renforcement/};
+
+  % Niveau 1 : 4 sous-dossiers
+  \node[mm-node-blue,   text width=2.0cm, minimum height=0.8cm] (src)
+        at (-6.4, -1.5) {src/};
+  \node[mm-node-green,  text width=2.0cm, minimum height=0.8cm] (models)
+        at (-2.0, -1.5) {models/};
+  \node[mm-node-yellow, text width=2.0cm, minimum height=0.8cm] (docs)
+        at ( 2.4, -1.5) {docs/};
+  \node[mm-node-orange, text width=2.0cm, minimum height=0.8cm] (tauri)
+        at ( 6.4, -1.5) {src-tauri/};
+
+  % Niveau 2 : feuilles (text width assez large pour les longs labels)
+  \node[mm-node-gray, text width=3.2cm, minimum height=0.7cm] (api)    at (-6.4, -3.2) {app/api/};
+  \node[mm-node-gray, text width=3.2cm, minimum height=0.7cm] (compo)  at (-6.4, -4.3) {components/};
+  \node[mm-node-gray, text width=3.2cm, minimum height=0.7cm] (lib)    at (-6.4, -5.4) {lib/ (moteur)};
+
+  \node[mm-node-gray, text width=3.2cm, minimum height=0.7cm] (keras)  at (-2.0, -3.2) {Keras .h5};
+  \node[mm-node-gray, text width=3.2cm, minimum height=0.7cm] (yolo)   at (-2.0, -4.3) {YOLO .pt};
+  \node[mm-node-gray, text width=3.2cm, minimum height=0.7cm] (infer)  at (-2.0, -5.4) {inference\_server.py};
+
+  \node[mm-node-gray, text width=3.2cm, minimum height=0.7cm] (imgs)   at ( 2.4, -3.2) {images/*.svg};
+  \node[mm-node-gray, text width=3.2cm, minimum height=0.7cm] (thesis) at ( 2.4, -4.3) {VALIDATION.md};
+
+  \node[mm-node-gray, text width=3.2cm, minimum height=0.7cm] (main)   at ( 6.4, -3.2) {main.rs};
+  \node[mm-node-gray, text width=3.2cm, minimum height=0.7cm] (conf)   at ( 6.4, -4.3) {tauri.conf.json};
+
+  % Arêtes racine → niveau 1
+  \draw (root.south) -- (src.north);
+  \draw (root.south) -- (models.north);
+  \draw (root.south) -- (docs.north);
+  \draw (root.south) -- (tauri.north);
+
+  % Arêtes niveau 1 → niveau 2
+  \draw (src.south)    -- (api.north);
+  \draw (src.south)    -- (compo.north);
+  \draw (src.south)    -- (lib.north);
+  \draw (models.south) -- (keras.north);
+  \draw (models.south) -- (yolo.north);
+  \draw (models.south) -- (infer.north);
+  \draw (docs.south)   -- (imgs.north);
+  \draw (docs.south)   -- (thesis.north);
+  \draw (tauri.south)  -- (main.north);
+  \draw (tauri.south)  -- (conf.north);
+  \end{tikzpicture}}
   \caption{Structure du projet (diagramme arborescent)~: dossiers
   principaux — frontal (src/), modèles d'IA (models/), documentation
   (docs/) et coquille de bureau (src-tauri/).}
@@ -414,16 +441,17 @@ résultat est injecté comme clé de la matrice 3D de décision.
 
 \begin{figure}[H]
   \centering
-  \begin{tikzpicture}[mermaid, node distance=0.6cm]
-  \node[mm-node-orange] (dc)  {$d_c$\\ mesurée};
+  \begin{tikzpicture}[mermaid, node distance=0.25cm,
+      every node/.style={font=\sffamily\scriptsize, text=mm-text, align=center}]
+  \node[mm-node-orange, text width=1.4cm, minimum height=1.0cm] (dc)  {$d_c$\\ mesurée};
   \node[mm-op, right=of dc]   (mul1) {$\times$};
-  \node[mm-node-yellow, right=of mul1] (cs)  {$C_s$\\ saison};
+  \node[mm-node-yellow, text width=1.4cm, minimum height=1.0cm, right=of mul1] (cs)  {$C_s$\\ saison};
   \node[mm-op, right=of cs]   (mul2) {$\times$};
-  \node[mm-node-yellow, right=of mul2] (cr)  {$C_r$\\ région};
+  \node[mm-node-yellow, text width=1.4cm, minimum height=1.0cm, right=of mul2] (cr)  {$C_r$\\ région};
   \node[mm-op, right=of cr]   (mul3) {$\times$};
-  \node[mm-node-yellow, right=of mul3] (ct)  {$C_t$\\ température};
+  \node[mm-node-yellow, text width=1.4cm, minimum height=1.0cm, right=of mul3] (ct)  {$C_t$\\ température};
   \node[mm-op, right=of ct]   (eq)  {$=$};
-  \node[mm-node-red, right=of eq]   (d)   {$d$\\ corrigée};
+  \node[mm-node-red, text width=1.4cm, minimum height=1.0cm, right=of eq]   (d)   {$d$\\ corrigée};
 
   \draw[mm-edge] (dc)  -- (mul1);
   \draw[mm-edge] (mul1) -- (cs);
@@ -434,22 +462,22 @@ résultat est injecté comme clé de la matrice 3D de décision.
   \draw[mm-edge] (ct)  -- (eq);
   \draw[mm-edge] (eq)  -- (d);
 
-  % Légendes sous les coefficients (note Mermaid)
-  \node[mm-note, below=0.4cm of cs]
-       {humide = 1,0\\intermédiaire = 1,15\\sèche = 1,25};
-  \node[mm-note, below=0.4cm of cr]
-       {Nord = 1,0\\Hauts-Plateaux = 0,8\\Sahara = 0,5};
-  \node[mm-note, below=0.4cm of ct]
+  % Légendes sous les coefficients (note Mermaid, plus petites)
+  \node[mm-note, text width=1.8cm, below=0.3cm of cs, font=\sffamily\scriptsize]
+       {humide = 1,0\\interm. = 1,15\\sèche = 1,25};
+  \node[mm-note, text width=1.8cm, below=0.3cm of cr, font=\sffamily\scriptsize]
+       {Nord = 1,0\\Hauts-Pl. = 0,8\\Sahara = 0,5};
+  \node[mm-note, text width=1.8cm, below=0.3cm of ct, font=\sffamily\scriptsize]
        {0\,\si{\celsius} = 1,40\\20\,\si{\celsius} = 1,00\\30\,\si{\celsius} = 0,90};
 
   % Annotation groupe de coefficients
-  \node[mm-node-violet, text width=4cm, minimum height=0.9cm,
-        below=2.4cm of cr] (grp)
+  \node[mm-node-violet, text width=3.6cm, minimum height=0.8cm,
+        below=2.2cm of cr, font=\sffamily\scriptsize] (grp)
        {Trois coefficients correcteurs\\\cttp{} p.~33};
   \draw[mm-edge-dashed, mm-violet-edge]
-        (cs.south) .. controls +(0,-1.0) and +(-1.0,0) .. (grp.north west);
+        (cs.south) .. controls +(0,-0.8) and +(-1.0,0) .. (grp.north west);
   \draw[mm-edge-dashed, mm-violet-edge]
-        (ct.south) .. controls +(0,-1.0) and +( 1.0,0) .. (grp.north east);
+        (ct.south) .. controls +(0,-0.8) and +( 1.0,0) .. (grp.north east);
   \end{tikzpicture}
   \caption{Schéma de calcul de la déflexion corrigée (diagramme
   Mermaid)~: $d = d_c \times C_s \times C_r \times C_t$
@@ -536,38 +564,71 @@ T3--T5 & Très Lourd & 25\,cm & 5\,cm BB + 25\,cm GB \\
   \centering
   \begin{tikzpicture}[mermaid,
       layer/.style={rectangle, rounded corners=3pt, very thick,
-                    minimum width=10cm, minimum height=0.9cm,
-                    font=\sffamily\small, text=mm-text},
-      tag/.style={mm-node, text width=3.4cm, font=\sffamily\footnotesize}
+                    minimum width=9cm, minimum height=1.0cm,
+                    font=\sffamily\small, text=mm-text, align=center},
+      role/.style={mm-node, text width=3.4cm, align=center,
+                   font=\sffamily\footnotesize, inner sep=4pt},
+      link/.style={draw=mm-gray-edge, thin, dashed}
   ]
-  % Bandes colorées façon Mermaid (du plus foncé au sol)
-  \node[layer, fill=mm-violet-fill, draw=mm-violet-edge] (L1) at (0, 0)   {BB 5\,cm --- couche de roulement};
-  \node[layer, fill=mm-blue-fill,   draw=mm-blue-edge]   (L2) at (0,-1.0) {BB 6\,cm --- couche de base};
+  % Titre de la figure
+  \node[font=\sffamily\bfseries\footnotesize, text=mm-text]
+        at (1.8, 1.15) {Structure «~Très Lourd~» --- trafic T3--T5};
+
+  % Indicateur de charge de roue (en haut)
+  \node[font=\sffamily\scriptsize\bfseries, text=mm-gray-edge]
+        at (-4.55, 0.75) {↓ Charge PL};
+  \draw[-{Stealth[length=4pt]}, thick, draw=mm-arrow]
+       (-4.55, 0.55) -- (-4.55, 0.48);
+
+  % Structure «~Très Lourd~» T3--T5 : 5\,cm BB + 25\,cm GB = 30\,cm
+  % Épaisseurs visuelles proportionnelles, interlignes de 0,45\,cm
+  \node[layer, fill=mm-violet-fill, draw=mm-violet-edge,
+        minimum height=0.9cm] (L1) at (0, 0)
+        {\textbf{BB 5\,cm} \quad --- \quad couche de roulement};
   \node[layer, fill=mm-yellow-fill, draw=mm-yellow-edge,
-        minimum height=2.5cm]                            (L3) at (0,-2.75)
-        {GB 25\,cm --- couche de fondation};
-  \node[layer, fill=mm-green-fill,  draw=mm-green-edge]  (L4) at (0,-4.5) {GNT 20\,cm --- couche de forme};
+        minimum height=2.0cm] (L2) at (0,-1.8)
+        {\textbf{GB 25\,cm} \quad --- \text{couche de base}};
   \node[layer, fill=mm-orange-fill, draw=mm-orange-edge,
-        minimum height=1.2cm]                            (L5) at (0,-6.0)
-        {Sol support --- classe S};
+        minimum height=1.0cm] (L3) at (0,-3.7)
+        {\textbf{Sol support} \quad --- \text{plate-forme classe~S}};
 
-  % Tag d'identification (pastille à droite)
-  \node[tag, fill=mm-violet-fill, draw=mm-violet-edge,
-        right=0.3cm of L1] (T1) {Revêtement\\bitumineux};
-  \node[tag, fill=mm-blue-fill,   draw=mm-blue-edge,
-        right=0.3cm of L2] (T2) {Couche de base\\bitumineuse};
-  \node[tag, fill=mm-yellow-fill, draw=mm-yellow-edge,
-        right=0.3cm of L3] (T3) {Couche de\\fondation GB};
-  \node[tag, fill=mm-green-fill,  draw=mm-green-edge,
-        right=0.3cm of L4] (T4) {Couche de forme\\non traitée};
-  \node[tag, fill=mm-orange-fill, draw=mm-orange-edge,
-        right=0.3cm of L5] (T5) {Plate-forme\\support};
+  % Hachures de sol sous la plate-forme (indication «~infini~»)
+  \begin{scope}
+    \clip (-4.5, -4.2) rectangle (4.5, -4.95);
+    \foreach \x in {-4.6,-4.4,...,4.6}{
+      \draw[mm-gray-edge, thin] (\x, -4.2) -- (\x+0.3, -4.95);
+    }
+  \end{scope}
+  \draw[mm-gray-edge, thin] (-4.5, -4.2) -- (4.5, -4.2);
 
-  % Annotation épaisseur totale
-  \draw[{Stealth[length=5pt]}-{Stealth[length=5pt]}, thick, draw=mm-arrow]
-       (-6.0, 0.45) -- (-6.0, -4.95)
-       node[midway, left=4pt, font=\sffamily\bfseries\footnotesize,
-            text=mm-text, fill=mm-bg, inner sep=2pt] {30\,cm de chaussée};
+  % Marqueurs d'épaisseur partielle à gauche de chaque couche
+  \node[font=\sffamily\scriptsize\bfseries, text=mm-gray-edge]
+        at (-4.55, 0) {5\,cm};
+  \node[font=\sffamily\scriptsize\bfseries, text=mm-gray-edge]
+        at (-4.55, -1.8) {25\,cm};
+
+  % Rôles à droite — alignés sur la couche correspondante
+  % (mêmes hauteurs que les couches pour un alignement visuel parfait)
+  \node[role, fill=mm-violet-fill, draw=mm-violet-edge,
+        minimum height=0.9cm] (R1) at (5.5, 0)
+        {Revêtement\\bitumineux};
+  \node[role, fill=mm-yellow-fill, draw=mm-yellow-edge,
+        minimum height=2.0cm] (R2) at (5.5, -1.8)
+        {Couche de base\\en grave bitume\\(fondation)};
+  \node[role, fill=mm-orange-fill, draw=mm-orange-edge,
+        minimum height=1.0cm] (R3) at (5.5, -3.7)
+        {Plate-forme\\support\\(sol en place)};
+
+  % Connecteurs pointillés entre chaque couche et son rôle
+  \draw[link] (L1.east) -- (R1.west);
+  \draw[link] (L2.east) -- (R2.west);
+  \draw[link] (L3.east) -- (R3.west);
+
+  % Annotation épaisseur totale : 5 + 25 = 30\,cm de chaussée
+  \draw[{Stealth[length=5pt]}-{Stealth[length=5pt]}, very thick, draw=mm-arrow]
+       (-5.3, 0.45) -- (-5.3, -2.3)
+       node[midway, left=5pt, font=\sffamily\bfseries\footnotesize,
+            text=mm-text, fill=mm-bg, inner sep=3pt] {30\,cm};
   \end{tikzpicture}
   \caption{Coupe transversale type d'une structure de renforcement
   «~Très Lourd~» pour un trafic T3--T5 (d'après \cttp{} p.~48--55,

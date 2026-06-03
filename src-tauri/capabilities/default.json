@@ -1,0 +1,19 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Default capabilities for CTTP Renforcement",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "shell:allow-spawn",
+    "shell:allow-execute",
+    {
+      "identifier": "http:default",
+      "allow": [
+        { "url": "http://127.0.0.1:5980/**" },
+        { "url": "http://localhost:5980/**" },
+        { "url": "http://0.0.0.0:5980/**" }
+      ]
+    }
+  ]
+}
