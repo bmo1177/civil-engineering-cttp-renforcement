@@ -103,8 +103,8 @@ Rapport PDF
 traçabilité réglementaire. \\
 \addlinespace
 Mode déconnecté
-& Fonctionnement \emph{offline-first} via \emph{service worker} et cache
-local. \\
+& Fonctionnement \emph{priorité hors ligne} via \emph{processus de service} et mémoire cache
+locale. \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -126,8 +126,8 @@ L'application implémente fidèlement les prescriptions du
         (p.~48--55).
 \end{itemize}
 
-Cette fidélité au texte réglementaire constitue la \emph{single source of
-truth} logicielle~: toutes les constantes, seuils et matrices sont
+Cette fidélité au texte réglementaire constitue la \emph{source de vérité
+unique} logicielle~: toutes les constantes, seuils et matrices sont
 centralisés dans un module dédié (\texttt{cttp-rules.ts}) garantissant
 qu'une mise à jour du guide ne nécessite qu'une seule modification de
 fichier source.
@@ -176,7 +176,7 @@ Moteur \cttp{} & Gemini VLM & ONNX & Python Flask & jsPDF \\
 \label{sec:stack}
 
 Le tableau~\ref{tab:stack} récapitule les technologies retenues et leur
-rôle. Le choix d'un \emph{stack} TypeScript de bout en bout garantit
+rôle. Le choix d'une \emph{pile} TypeScript de bout en bout garantit
 l'homogénéité du typage entre le moteur de calcul, les routes d'API et
 les composants d'interface.
 
@@ -189,7 +189,7 @@ les composants d'interface.
 \toprule
 \bfseries Couche & \bfseries Technologie & \bfseries Rôle \\
 \midrule
-Framework frontal & Next.js~16 (App Router) & SPA full-stack React \\
+Cadriciel frontal & Next.js~16 (App Router) & Application monopage React complète \\
 \addlinespace
 Interface utilisateur & React~19 + Tailwind~4 & Composants et styles
 utilitaires \\
@@ -199,7 +199,7 @@ Bibliothèque UI & shadcn/ui (Radix) & Composants accessibles \\
 Formulaires & react-hook-form + Zod & Validation et état de
 formulaire \\
 \addlinespace
-État & Zustand + TanStack React Query & État global et cache serveur
+État & Zustand + TanStack React Query & État global et mémoire cache du serveur
 \\
 \addlinespace
 i18n & next-intl & Français / Anglais \\
@@ -208,7 +208,7 @@ Icônes & Lucide React & Iconographie \\
 \addlinespace
 Graphiques & Recharts & Visualisation des jauges \\
 \addlinespace
-Génération PDF & jsPDF & Rapport client-side \\
+Génération PDF & jsPDF & Rapport côté client \\
 \addlinespace
 Calcul \cttp{} & TypeScript (moteur dédié) & Règles métier
 unilatérales \\
@@ -222,7 +222,7 @@ IA -- local & ONNX Runtime / YOLOv8-cls & Inférence CPU embarquée
 IA -- local & TensorFlow / Keras (EfficientNetB0) & Modèle
 complémentaire \\
 \addlinespace
-Serveur d'inférence & Python Flask & Pont HTTP vers Keras/YOLO \\
+Serveur d'inférence & Python Flask & Passerelle HTTP vers Keras/YOLO \\
 \addlinespace
 Bureau & Tauri~v2 (Rust) & Coquille native multi-OS \\
 \bottomrule
@@ -232,11 +232,11 @@ Bureau & Tauri~v2 (Rust) & Coquille native multi-OS \\
 \subsection{Structure du projet}
 \label{sec:structure}
 
-L'arborescence suit la séparation classique \emph{framework} /
+L'arborescence suit la séparation classique \emph{cadriciel} /
 \emph{logique métier} / \emph{interface utilisateur}. Le moteur
 \cttp{} est strictement isolé du frontal et de toute dépendance à
 React, ce qui le rend théoriquement réutilisable depuis n'importe quel
-runtime Node.
+environnement d'exécution Node.
 
 \begin{lstlisting}[style=tsstyle,caption={Module central des règles \cttp{}
 (cttp-rules.ts).},label={lst:rules}]
@@ -291,7 +291,7 @@ un ingénieur ne peut pas saisir une classe de trafic inconnue.
 \label{sec:calcul-trafic}
 
 Le calcul du trafic applique la chaîne de formules du \cttp{} p.~19,
-selon le pipeline suivant~:
+selon la séquence suivante~:
 
 \begin{equation}
   T_{pl} = T_{JMA} \times k_{voie}
@@ -485,9 +485,9 @@ mais l'application mécanique d'un texte réglementaire daté.
 \label{sec:provider}
 
 L'analyse d'images est encapsulée derrière une interface unique
-\texttt{InferenceProvider} qui permet d'interchanger les backends d'IA
-sans toucher au code frontal. L'environnement \texttt{INFERENCE\_BACKEND}
-pilote ce choix~:
+\texttt{InferenceProvider} qui permet d'interchanger les moteurs
+d'inférence d'IA sans toucher au code frontal. L'environnement
+\texttt{INFERENCE\_BACKEND} pilote ce choix~:
 
 \begin{itemize}
   \item \texttt{gemini} -- Gemini 2.0 Flash de Google (cloud,
@@ -591,7 +591,7 @@ visuel global est automatiquement reporté dans l'onglet
 \subsection{Génération de rapport PDF}
 \label{sec:ui-pdf}
 
-Le bouton d'export produit un rapport PDF \emph{client-side} via
+Le bouton d'export produit un rapport PDF \emph{côté client} via
 jsPDF, contenant~:
 
 \begin{itemize}
@@ -652,7 +652,7 @@ T4 & Mauvais & High & Très Lourd, GB (5\,cm BB + 25\,cm GB) \\
 \end{tabular}
 \end{table}
 
-\subsection{Test end-to-end documenté}
+\subsection{Test de bout en bout documenté}
 \label{sec:e2e}
 
 Le scénario nominal, saisi dans le formulaire de l'application avec
@@ -684,17 +684,17 @@ répondent à des contextes d'usage distincts.
 \label{sec:vercel}
 
 Le déploiement de référence cible Vercel, qui exploite nativement le
-runtime Next.js~16. La variable d'environnement
+moteur d'exécution Next.js~16. La variable d'environnement
 \texttt{NEXT\_PUBLIC\_GEMINI\_CONFIGURED} permet d'activer ou non le
-backend Gemini en fonction de la clé API disponible.
+moteur d'inférence Gemini en fonction de la clé API disponible.
 
 \subsection{Application de bureau (Tauri~v2)}
 \label{sec:tauri}
 
-Pour un usage \emph{offline} prolongé, l'application est encapsulée
+Pour un usage \emph{hors ligne} prolongé, l'application est encapsulée
 dans une coquille Tauri~v2 (Rust), qui produit un binaire natif
 Windows (NSIS) ou Linux (debian). Le frontal est exporté en mode
-\emph{standalone} et embarqué dans la coquille~: l'utilisateur
+\emph{autonome} et embarqué dans la coquille~: l'utilisateur
 dispose d'une application bureautique traditionnelle, sans navigateur,
 qui démarre en moins d'une seconde et fonctionne sans connexion
 Internet.
@@ -702,11 +702,11 @@ Internet.
 \subsection{Progressive Web App (PWA)}
 \label{sec:pwa}
 
-L'application enregistre un \emph{service worker} (\texttt{SWRegistrar.tsx})
-qui met en cache les ressources statiques et les derniers résultats
-de calcul. L'utilisateur peut ainsi consulter l'outil en mode
-déconnecté et retrouver l'historique de ses dimensionnements sans
-réseau.
+L'application enregistre un \emph{processus de service}
+(\texttt{SWRegistrar.tsx}) qui met en cache les ressources statiques
+et les derniers résultats de calcul. L'utilisateur peut ainsi
+consulter l'outil en mode déconnecté et retrouver l'historique de
+ses dimensionnements sans réseau.
 
 \subsection{Indicateurs de performance}
 \label{sec:perfs}
@@ -717,7 +717,7 @@ Les indicateurs cibles, mesurés sur un poste de travail standard
 \begin{itemize}
   \item Chargement initial de la page $< 2$\,s (connexion 3G)~;
   \item Calcul de dimensionnement $< 100$\,ms (synchrone,
-        client-side)~;
+        côté client)~;
   \item Génération PDF $< 3$\,s (jsPDF côté client)~;
   \item Inférence Gemini $< 10$\,s par image~;
   \item Inférence ONNX $< 2$\,s par image (modèle CPU).
@@ -792,7 +792,7 @@ Ce chapitre a présenté la traduction opérationnelle du \cttp{} de
 1992 en une application logicielle de bout en bout, exploitable en
 bureau d'études comme sur le terrain. L'architecture retenue --
 séparation stricte entre moteur de calcul déterministe et interface
-utilisateur, abstraction du backend d'IA, distribution
+utilisateur, abstraction du moteur d'IA, distribution
 multiplateforme -- répond simultanément aux exigences de rigueur
 réglementaire, de traçabilité et d'ergonomie professionnelle.
 
@@ -802,7 +802,7 @@ catalogues matériaux sont codifiés en TypeScript, testés
 unitairement et accompagnés d'un objet de traçabilité
 automatiquement reporté dans le rapport PDF final. Le module d'analyse
 par IA, grâce à son interface \texttt{InferenceProvider}, supporte
-trois backends interchangeables (Gemini cloud, ONNX local, Python
+trois moteurs d'inférence interchangeables (Gemini cloud, ONNX local, Python
 Keras+YOLO) qui couvrent l'ensemble des contextes opérationnels,
 du bureau connecté au terrain isolé.
 
