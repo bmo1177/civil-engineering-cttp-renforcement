@@ -11,29 +11,30 @@
   <br>
   <a href="#installation"><img src="https://img.shields.io/badge/Stack-React_19_+_Tailwind_4_+_TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="Stack"></a>
   <a href="#deployment"><img src="https://img.shields.io/badge/Deploy-Vercel_|_Docker_|_Desktop-000000?style=flat-square&logo=vercel&logoColor=white" alt="Deploy"></a>
-  <a href="#ai-models"><img src="https://img.shields.io/badge/Accuracy-96–98%25-22C55E?style=flat-square" alt="Accuracy"></a>
+  <a href="#ai-models"><img src="https://img.shields.io/badge/Accuracy-96%E2%80%9398%25-22C55E?style=flat-square" alt="Accuracy"></a>
 </p>
 
 ---
 
-## 📋 Table of Contents
+## Table of Contents
 
-- [Overview](#-overview)
-- [Features](#-features)
-- [Architecture](#-architecture)
-- [AI Models](#-ai-models)
-- [Tech Stack](#-tech-stack)
-- [Installation](#-installation)
-- [Usage Guide](#-usage-guide)
-- [Testing](#-testing)
-- [Deployment](#-deployment)
-- [Project Structure](#-project-structure)
-- [API Reference](#-api-reference)
-- [Environment Variables](#-environment-variables)
+- [Overview](#overview)
+- [Screenshots](#screenshots)
+- [Features](#features)
+- [Architecture](#architecture)
+- [AI Models](#ai-models)
+- [Tech Stack](#tech-stack)
+- [Installation](#installation)
+- [Usage Guide](#usage-guide)
+- [Testing](#testing)
+- [Deployment](#deployment)
+- [Project Structure](#project-structure)
+- [API Reference](#api-reference)
+- [Environment Variables](#environment-variables)
 
 ---
 
-## 🏗️ Overview
+## Overview
 
 **CTTP Renforcement** is a production-grade engineering application for **pavement distress detection and CTTP-compliant reinforcement design**, built for the **RN120 PK70-80** rehabilitation project in **Tiaret, Algeria**.
 
@@ -41,34 +42,103 @@ The application solves two core problems in pavement engineering:
 
 | Problem | Solution |
 |---------|----------|
-| **Condition Assessment** | Upload road surface images → AI models detect & classify distresses automatically |
-| **Reinforcement Design** | Input traffic & deflection data → CTTP rule engine computes compliant reinforcement structures |
+| **Condition Assessment** | Upload road surface images -> AI models detect & classify distresses automatically |
+| **Reinforcement Design** | Input traffic & deflection data -> CTTP rule engine computes compliant reinforcement structures |
 
-Developed in collaboration with the **Direction des Études Techniques (DET)** and following the **CTTP Guide des Renforcements des Chaussées Souples (Déc. 1992)** — the official Algerian technical standard for flexible pavement reinforcement.
+Developed in collaboration with the **Direction des Etudes Techniques (DET)** and following the **CTTP Guide des Renforcements des Chaussees Souples (Dec. 1992)** -- the official Algerian technical standard for flexible pavement reinforcement.
 
 ---
 
-## ✨ Features
+## Screenshots
 
-### 🧠 AI-Powered Pavement Assessment
+### Design Tab -- Input Parameters & Computed Values
+
+<p align="center">
+  <img src="docs/images/design-tab.png" alt="Design Tab - Input Parameters" width="100%">
+</p>
+
+The design interface provides a split-panel layout: input parameters on the left (traffic class, surface type, visual status, UNI, deflection) with real-time computed values on the right (corrected deflection, traffic class, deflection zone).
+
+### Deflection Correction Calculator
+
+<p align="center">
+  <img src="docs/images/deflection-calculator.png" alt="Deflection Correction Calculator" width="100%">
+</p>
+
+The deflection correction module computes `d = dc x Cs x Cr x Ct` in real time, applying seasonal (Cs), regional (Cr), and temperature (Ct) coefficients. The corrected deflection determines the deflection zone used for CTTP lookups.
+
+### Reinforcement Design Results
+
+<p align="center">
+  <img src="docs/images/reinforcement-result.png" alt="Reinforcement Design Results" width="100%">
+</p>
+
+Computed reinforcement output includes the type (Lourd/BS, BC, GB, BB, ES), a visual cross-section diagram showing layer composition and thicknesses, material specifications, compaction requirements, and drainage warnings.
+
+### CTTP Traceability
+
+<p align="center">
+  <img src="docs/images/reinforcement-traceability.png" alt="CTTP Traceability" width="100%">
+</p>
+
+Every design decision links back to its CTTP regulatory source. The traceability panel shows the exact table, traffic class, visual status, and deflection zone used to arrive at the reinforcement decision.
+
+### AI Analysis -- Image Upload
+
+<p align="center">
+  <img src="docs/images/analysis-upload.png" alt="AI Analysis Upload" width="100%">
+</p>
+
+The AI Analysis tab provides a drag-and-drop upload area for pavement surface images. The right panel continues to show computed values from the Design tab for context.
+
+### Local Model Classification (Keras + YOLO)
+
+<p align="center">
+  <img src="docs/images/local-models.png" alt="Local Model Classification" width="100%">
+</p>
+
+The ensemble classification system runs both Keras EfficientNetB0 and YOLOv8-cls independently. Results are displayed per-model with confidence percentages, then combined into a consensus status that can auto-update the visual status field.
+
+### Gemini AI -- Distress Detection with Bounding Boxes
+
+<p align="center">
+  <img src="docs/images/gemini-detection.png" alt="Gemini Distress Detection" width="100%">
+</p>
+
+Gemini 2.0 Flash provides cloud-based distress detection with bounding box localization. Detected distresses (e.g., "Fissures transversales") are overlaid directly on the uploaded image with severity indicators.
+
+### Settings & License
+
+<p align="center">
+  <img src="docs/images/settings.png" alt="Settings Dialog" width="48%">
+  <img src="docs/images/license.png" alt="License Activation" width="48%">
+</p>
+
+The settings dialog allows users to configure their Gemini API key (stored locally in the browser, never sent to external servers) and switch between French and English. The license activation panel manages offline desktop licensing.
+
+---
+
+## Features
+
+### AI-Powered Pavement Assessment
 
 | Model | Type | Input | Classes | Accuracy | Framework |
 |-------|------|-------|---------|----------|-----------|
-| **EfficientNetB0** (Keras) | Image Classification | 224×224 RGB | 4 road conditions | ~96% | TensorFlow |
-| **YOLOv8-cls** (Ultralytics) | Image Classification | 224×224 RGB | 4 road conditions | ~98% | PyTorch |
-| **Gemini 2.0 Flash** (opt.) | Visual Language Model | Any resolution | Distress detection + bounding boxes | — | Google API |
+| **EfficientNetB0** (Keras) | Image Classification | 224x224 RGB | 4 road conditions | ~96% | TensorFlow |
+| **YOLOv8-cls** (Ultralytics) | Image Classification | 224x224 RGB | 4 road conditions | ~98% | PyTorch |
+| **Gemini 2.0 Flash** (opt.) | Visual Language Model | Any resolution | Distress detection + bounding boxes | -- | Google API |
 
 All three models work together or independently. The **Keras + YOLO** models run locally (air-gapped), while Gemini provides cloud-based distress detection with bounding box visualization.
 
-### 📐 CTTP-Compliant Design Engine
+### CTTP-Compliant Design Engine
 
-- **Traffic class** determination (T0–T5) per CTTP classification
-- **Deflection correction** with seasonal (C<sub>s</sub>), regional (C<sub>r</sub>), and temperature (C<sub>t</sub>) coefficients
-- **Reinforcement type selection** — BS, BC, GB, BB, ES
+- **Traffic class** determination (T0-T5) per CTTP classification
+- **Deflection correction** with seasonal (Cs), regional (Cr), and temperature (Ct) coefficients
+- **Reinforcement type selection** -- BS, BC, GB, BB, ES
 - **Layer structure** definition with thicknesses, materials, and compaction requirements
-- **Full traceability** — every design decision links to its regulatory source
+- **Full traceability** -- every design decision links to its regulatory source
 
-### 📊 Professional PDF Reports
+### Professional PDF Reports
 
 Generate comprehensive engineering reports containing:
 - Project metadata and input parameters
@@ -77,18 +147,18 @@ Generate comprehensive engineering reports containing:
 - Final reinforcement structure with materials
 - Regulatory traceability (CTTP table references)
 
-### 🌐 Cross-Platform
+### Cross-Platform
 
 | Platform | Support | Packaging |
 |----------|---------|-----------|
-| 🌐 Web | ✅ Full | Vercel, Docker, standalone |
-| 🖥️ Windows | ✅ Full | NSIS installer (`.exe`) |
-| 🐧 Linux | ✅ Full | Debian package (`.deb`) |
-| 📱 PWA | ✅ Full | Service worker + offline cache |
+| Web | Full | Vercel, Docker, standalone |
+| Windows | Full | NSIS installer (`.exe`) |
+| Linux | Full | Debian package (`.deb`) |
+| PWA | Full | Service worker + offline cache |
 
 ---
 
-## 🏛️ Architecture
+## Architecture
 
 <p align="center">
   <img src="docs/images/architecture.svg" alt="System Architecture" width="100%">
@@ -98,15 +168,15 @@ Generate comprehensive engineering reports containing:
 
 1. **User** uploads a pavement image or enters design parameters in the **React UI**
 2. The **Next.js API layer** routes requests to the appropriate backend:
-   - `/api/predict` → Gemini 2.0 Flash (cloud) or ONNX Runtime (local)
-   - `/api/predict-local` → Python inference server (Keras + YOLO)
-   - `/api/design` → CTTP rule engine (TypeScript)
+   - `/api/predict` -> Gemini 2.0 Flash (cloud) or ONNX Runtime (local)
+   - `/api/predict-local` -> Python inference server (Keras + YOLO)
+   - `/api/design` -> CTTP rule engine (TypeScript)
 3. **Inference results** flow back through the API to the frontend for visualization
 4. **PDF reports** are generated client-side via jsPDF
 
 ### Inference Provider Architecture
 
-All AI backends implement a common `InferenceProvider` interface, making them **swappable via a single environment variable** — zero code changes required:
+All AI backends implement a common `InferenceProvider` interface, making them **swappable via a single environment variable** -- zero code changes required:
 
 ```typescript
 interface InferenceProvider {
@@ -123,18 +193,14 @@ INFERENCE_BACKEND=python   # Local Keras + YOLO models
 
 ---
 
-## 🎯 AI Models
-
-<p align="center">
-  <img src="docs/images/screenshot-analysis.svg" alt="AI Analysis Screenshot" width="100%">
-</p>
+## AI Models
 
 The application integrates three distinct AI models for comprehensive pavement assessment:
 
 ### Keras EfficientNetB0
 - **Framework:** TensorFlow / Keras
 - **Architecture:** EfficientNetB0 (transfer learning)
-- **Input:** 224×224×3 RGB images
+- **Input:** 224x224x3 RGB images
 - **Output:** 4-class softmax (good, satisfactory, poor, very_poor)
 - **Size:** 46 MB (trained)
 - **Validation Accuracy:** ~96%
@@ -142,7 +208,7 @@ The application integrates three distinct AI models for comprehensive pavement a
 ### YOLOv8-cls
 - **Framework:** PyTorch / Ultralytics
 - **Architecture:** YOLOv8 classification head
-- **Input:** 224×224×3 RGB images
+- **Input:** 224x224x3 RGB images
 - **Output:** 4-class softmax (good, satisfactory, poor, very_poor)
 - **Size:** 10.3 MB (ultra-lightweight)
 - **Validation Accuracy:** ~98%
@@ -151,18 +217,14 @@ The application integrates three distinct AI models for comprehensive pavement a
 ### Gemini 2.0 Flash (Optional)
 - **Framework:** Google Vertex AI
 - **Capability:** Visual-language understanding with distress detection and bounding box localization
-- **Distress Types:** Fissures longitudinales, Nids de poule, Arrachements, Orniérage, and 6 more
+- **Distress Types:** Fissures longitudinales, Nids de poule, Arrachements, Ornierage, and 6 more
 - **Requires:** Internet connection + Gemini API key
 
-> The Keras and YOLO models provide an **ensemble prediction** — both classify the same image independently, and their predictions are combined into a single consensus result with confidence weighting.
+> The Keras and YOLO models provide an **ensemble prediction** -- both classify the same image independently, and their predictions are combined into a single consensus result with confidence weighting.
 
 ---
 
-## 💻 Tech Stack
-
-<p align="center">
-  <img src="docs/images/screenshot-design.svg" alt="Design Screenshot" width="100%">
-</p>
+## Tech Stack
 
 | Layer | Technology | Purpose |
 |-------|-----------|---------|
@@ -182,7 +244,7 @@ The application integrates three distinct AI models for comprehensive pavement a
 
 ---
 
-## 🚀 Installation
+## Installation
 
 ### Prerequisites
 
@@ -202,7 +264,7 @@ npm install
 
 # Copy and configure environment
 cp .env.example .env
-# Edit .env — GEMINI_API_KEY is optional (demo mode works without it)
+# Edit .env -- GEMINI_API_KEY is optional (demo mode works without it)
 
 # Start development server
 npm run dev
@@ -240,28 +302,28 @@ cargo tauri build
 
 ---
 
-## 📖 Usage Guide
+## Usage Guide
 
-### Step 1 — Enter Design Parameters
+### Step 1 -- Enter Design Parameters
 
 Navigate to the **Design** tab and input the following parameters:
 
 | Parameter | Description | Example |
 |-----------|-------------|---------|
-| **Traffic Class** | Cumulative heavy truck traffic (T0–T5) | T3 (1.5×10⁶–4.0×10⁶) |
-| **Surface Type** | Existing pavement surface | BB (Béton Bitumineux) |
+| **Traffic Class** | Cumulative heavy truck traffic (T0-T5) | T3 (1.5x10^6 - 4.0x10^6) |
+| **Surface Type** | Existing pavement surface | BB (Beton Bitumineux) |
 | **Visual Status** | Visual condition assessment | Moyen |
-| **UNI** | Uniformity Index (0–5000) | 3200 |
+| **UNI** | Uniformity Index (0-5000) | 3200 |
 | **Deflection (d_c)** | Measured deflection in 1/100mm | 70 |
 | **Season** | Measurement season | Dry |
 | **Region** | Project region | North |
-| **Temperature** | Pavement temperature at testing | 20°C |
+| **Temperature** | Pavement temperature at testing | 20C |
 
 The corrected deflection and deflection zone are computed in **real time**.
 
-### Step 2 — AI Analysis (Optional)
+### Step 2 -- AI Analysis (Optional)
 
-Switch to the **Analysis** tab:
+Switch to the **AI Analysis** tab:
 
 1. **Upload** a pavement surface photo (drag & drop or click to browse)
 2. Click **"Analyze with AI"** for Gemini-powered distress detection (cloud)
@@ -269,44 +331,40 @@ Switch to the **Analysis** tab:
 4. View detection bounding boxes overlaid on the image
 5. The **visual status** is automatically updated based on AI results
 
-### Step 3 — Compute Design
+### Step 3 -- Compute Design
 
-Click **"Compute Reinforcement"** to generate the CTTP-compliant design:
+Click **"Calculer le Renforcement"** to generate the CTTP-compliant design:
 
-- **Reinforcement type** — BS, BC, GB, BB, or ES
-- **Structure** — Layer composition with thicknesses
-- **Materials** — Binder and wearing course specifications
-- **Compaction** — Required density (% MDA)
-- **Drainage** — Drainage requirements
-- **Traceability** — CTTP guide section references
+- **Reinforcement type** -- BS, BC, GB, BB, or ES
+- **Structure** -- Layer composition with thicknesses
+- **Materials** -- Binder and wearing course specifications
+- **Compaction** -- Required density (% MDA)
+- **Drainage** -- Drainage requirements
+- **Traceability** -- CTTP guide section references
 
-### Step 4 — Export Report
+### Step 4 -- Export Report
 
-<p align="center">
-  <img src="docs/images/screenshot-pdf.svg" alt="PDF Report Screenshot" width="70%">
-</p>
-
-Click the **export button** in the header to generate a professional PDF report containing all design parameters, calculations, and results with full regulatory traceability.
+Click the **Export** button in the header to generate a professional PDF report containing all design parameters, calculations, and results with full regulatory traceability.
 
 ---
 
-## 🧪 Testing
+## Testing
 
 ### End-to-End Test Walkthrough
 
 #### 1. Design Calculator Test
 ```
-Input:  T3 + BB + Moyen + UNI 3200 + d_c 70 + Dry + North + 20°C
-Output: Corrected deflection ≈ 91.44 1/100mm → Zone T4
-        Reinforcement: BS (Béton Bitumineux épais)
+Input:  T3 + BB + Moyen + UNI 3200 + d_c 70 + Dry + North + 20C
+Output: Corrected deflection ~91.44 1/100mm -> Zone T4
+        Reinforcement: BS (Beton Bitumineux epais)
         Structure: 6 cm BB binder + 4 cm BB wearing course
 ```
 
 #### 2. AI Distress Detection Test
-1. Upload a pavement photo to the **Analysis** tab
+1. Upload a pavement photo to the **AI Analysis** tab
 2. Click **"Analyze with AI"**
-3. ✅ Detection bounding boxes with severity labels and confidence scores
-4. ✅ Detection list with individual confidence percentages
+3. Detection bounding boxes with severity labels and confidence scores
+4. Detection list with individual confidence percentages
 
 #### 3. Local Model Classification Test
 ```bash
@@ -315,31 +373,31 @@ bash scripts/start-inference-server.sh
 
 # Verify it's running
 curl http://localhost:5980/health
-# → {"status":"ok","keras_loaded":true,"yolo_loaded":true}
+# -> {"status":"ok","keras_loaded":true,"yolo_loaded":true}
 ```
 1. Upload a pavement photo
 2. Click **"Classify with Local Models"**
-3. ✅ Keras result with status + confidence
-4. ✅ YOLO result with status + confidence
-5. ✅ Combined ensemble status
+3. Keras result with status + confidence
+4. YOLO result with status + confidence
+5. Combined ensemble status
 
 #### 4. PDF Export Test
-1. Compute a design (steps 1–3 above)
-2. Click the **export button**
-3. ✅ Professional PDF downloads with all sections populated
+1. Compute a design (steps 1-3 above)
+2. Click the **Export** button
+3. Professional PDF downloads with all sections populated
 
 #### 5. Offline Mode Test
 1. Disconnect from the internet
-2. ✅ Offline badge appears in the header
-3. ✅ Previously computed results load from cache
+2. Offline badge appears in the header
+3. Previously computed results load from cache
 
 #### 6. Desktop Application Test
 ```bash
 cd src-tauri && cargo tauri build
 ./target/release/cttp-renforcement
 ```
-- ✅ Application launches as native window
-- ✅ All functionality works without a browser
+- Application launches as native window
+- All functionality works without a browser
 
 ### Testing the Python Server Directly
 
@@ -370,65 +428,71 @@ curl -X POST -F "file=@test_image.jpg" http://localhost:5980/predict
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
-├── 📦 models/                          # Trained AI models & inference server
-│   ├── 🐍 inference_server.py          # Unified Keras + YOLO API (Flask)
-│   ├── 📓 road_condition_model_finetuned.keras  # Keras EfficientNetB0
-│   ├── 📂 Yolo-Road-Condition-main/
-│   │   └── yolo_road_model.pt          # YOLOv8-cls (10.3 MB)
-│   └── requirements.txt                # Python dependencies
-│
-├── 🌐 src/                             # Application source code
-│   ├── 📱 app/                         # Next.js App Router
-│   │   ├── api/
-│   │   │   ├── predict/route.ts        # Gemini/ONNX inference
-│   │   │   ├── predict-local/route.ts  # Local model proxy
-│   │   │   ├── design/route.ts         # CTTP design engine
-│   │   │   └── export/route.ts         # PDF generation
-│   │   └── page.tsx                    # Main SPA page
-│   ├── 🧩 components/cttp/             # Application UI
-│   │   ├── CalculatorApp.tsx           # Main container
-│   │   ├── DetectionCanvas.tsx         # SVG detection overlay
-│   │   ├── ImageUploader.tsx           # Drag & drop upload
-│   │   ├── MetricsPanel.tsx            # Engineering gauges
-│   │   └── ReinforcementPanel.tsx      # Design results
-│   ├── ⚙️ lib/                         # Business logic
-│   │   ├── engine.ts                   # CTTP rule engine
-│   │   ├── cttp-rules.ts               # Design matrices (SOT)
-│   │   ├── inference-provider.ts       # Provider abstraction
-│   │   ├── python-inference.ts         # Python backend client
-│   │   ├── client-predict.ts           # Browser Gemini client
-│   │   ├── pdf-generator.ts            # PDF report builder
-│   │   └── translations.tsx            # i18n (FR/EN)
-│   └── hooks/                          # Custom React hooks
-│
-├── 🖥️ src-tauri/                       # Tauri desktop shell
-│   ├── src/main.rs                     # Entry point + sidecar
-│   └── tauri.conf.json                 # Desktop configuration
-│
-├── 📜 scripts/                         # Build & launch scripts
-│   ├── build.sh                        # Production build
-│   ├── start-inference-server.sh       # Python server launcher
-│   └── build-inference-server.sh       # PyInstaller bundler
-│
-├── 📚 docs/
-│   ├── images/                         # README visuals
-│   │   ├── hero-banner.svg
-│   │   ├── architecture.svg
-│   │   ├── workflow.svg
-│   │   ├── screenshot-design.svg
-│   │   ├── screenshot-analysis.svg
-│   │   └── screenshot-pdf.svg
-│   └── THESIS_VALIDATION.md            # Thesis defense checklist
-│
-└── 📄 README.md                        # This document
++-- models/                              # Trained AI models & inference server
+|   +-- inference_server.py              # Unified Keras + YOLO API (Flask)
+|   +-- road_condition_model_finetuned.keras  # Keras EfficientNetB0
+|   +-- Yolo-Road-Condition-main/
+|   |   +-- yolo_road_model.pt          # YOLOv8-cls (10.3 MB)
+|   +-- requirements.txt                # Python dependencies
+|
++-- src/                                 # Application source code
+|   +-- app/                             # Next.js App Router
+|   |   +-- api/
+|   |   |   +-- predict/route.ts        # Gemini/ONNX inference
+|   |   |   +-- predict-local/route.ts  # Local model proxy
+|   |   |   +-- design/route.ts         # CTTP design engine
+|   |   |   +-- export/route.ts         # PDF generation
+|   |   +-- page.tsx                    # Main SPA page
+|   +-- components/cttp/                # Application UI
+|   |   +-- CalculatorApp.tsx           # Main container
+|   |   +-- DetectionCanvas.tsx         # SVG detection overlay
+|   |   +-- ImageUploader.tsx           # Drag & drop upload
+|   |   +-- MetricsPanel.tsx            # Engineering gauges
+|   |   +-- ReinforcementPanel.tsx      # Design results
+|   +-- lib/                            # Business logic
+|   |   +-- engine.ts                   # CTTP rule engine
+|   |   +-- cttp-rules.ts               # Design matrices (SOT)
+|   |   +-- inference-provider.ts       # Provider abstraction
+|   |   +-- python-inference.ts         # Python backend client
+|   |   +-- client-predict.ts           # Browser Gemini client
+|   |   +-- pdf-generator.ts            # PDF report builder
+|   |   +-- translations.tsx            # i18n (FR/EN)
+|   +-- hooks/                          # Custom React hooks
+|
++-- src-tauri/                           # Tauri desktop shell
+|   +-- src/main.rs                     # Entry point + sidecar
+|   +-- tauri.conf.json                 # Desktop configuration
+|
++-- scripts/                             # Build & launch scripts
+|   +-- build.sh                        # Production build
+|   +-- start-inference-server.sh       # Python server launcher
+|   +-- build-inference-server.sh       # PyInstaller bundler
+|
++-- docs/
+|   +-- images/                         # README visuals
+|   |   +-- hero-banner.svg
+|   |   +-- architecture.svg
+|   |   +-- workflow.svg
+|   |   +-- design-tab.png
+|   |   +-- deflection-calculator.png
+|   |   +-- reinforcement-result.png
+|   |   +-- reinforcement-traceability.png
+|   |   +-- analysis-upload.png
+|   |   +-- local-models.png
+|   |   +-- gemini-detection.png
+|   |   +-- settings.png
+|   |   +-- license.png
+|   +-- THESIS_VALIDATION.md           # Thesis defense checklist
+|
++-- README.md                            # This document
 ```
 
 ---
 
-## 🌐 API Reference
+## API Reference
 
 | Route | Method | Input | Description | Response |
 |-------|--------|-------|-------------|----------|
@@ -436,26 +500,26 @@ curl -X POST -F "file=@test_image.jpg" http://localhost:5980/predict
 | `/api/predict-local` | POST | multipart `image` (file) | Local Keras + YOLO classification | `{ keras_result, yolo_result, combined_status }` |
 | `/api/design` | POST | JSON `DesignInput` | CTTP reinforcement design | `{ reinforcement_type, structure, traceability }` |
 | `/api/export` | POST | JSON `ExportInput` | PDF report generation | PDF binary (application/pdf) |
-| `/api` | GET | — | Health check | `{ status: "ok" }` |
+| `/api` | GET | -- | Health check | `{ status: "ok" }` |
 
 ---
 
-## ⚙️ Environment Variables
+## Environment Variables
 
 | Variable | Required | Default | Description |
 |----------|----------|---------|-------------|
-| `GEMINI_API_KEY` | No* | — | Google Gemini API key for VLM distress detection |
+| `GEMINI_API_KEY` | No* | -- | Google Gemini API key for VLM distress detection |
 | `NEXT_PUBLIC_GEMINI_CONFIGURED` | No | `false` | Set to `true` when Gemini key is configured in env |
 | `INFERENCE_BACKEND` | No | `gemini` | AI backend: `gemini`, `onnx`, or `python` |
 | `INFERENCE_SERVER_URL` | No | `http://localhost:5980` | URL of the Python inference server |
-| `ONNX_MODEL_PATH` | No | — | Path to ONNX model (for `onnx` backend) |
+| `ONNX_MODEL_PATH` | No | -- | Path to ONNX model (for `onnx` backend) |
 | `NEXT_OUTPUT` | No | `standalone` | Override Next.js output mode |
 
 *\*Without a Gemini key, the app runs in **demo mode** with simulated detections for UI testing.*
 
 ---
 
-## 🚢 Deployment
+## Deployment
 
 ### Vercel (Recommended for Web)
 
@@ -487,11 +551,11 @@ docker run -p 3000:3000 cttp-renforcement
 
 ---
 
-## 📄 License
+## License
 
-**CTTP Renforcement** — Direction des Études Techniques, Tiaret, Algeria.
+**CTTP Renforcement** -- Direction des Etudes Techniques, Tiaret, Algeria.
 
-Built for the **RN120 PK70-80** pavement rehabilitation project. This application implements the **CTTP Guide des Renforcements des Chaussées Souples** (December 1992), the official Algerian technical standard for flexible pavement reinforcement design.
+Built for the **RN120 PK70-80** pavement rehabilitation project. This application implements the **CTTP Guide des Renforcements des Chaussees Souples** (December 1992), the official Algerian technical standard for flexible pavement reinforcement design.
 
 <p align="center">
   <img src="docs/images/workflow.svg" alt="Application Workflow" width="100%">
@@ -500,7 +564,7 @@ Built for the **RN120 PK70-80** pavement rehabilitation project. This applicatio
 ---
 
 <p align="center">
-  <sub>Built with ❤️ for the Direction des Études Techniques — Tiaret, Algeria</sub>
+  <sub>Built with care for the Direction des Etudes Techniques -- Tiaret, Algeria</sub>
   <br>
-  <sub>CTTP — Contrôle Technique des Travaux Publics — Algiers</sub>
+  <sub>CTTP -- Controle Technique des Travaux Publics -- Algiers</sub>
 </p>
