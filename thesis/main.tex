@@ -1,0 +1,172 @@
+% =============================================================================
+%  CTTP Renforcement --- Chapitre Application
+%  Mémoire de fin d'études --- Génie Civil
+%  Compilé avec Tectonic
+% =============================================================================
+
+\documentclass[12pt,a4paper,oneside,openany]{report}
+
+% ─── Encodage & Langue ───────────────────────────────────────────────────────
+%  pdfTeX gère désormais UTF-8 nativement depuis la mise à jour 2018,
+%  la déclaration explicite de inputenc n'est plus nécessaire.
+\usepackage[T1]{fontenc}
+\usepackage{babel}
+\babelprovide[import,main]{french}
+\usepackage{lmodern}
+
+% ─── Mise en page ────────────────────────────────────────────────────────────
+\usepackage[a4paper,margin=2.5cm,headheight=14pt]{geometry}
+\usepackage{fancyhdr}
+\usepackage{setspace}
+\onehalfspacing
+
+% ─── Mathématiques ───────────────────────────────────────────────────────────
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{siunitx}
+
+% ─── Tableaux & Figures ──────────────────────────────────────────────────────
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+\captionsetup{font=small,labelfont=bf,labelsep=period}
+
+% ─── Code source ─────────────────────────────────────────────────────────────
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{codebg}{RGB}{248,248,248}
+\definecolor{codekeyword}{RGB}{0,90,156}
+\definecolor{codecomment}{RGB}{106,153,78}
+\definecolor{codestring}{RGB}{200,80,40}
+\definecolor{codenumber}{RGB}{180,80,160}
+
+\lstdefinestyle{tsstyle}{
+  backgroundcolor=\color{codebg},
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{codekeyword}\bfseries,
+  commentstyle=\color{codecomment}\itshape,
+  stringstyle=\color{codestring},
+  numberstyle=\tiny\color{codenumber},
+  numbers=left,
+  numbersep=8pt,
+  frame=single,
+  rulecolor=\color{black!20},
+  breaklines=true,
+  breakatwhitespace=true,
+  showstringspaces=false,
+  captionpos=b,
+  tabsize=2,
+  language=Java,
+  extendedchars=true,
+  inputencoding=utf8,
+  literate=
+    {é}{{\'e}}1  {è}{{\`e}}1  {ê}{{\^e}}1
+    {à}{{\`a}}1  {â}{{\^a}}1  {ä}{{\"a}}1
+    {î}{{\^i}}1  {ï}{{\"i}}1
+    {ô}{{\^o}}1  {ö}{{\"o}}1
+    {ù}{{\`u}}1  {û}{{\^u}}1  {ü}{{\"u}}1
+    {ç}{{\c{c}}}1
+    {É}{{\'E}}1  {È}{{\`E}}1  {Ê}{{\^E}}1
+    {À}{{\`A}}1  {Â}{{\^A}}1
+    {Ô}{{\^O}}1  {Û}{{\^U}}1
+    {Ç}{{\c{C}}}1
+    {«}{{\guillemotleft}}1  {»}{{\guillemotright}}1
+    {---}{{\textemdash}}1  {--}{{\textendash}}1,
+  morekeywords={interface,type,export,const,let,function,return,if,else,for,of,in,
+               implements,async,await,new,class,readonly,throw,record,keyof,as,
+               Record,Number,Boolean,String,undefined,null,true,false}
+}
+
+% ─── Liens & Métadonnées ─────────────────────────────────────────────────────
+\usepackage[colorlinks=true,linkcolor=blue!60!black,citecolor=blue!60!black,
+            urlcolor=blue!60!black,bookmarks=true,bookmarksnumbered=true,
+            pdftitle={CTTP Renforcement --- Chapitre Application},
+            pdfauthor={Mémoire de fin d'études --- Génie Civil},
+            pdfsubject={Application logicielle pour le dimensionnement du
+                        renforcement des chaussées souples selon le CTTP}]{hyperref}
+
+% ─── Bibliographie (environnement natif) ─────────────────────────────────────
+%  On utilise l'environnement thebibliography pour éviter les dépendances
+%  externes (biber/biblatex). Le format est de type numérique compact.
+
+% ─── En-têtes & pieds de page ────────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textit{CTTP Renforcement --- Chapitre : Application}}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\setlength{\headsep}{15pt}
+
+% ─── Commandes utilitaires ───────────────────────────────────────────────────
+\newcommand{\cttp}{CTTP}
+\newcommand{\figref}[1]{Figure~\ref{#1}}
+\newcommand{\tabref}[1]{Tableau~\ref{#1}}
+\newcommand{\secref}[1]{Section~\ref{#1}}
+\newcommand{\equref}[1]{Équation~(\ref{#1})}
+
+% ─── Métadonnées ─────────────────────────────────────────────────────────────
+\title{
+  \vspace*{1cm}
+  \begin{center}
+    {\large Université --- Faculté de Technologie}\\[0.2cm]
+    {\large Département de Génie Civil}\\[1.2cm]
+
+    {\LARGE\bfseries Application logicielle pour le dimensionnement\\
+    du renforcement des chaussées souples}\\[0.3cm]
+    {\Large\itshape selon le \cttp{} \textit{Guide des Renforcements}
+    (Déc. 1992)}\\[1.2cm]
+
+    \rule{0.6\textwidth}{0.4pt}\\[0.4cm]
+
+    {\Large\bfseries Chapitre : Application}\\[0.4cm]
+    {\large Projet \cttp{} Renforcement}\\[0.2cm]
+    {\large RN120 PK70--80 --- Wilaya de Tiaret, Algérie}\\[0.4cm]
+
+    \rule{0.6\textwidth}{0.4pt}
+  \end{center}
+  \vspace{1.2cm}
+}
+
+\author{
+  \begin{tabular}{r l}
+    \textbf{Rédigé par :} & Étudiant(e) en Master 2 --- Génie Civil \\
+    \textbf{Encadré par :} & Direction des Études Techniques (DET), Tiaret \\
+    \textbf{Organisme :}   & \cttp{} --- Contrôle Technique des Travaux Publics \\
+  \end{tabular}
+}
+
+\date{Année universitaire 2025--2026}
+
+% =============================================================================
+\begin{document}
+
+% ─── Page de titre ───────────────────────────────────────────────────────────
+\maketitle
+\thispagestyle{empty}
+
+% ─── Table des matières ──────────────────────────────────────────────────────
+\tableofcontents
+\newpage
+
+% ─── Liste des figures ───────────────────────────────────────────────────────
+\listoffigures
+\thispagestyle{fancy}
+\newpage
+
+% ─── Liste des tableaux ──────────────────────────────────────────────────────
+\listoftables
+\thispagestyle{fancy}
+\newpage
+
+% ─── Inclusion du chapitre ───────────────────────────────────────────────────
+\input{chapters/chap-application}
+
+% ─── Bibliographie ───────────────────────────────────────────────────────────
+\input{chapters/bibliographie}
+
+\end{document}
