@@ -146,7 +146,6 @@ fn main() {
         .plugin(tauri_plugin_shell::init())
         .invoke_handler(tauri::generate_handler![proxy_predict, check_server_health])
         .setup(|app| {
-            #[cfg(not(debug_assertions))]
             {
                 if let Ok(sidecar_command) = app.shell().sidecar("inference-server") {
                     let sidecar_command = if let Ok(res_dir) = app.path().resource_dir() {
