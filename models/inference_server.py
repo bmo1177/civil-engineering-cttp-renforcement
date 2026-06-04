@@ -69,6 +69,8 @@ if mode == 'keras':
                 'probabilities': {CLASS_NAMES[i]: round(float(score[i]) * 100, 2) for i in range(len(CLASS_NAMES))},
             })
         except Exception as e:
+            import traceback
+            traceback.print_exc()
             return jsonify({'success': False, 'error': str(e)}), 500
 
     print(f"[keras-server] Starting Keras server on port {sub_port}...", flush=True)
@@ -140,6 +142,8 @@ elif mode == 'yolo':
             else:
                 return jsonify({'success': False, 'error': 'No classification output'}), 500
         except Exception as e:
+            import traceback
+            traceback.print_exc()
             return jsonify({'success': False, 'error': str(e)}), 500
 
     print(f"[yolo-server] Starting YOLO server on port {sub_port}...", flush=True)
@@ -296,7 +300,12 @@ else:
                     else:
                         result['keras'] = {'error': res_data.get('error', 'Unknown error')}
                 else:
-                    result['keras'] = {'error': f'Sub-server returned status {r.status_code}'}
+                    try:
+                        res_data = r.json()
+                        err_msg = res_data.get('error', f'Sub-server returned status {r.status_code}')
+                        result['keras'] = {'error': err_msg}
+                    except:
+                        result['keras'] = {'error': f'Sub-server returned status {r.status_code}'}
             except Exception as e:
                 result['keras'] = {'error': str(e)}
 
@@ -315,7 +324,12 @@ else:
                     else:
                         result['yolo'] = {'error': res_data.get('error', 'Unknown error')}
                 else:
-                    result['yolo'] = {'error': f'Sub-server returned status {r.status_code}'}
+                    try:
+                        res_data = r.json()
+                        err_msg = res_data.get('error', f'Sub-server returned status {r.status_code}')
+                        result['yolo'] = {'error': err_msg}
+                    except:
+                        result['yolo'] = {'error': f'Sub-server returned status {r.status_code}'}
             except Exception as e:
                 result['yolo'] = {'error': str(e)}
 
