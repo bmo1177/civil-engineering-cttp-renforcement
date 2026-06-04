@@ -82,9 +82,10 @@ CLASS_NAMES = ['good', 'poor', 'satisfactory', 'very_poor']
 
 keras_model = None
 yolo_model = None
+yolo_load_error = None  # Capture error for debugging via /health
 
 def load_models():
-    global keras_model, yolo_model, tf
+    global keras_model, yolo_model, yolo_load_error, tf
 
     keras_path = MODELS_DIR / "road_condition_model_finetuned.keras"
     yolo_dir = MODELS_DIR / "Yolo-Road-Condition-main"
@@ -98,8 +99,10 @@ def load_models():
             yolo_model = YOLO(str(yolo_path))
             logger.info(f"YOLO model loaded. Task: {yolo_model.task}, Classes: {yolo_model.names}")
         except Exception as e:
+            yolo_load_error = str(e)
             logger.error(f"Failed to load YOLO model: {e}")
     else:
+        yolo_load_error = f"Model file not found at: {yolo_path}"
         logger.warning(f"YOLO model not found at {yolo_path}")
 
     # ── Keras Model ──
@@ -131,6 +134,7 @@ def health():
         'status': 'ok',
         'keras_loaded': keras_model is not None,
         'yolo_loaded': yolo_model is not None,
+        'yolo_error': yolo_load_error,  # None if loaded OK, error string if failed
         'class_names': CLASS_NAMES,
     })
 
@@ -252,9 +256,11 @@ def ensemble_predict(result):
         'confidence': round(votes[winner] / len([k for k in ['keras', 'yolo'] if result.get(k, {}).get('status')]), 2),
     }
 
+# Load models at import time so gunicorn workers have them ready
+logger.info("Loading models at startup...")
+load_models()
+
 if __name__ == '__main__':
-    logger.info("Loading models...")
-    load_models()
-    port = int(os.environ.get('INFERENCE_PORT', 5980))
+    port = int(os.environ.get('PORT', os.environ.get('INFERENCE_PORT', 5980)))
     logger.info(f"Starting inference server on port {port}")
     app.run(host='0.0.0.0', port=port, debug=False)

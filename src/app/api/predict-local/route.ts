@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 
+// Allow up to 60s for ML inference round-trip to Railway backend
+export const maxDuration = 60
+
 const INFERENCE_SERVER_URL = process.env.INFERENCE_SERVER_URL || 'http://127.0.0.1:5980'
 const CLASS_NAMES = ['good', 'poor', 'satisfactory', 'very_poor']
+
 
 function normalizeStatus(status: string): string {
   const normalized = status.trim().toLowerCase().replace(/\s+/g, '_')
