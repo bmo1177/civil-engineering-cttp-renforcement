@@ -328,23 +328,24 @@ export default function CalculatorApp() {
         //
         // Poll the inference server via Rust's check_server_health command
         // (never touches 127.0.0.1 from the WebView).
-        const MAX_ATTEMPTS = 60  // 60 × 2 s = 2 min ceiling
+        const MAX_ATTEMPTS = 300  // 300 × 2 s = 10 min ceiling
         let attempt = 0
         let serverReady = false
 
         while (!serverReady && attempt < MAX_ATTEMPTS) {
           attempt++
           const elapsed = attempt * 2
-          setClassifyStatus(
-            attempt <= 3  ? 'Starting inference engine…' :
-            attempt <= 15 ? `Loading YOLO model… (${elapsed}s)` :
-                            `Loading Keras model… (~40 s on CPU, ${elapsed}s elapsed)`
-          )
+          let displayMsg = attempt <= 3  ? 'Starting inference engine…' :
+                           attempt <= 15 ? `Loading YOLO model… (${elapsed}s)` :
+                                           `Loading Keras model… (~40 s on CPU, ${elapsed}s elapsed)`
 
           try {
-            const health = await tauriInvoke<{ ready: boolean; keras: boolean; yolo: boolean }>(
+            const health = await tauriInvoke<{ ready: boolean; keras: boolean; yolo: boolean; status?: string }>(
               'check_server_health'
             )
+            if (health.status) {
+              displayMsg = `${health.status} (${elapsed}s elapsed)`
+            }
             if (health.keras || health.yolo) {
               serverReady = true
               break
@@ -353,13 +354,14 @@ export default function CalculatorApp() {
             // Server not up yet — keep polling
           }
 
+          setClassifyStatus(displayMsg)
           await new Promise((r) => setTimeout(r, 2000))
         }
 
         if (!serverReady) {
           throw new Error(
-            'AI models did not load within 2 minutes. ' +
-            'Ensure python3, tensorflow, ultralytics and flask are installed.'
+            'AI models did not load within 10 minutes. ' +
+            'Please ensure python3, tensorflow, ultralytics, pillow, numpy, and flask are installed or can be installed.'
           )
         }
 

@@ -10,8 +10,55 @@ import json
 import time
 import io
 import logging
+import subprocess
 from pathlib import Path
 
+# ─── Dependency Auto-Installation Routine ────────────────────────────────────
+REQUIRED_PACKAGES = {
+    'flask': 'flask>=3.0',
+    'numpy': 'numpy>=1.24',
+    'tensorflow': 'tensorflow>=2.15',
+    'ultralytics': 'ultralytics>=8.0',
+    'PIL': 'Pillow>=10.0'
+}
+
+missing_packages = []
+for import_name, install_name in REQUIRED_PACKAGES.items():
+    try:
+        __import__(import_name)
+    except ImportError:
+        missing_packages.append(install_name)
+
+if missing_packages:
+    print(f"[inference-server] Missing packages: {missing_packages}. Installing them now...", flush=True)
+    try:
+        subprocess.check_call([sys.executable, "-m", "pip", "--version"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    except Exception:
+        print("[inference-server] Error: pip is not available. Please install python3-pip or the missing dependencies manually.", flush=True)
+        sys.exit(1)
+
+    commands = [
+        [sys.executable, "-m", "pip", "install", "-q"] + missing_packages,
+        [sys.executable, "-m", "pip", "install", "-q", "--user"] + missing_packages,
+        [sys.executable, "-m", "pip", "install", "-q", "--user", "--break-system-packages"] + missing_packages
+    ]
+    
+    success = False
+    for cmd in commands:
+        try:
+            print(f"[inference-server] Running: {' '.join(cmd)}", flush=True)
+            subprocess.check_call(cmd)
+            success = True
+            print("[inference-server] Packages installed successfully!", flush=True)
+            break
+        except Exception as e:
+            print(f"[inference-server] Installation method failed: {e}", flush=True)
+            
+    if not success:
+        print("[inference-server] Critical: Failed to install packages via all methods.", flush=True)
+        sys.exit(1)
+
+# Now safe to import third-party packages
 import numpy as np
 from flask import Flask, request, jsonify
 

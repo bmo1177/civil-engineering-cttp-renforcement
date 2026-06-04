@@ -11,8 +11,8 @@ use std::sync::Mutex;
 /// All HTTP communication with the inference server is done from Rust (via reqwest
 /// bundled in tauri-plugin-http) to bypass WebKitGTK's cross-origin restrictions
 /// when the app is served from the tauri:// custom protocol.
-
 struct SidecarChild(Mutex<Option<tauri_plugin_shell::process::CommandChild>>);
+struct SidecarStatus(Mutex<String>);
 
 impl Drop for SidecarChild {
     fn drop(&mut self) {
@@ -32,7 +32,7 @@ async fn wait_for_inference_server(app: AppHandle) {
         .build()
         .expect("failed to build reqwest client");
 
-    let deadline = std::time::Instant::now() + std::time::Duration::from_secs(120);
+    let deadline = std::time::Instant::now() + std::time::Duration::from_secs(600);
     let mut attempt: u32 = 0;
 
     loop {
@@ -109,34 +109,37 @@ async fn proxy_predict(image_bytes: Vec<u8>, filename: String) -> Result<String,
 }
 
 /// Health-check the inference server from Rust.
-/// Returns { ready, keras, yolo } — the frontend polls this in a loop
+/// Returns { ready, keras, yolo, status } — the frontend polls this in a loop
 /// instead of fetching 127.0.0.1 from the WebView (which WebKitGTK blocks).
 #[tauri::command]
-async fn check_server_health() -> Result<serde_json::Value, String> {
+async fn check_server_health(state: tauri::State<'_, SidecarStatus>) -> Result<serde_json::Value, String> {
     let client = reqwest::Client::builder()
-        .timeout(std::time::Duration::from_secs(4))
+        .timeout(std::time::Duration::from_secs(2))
         .build()
         .map_err(|e| e.to_string())?;
 
-    let resp = client
-        .get(format!("{}/health", INFERENCE_URL))
-        .send()
-        .await
-        .map_err(|e| format!("not ready: {e}"))?;
-
-    if !resp.status().is_success() {
-        return Err(format!("not ready: HTTP {}", resp.status()));
+    match client.get(format!("{}/health", INFERENCE_URL)).send().await {
+        Ok(resp) if resp.status().is_success() => {
+            if let Ok(body) = resp.json::<serde_json::Value>().await {
+                let keras = body["keras_loaded"].as_bool().unwrap_or(false);
+                let yolo  = body["yolo_loaded"].as_bool().unwrap_or(false);
+                return Ok(serde_json::json!({
+                    "ready": keras || yolo,
+                    "keras": keras,
+                    "yolo":  yolo,
+                    "status": "Ready",
+                }));
+            }
+        }
+        _ => {}
     }
 
-    let body: serde_json::Value = resp.json().await.map_err(|e| e.to_string())?;
-
-    let keras = body["keras_loaded"].as_bool().unwrap_or(false);
-    let yolo  = body["yolo_loaded"].as_bool().unwrap_or(false);
-
+    let current_status = state.0.lock().unwrap().clone();
     Ok(serde_json::json!({
-        "ready": keras || yolo,
-        "keras": keras,
-        "yolo":  yolo,
+        "ready": false,
+        "keras": false,
+        "yolo": false,
+        "status": current_status,
     }))
 }
 
@@ -146,6 +149,8 @@ fn main() {
         .plugin(tauri_plugin_shell::init())
         .invoke_handler(tauri::generate_handler![proxy_predict, check_server_health])
         .setup(|app| {
+            app.manage(SidecarStatus(Mutex::new("Starting AI engine…".to_string())));
+
             {
                 if let Ok(sidecar_command) = app.shell().sidecar("inference-server") {
                     let sidecar_command = if let Ok(res_dir) = app.path().resource_dir() {
@@ -161,16 +166,35 @@ fn main() {
                         Ok((mut rx, child)) => {
                             app.manage(SidecarChild(Mutex::new(Some(child))));
 
-                            // Log sidecar output
+                            // Log sidecar output and update status
                             let app_handle = app.handle().clone();
                             tauri::async_runtime::spawn(async move {
                                 while let Some(event) = rx.recv().await {
                                     match event {
                                         tauri_plugin_shell::process::CommandEvent::Stdout(line) => {
+                                            let text = String::from_utf8_lossy(&line);
                                             println!(
                                                 "[inference-server] {}",
-                                                String::from_utf8_lossy(&line)
+                                                text
                                             );
+                                            
+                                            let status_msg = if text.contains("Missing packages") || text.contains("Installing") || text.contains("Running: ") {
+                                                Some("Installing required Python dependencies (may take a few minutes)…".to_string())
+                                            } else if text.contains("Loading models") || text.contains("Loading YOLO model") {
+                                                Some("Loading YOLO model…".to_string())
+                                            } else if text.contains("Loading Keras model") {
+                                                Some("Loading Keras model… (may take ~40 s on CPU)".to_string())
+                                            } else if text.contains("Starting inference server") || text.contains("Serving Flask app") {
+                                                Some("Starting Flask web server…".to_string())
+                                            } else {
+                                                None
+                                            };
+
+                                            if let Some(msg) = status_msg {
+                                                if let Some(status) = app_handle.try_state::<SidecarStatus>() {
+                                                    *status.0.lock().unwrap() = msg;
+                                                }
+                                            }
                                         }
                                         tauri_plugin_shell::process::CommandEvent::Stderr(line) => {
                                             eprintln!(
