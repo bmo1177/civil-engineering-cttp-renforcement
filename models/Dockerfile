@@ -35,4 +35,4 @@ COPY Yolo-Road-Condition-main/yolo_road_model.pt ./Yolo-Road-Condition-main/yolo
 EXPOSE 7860
 
 # Start the server
-CMD ["gunicorn", "-w", "1", "-b", "0.0.0.0:7860", "--timeout", "120", "--preload", "inference_server:app"]
+CMD ["gunicorn", "-w", "1", "-b", "0.0.0.0:7860", "--timeout", "120", "inference_server:app"]
